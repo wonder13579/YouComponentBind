@@ -10,8 +10,60 @@ namespace YouComponentBind
     // 这里用来做代码生成 C#代码生成
     public class YouComponentBindCodeGenerater
     {
+        private CSharpGCodeFileGenerater CSharpGCodeGenerater = new CSharpGCodeFileGenerater();
         public static YouComponentBindCodeGenerater Instance { get; private set; } = new YouComponentBindCodeGenerater();
         public YouBindBase rootBindBase { get; set; }
+
+        public void DoGenerate(YouBindBase rootBindBase)
+        {
+            this.rootBindBase = rootBindBase;
+
+            if (rootBindBase?.bindInfoList == null)
+            {
+                Debug.LogError("生成失败 rootBindBase为空");
+                return;
+            }
+            CSharpGCodeGenerater.className = rootBindBase.transform.name;
+            CSharpGCodeGenerater.outputFilePath =
+                $"{YouBindConfigManager.CSharpGenCodePath}/{rootBindBase.transform.name}.g.cs";
+            CSharpGCodeGenerater.Clear();
+            for (int i = 0; i < rootBindBase.bindInfoList.Count; i++)
+            {
+                var bindInfo = rootBindBase.bindInfoList[i];
+                if (bindInfo == null)
+                {
+                    Debug.LogWarning("请注意有bindInfo为空");
+                    return;
+                }
+
+                CSharpGCodeGenerater.AppendObject(bindInfo);
+                CSharpGCodeGenerater.AppendEvent(bindInfo);
+            }
+            CSharpGCodeGenerater.ExportCodeFile();
+            CSharpGCodeGenerater.Clear();
+        }
+
+        public static void SaveToFile(string filePath, string content, bool overwrite = false)
+        {
+            // 获取文件所在目录
+            string directory = Path.GetDirectoryName(filePath);
+            if (!Directory.Exists(directory))
+            {
+                Directory.CreateDirectory(directory);
+            }
+
+            if (overwrite || !File.Exists(filePath))
+            {
+                File.WriteAllText(filePath, content);
+            }
+        }
+    }
+
+    // 生成.g.cs文件
+    public class CSharpGCodeFileGenerater
+    {
+        public string className;
+        public string outputFilePath;
         // 命名空间收集
         private List<string> nameSpaceList = new List<string>();
         // 字段赋值代码块
@@ -26,7 +78,7 @@ namespace YouComponentBind
         private StringBuilder eventDefinitionBuilder = new StringBuilder();
         // 代码基础模板
         private string templeteCSharpGenCode =
-@"@NameSpace@
+    @"@NameSpace@
 
 // 此文件由YouComponentBind生成，请勿修改。可参考YouComponentBindWindow
 public partial class @ClassName@ : YouBindBase
@@ -60,57 +112,8 @@ public interface I@ClassName@EventFunction
 }
 ";
 
-        public void DoGenerate(YouBindBase rootBindBase, string outputPath)
-        {
-            var resultBuilder = new StringBuilder(templeteCSharpGenCode);
-            this.rootBindBase = rootBindBase;
-            Init();
-            if (rootBindBase?.bindInfoList == null)
-            {
-                Debug.LogError("生成失败 rootBindBase为空");
-                return;
-            }
-            for (int i = 0; i < rootBindBase.bindInfoList.Count; i++)
-            {
-                var bindInfo = rootBindBase.bindInfoList[i];
-                if (bindInfo == null)
-                {
-                    Debug.LogWarning("请注意有bindInfo为空");
-                    return;
-                }
 
-                GenerateObject(bindInfo);
-                GenerateEvent(bindInfo);
-            }
-            var nameSpaceContent = string.Concat(nameSpaceList.Select(nameSpace => $"using {nameSpace};\n"));
-            var className = rootBindBase.transform.name;
-            resultBuilder.Replace("@ClassName@", className);
-            resultBuilder.Replace("@NameSpace@", nameSpaceContent);
-            resultBuilder.Replace("@FieldAssignment@", fieldAssignmentBuilder.ToString());
-            resultBuilder.Replace("@AddListener@", addListenerBuilder.ToString());
-            resultBuilder.Replace("@RemoveListener@", removeListenerBuilder.ToString());
-            resultBuilder.Replace("@FieldDefinition@", fieldDefinitionBuilder.ToString());
-            resultBuilder.Replace("@EventDefinition@", eventDefinitionBuilder.ToString());
-            SaveToFile(outputPath, resultBuilder.ToString(), true);
-            Debug.Log("代码生成完毕，保存路径为" + outputPath); 
-        }
-
-        public void SaveToFile(string filePath, string content, bool overwrite = false)
-        {
-            // 获取文件所在目录
-            string directory = Path.GetDirectoryName(filePath);
-            if (!Directory.Exists(directory))
-            {
-                Directory.CreateDirectory(directory);
-            }
-
-            if (overwrite || !File.Exists(filePath))
-            {
-                File.WriteAllText(filePath, content);
-            }
-        }
-
-        public void Init()
+        public void Clear()
         {
             nameSpaceList.Clear();
             nameSpaceList.Add("YouComponentBind");
@@ -121,7 +124,7 @@ public interface I@ClassName@EventFunction
             eventDefinitionBuilder.Clear();
         }
 
-        public void GenerateObject(ComponentBindInfo bindInfo)
+        public void AppendObject(ComponentBindInfo bindInfo)
         {
             if (bindInfo?.bindType == null) return;
             if (!bindInfo.genCode) return;
@@ -159,7 +162,7 @@ public interface I@ClassName@EventFunction
                 $"    public {bindInfo.bindType.Name} {bindInfo.fieldName};");
         }
 
-        public void GenerateEvent(ComponentBindInfo bindInfo)
+        public void AppendEvent(ComponentBindInfo bindInfo)
         {
             if (bindInfo?.eventInfoList == null || bindInfo.eventInfoList.Count <= 0)
                 return;
@@ -170,7 +173,7 @@ public interface I@ClassName@EventFunction
                 var eventConfig = YouBindConfigManager.Instance.GetEventConfig(bindInfo.bindType, eventInfo.eventName);
                 if (eventConfig == null) continue;
 
-                var eventFuncName = eventConfig.eventFuncFormat.Replace("@XXX@", fieldName);
+                var eventFuncName = eventConfig.eventFuncFormat.Replace("@EventName@", fieldName);
                 addListenerBuilder.AppendLine(
                     //        view.btnExitButton.onClick.AddListener(OnClickExitButton);
                     $"        view.{fieldName}.{eventConfig.eventName}.AddListener({eventFuncName});");
@@ -179,8 +182,23 @@ public interface I@ClassName@EventFunction
                     $"        view.{fieldName}.{eventConfig.eventName}.RemoveListener({eventFuncName});");
                 eventDefinitionBuilder.AppendLine(
                     //    void OnExitButtonClick();
-                    $"    void {eventFuncName}();");
+                    eventConfig.eventDefinition.Replace("@EventName@", fieldName));
             }
+        }
+
+        public void ExportCodeFile()
+        {
+            var resultBuilder = new StringBuilder(templeteCSharpGenCode);
+            var nameSpaceContent = string.Concat(nameSpaceList.Select(nameSpace => $"using {nameSpace};\r\n"));
+            resultBuilder.Replace("@ClassName@", className);
+            resultBuilder.Replace("@NameSpace@", nameSpaceContent);
+            resultBuilder.Replace("@FieldAssignment@", fieldAssignmentBuilder.ToString());
+            resultBuilder.Replace("@AddListener@", addListenerBuilder.ToString());
+            resultBuilder.Replace("@RemoveListener@", removeListenerBuilder.ToString());
+            resultBuilder.Replace("@FieldDefinition@", fieldDefinitionBuilder.ToString());
+            resultBuilder.Replace("@EventDefinition@", eventDefinitionBuilder.ToString());
+            YouComponentBindCodeGenerater.SaveToFile(outputFilePath, resultBuilder.ToString(), true);
+            Debug.Log("代码生成完毕，保存路径为" + outputFilePath);
         }
     }
 }

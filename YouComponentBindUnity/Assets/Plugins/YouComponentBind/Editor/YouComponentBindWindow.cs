@@ -67,8 +67,7 @@ namespace YouComponentBind
             if (GUILayout.Button("生成代码"))
             {
                 // 生成代码
-                var path = $"{YouBindConfigManager.CSharpGenCodePath}/{rootBindBase.transform.name}.cs";
-                YouComponentBindCodeGenerater.Instance.DoGenerate(rootBindBase, path);
+                YouComponentBindCodeGenerater.Instance.DoGenerate(rootBindBase);
             }
             var obj = EditorGUILayout.ObjectField("拖入组件手动添加", null, typeof(Object), true);
             if (obj)

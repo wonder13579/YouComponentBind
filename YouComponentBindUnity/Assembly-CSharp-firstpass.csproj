@@ -55,6 +55,7 @@
   <ItemGroup>
     <Compile Include="Assets\Plugins\YouComponentBind\FirstWindow.cs" />
     <Compile Include="Assets\Plugins\YouComponentBind\Gen\FirstWindow.cs" />
+    <Compile Include="Assets\Plugins\YouComponentBind\Gen\FirstWindow.g.cs" />
     <Compile Include="Assets\Plugins\YouComponentBind\RunTime\EventCenter.cs" />
     <Compile Include="Assets\Plugins\YouComponentBind\RunTime\FirstWindow.g.cs" />
     <Compile Include="Assets\Plugins\YouComponentBind\RunTime\MyImage.cs" />

@@ -68,16 +68,16 @@ namespace YouComponentBind
             AddConfig(typeof(RawImage), "Raw");
             AddConfig(typeof(Button), "Button", eventArray: new[]
             {
-                new YouEventBindConfig("onClick", "On@XXX@Click")
+                new YouEventBindConfig("onClick", "On@EventName@Click", "    void On@EventName@Click();")
             });
             AddConfig(typeof(Toggle), "Toggle", eventArray: new[]
             {
-                new YouEventBindConfig("onValueChanged", "On@XXX@ValueChanged")
+                new YouEventBindConfig("onValueChanged", "On@EventName@ValueChanged", "    void On@EventName@ValueChanged(bool value);")
             });
             AddConfig(typeof(InputField), "Input", eventArray: new[]
             {
-                new YouEventBindConfig("onValueChange", "On@XXX@ValueChanged"),
-                new YouEventBindConfig("onEndEdit", "On@XXX@EndEdit")
+                new YouEventBindConfig("onValueChanged", "On@EventName@ValueChanged", "    void On@EventName@ValueChanged(string value);"),
+                new YouEventBindConfig("onEndEdit", "On@EventName@EndEdit", "    void On@EventName@EndEdit(string value);")
             });
             bindConfigList.ForEach(p => { bindConfigDict[p.bindType] = p; });
         }
@@ -112,14 +112,16 @@ namespace YouComponentBind
 
     public class YouEventBindConfig : IYouCodeBindGenerate
     {
-        public bool autoGenerate = true; // 扫描时默认加入此事件
         public string eventName;
         public string eventFuncFormat;
+        public string eventDefinition;
+        public bool autoGenerate = true; // 扫描时默认加入此事件
 
-        public YouEventBindConfig(string eventName, string eventFuncFormat, bool autoGenerate = true)
+        public YouEventBindConfig(string eventName, string eventFuncFormat, string eventDefinition, bool autoGenerate = true)
         {
             this.eventName = eventName;
             this.eventFuncFormat = eventFuncFormat;
+            this.eventDefinition = eventDefinition;
             this.autoGenerate = autoGenerate;
         }
 
