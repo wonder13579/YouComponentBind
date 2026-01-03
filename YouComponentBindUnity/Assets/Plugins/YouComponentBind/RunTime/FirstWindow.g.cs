@@ -8,7 +8,7 @@ public partial class ExampleWindow : YouBindBase
 {
     // 序列化出来的控件，统一放view里，保持类字段整洁
     // 私有的，不要直接访问其他界面的控件！
-    private FirstWindowView view;
+    private ExampleWindowView view;
 
     public virtual void Reset()
     {
@@ -33,7 +33,7 @@ public partial class ExampleWindow : YouBindBase
     }
 }
 
-public partial class FirstWindowView
+public partial class ExampleWindowView
 {
     // @字段定义@
     public Button btnExitButton;

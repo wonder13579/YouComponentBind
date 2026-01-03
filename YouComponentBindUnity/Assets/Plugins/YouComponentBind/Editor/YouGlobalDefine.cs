@@ -1,16 +1,16 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
-public class YouGlobalDefine : MonoBehaviour {
-
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+namespace YouComponentBind
+{
+    public static class YouGlobalDefine
+    {
+        public static string GetCSharpGenCodeFilePath(string className)
+        {
+            return $"{Application.dataPath}/Plugins/YouComponentBind/Gen/{className}.g.cs";
+        }
+        public static string GetCSharpCustomCodeFilePath(string className)
+        {
+            return $"{Application.dataPath}/Plugins/YouComponentBind/Gen/{className}.cs";
+        }
+    }
 }

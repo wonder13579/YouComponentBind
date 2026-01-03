@@ -1,8 +1,8 @@
 using YouComponentBind;
-using UnityEngine.UI;
 
 
-// 此文件由YouComponentBind生成，请勿修改。可参考YouComponentBindWindow
+// 此文件由YouComponentBind生成，但是不会覆盖，请将您的逻辑放在这里。
+// 新增事件后，可用IDE补全IFirstWindowEventFunction接口，添加新事件。
 public partial class FirstWindow : YouBindBase, IFirstWindowEventFunction
 {
     public void OnButtonButtonClick()
@@ -10,7 +10,7 @@ public partial class FirstWindow : YouBindBase, IFirstWindowEventFunction
         throw new System.NotImplementedException();
     }
 
-    public void OnInputInputFieldEndEdit(string value)
+    public void OnToggleToggleValueChanged(bool value)
     {
         throw new System.NotImplementedException();
     }
@@ -20,8 +20,10 @@ public partial class FirstWindow : YouBindBase, IFirstWindowEventFunction
         throw new System.NotImplementedException();
     }
 
-    public void OnToggleToggleValueChanged(bool value)
+    public void OnInputInputFieldEndEdit(string value)
     {
         throw new System.NotImplementedException();
     }
+
+
 }

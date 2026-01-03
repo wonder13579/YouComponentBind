@@ -120,7 +120,6 @@ namespace YouComponentBind
                 var eventInfo = new BindEventInfo
                 {
                     genCode = true,
-                    targetInfo = componentInfo,
                     eventName = eventConfig.eventName
                 };
                 componentInfo.eventInfoList.Add(eventInfo);
@@ -139,12 +138,14 @@ namespace YouComponentBind
             return bindConfig?.prefix + objectTF?.name;
         }
 
-        public string GetRelativePath(Transform tf)
+        public static string GetRelativePath(Transform tf, Transform root = null)
         {
-            if (rootBindBase == null) return "";
+            if (tf == null) return "";
+            if (root == null)
+                root = Instance.rootBindBase.transform;
             var ans = new StringBuilder();
 
-            while (tf != null && tf != rootBindBase.transform)
+            while (tf != null && tf != root)
             {
                 if (ans.Length > 0)
                     ans.Insert(0, "/");

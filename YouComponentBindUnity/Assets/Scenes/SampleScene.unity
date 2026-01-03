@@ -159,6 +159,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bindInfoList: []
+  view:
+    Texttip23424: {fileID: 0}
+    RawRawImage: {fileID: 0}
+    ButtonButton: {fileID: 0}
+    TextText2: {fileID: 0}
+    ToggleToggle: {fileID: 0}
+    Text2: {fileID: 0}
+    TextLabel: {fileID: 0}
+    ToggleItem: {fileID: 0}
+    TextItemLabel: {fileID: 0}
+    InputInputField: {fileID: 0}
+    TextPlaceholder: {fileID: 0}
+    TextText: {fileID: 0}
 --- !u!1001 &643685920
 Prefab:
   m_ObjectHideFlags: 0
@@ -710,6 +723,14 @@ Prefab:
       propertyPath: bindInfoList.Array.data[14].relativePath
       value: AllType/transformAndGameObject
       objectReference: {fileID: 0}
+    - target: {fileID: 1913204486404778, guid: 1501fc89bbdc13843a2239fb6fa746e1, type: 2}
+      propertyPath: m_Name
+      value: Text2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1583112664310974, guid: 1501fc89bbdc13843a2239fb6fa746e1, type: 2}
+      propertyPath: m_Name
+      value: 2
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 1501fc89bbdc13843a2239fb6fa746e1, type: 2}
   m_IsPrefabParent: 0
@@ -795,6 +816,36 @@ RectTransform:
   m_PrefabParentObject: {fileID: 224448631576387652, guid: 1501fc89bbdc13843a2239fb6fa746e1,
     type: 2}
   m_PrefabInternal: {fileID: 643685920}
+--- !u!1 &643685935 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 1110283542971286, guid: 1501fc89bbdc13843a2239fb6fa746e1,
+    type: 2}
+  m_PrefabInternal: {fileID: 643685920}
+--- !u!114 &643685936
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 643685935}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ea3d699070e0dce4490dfe8a3ccb8dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bindInfoList: []
+  view:
+    Texttip23424: {fileID: 643685933}
+    RawRawImage: {fileID: 643685932}
+    ButtonButton: {fileID: 643685931}
+    TextText2: {fileID: 643685930}
+    ToggleToggle: {fileID: 643685929}
+    Text2: {fileID: 643685928}
+    TextLabel: {fileID: 643685927}
+    ToggleItem: {fileID: 643685926}
+    TextItemLabel: {fileID: 643685925}
+    InputInputField: {fileID: 643685924}
+    TextPlaceholder: {fileID: 643685923}
+    TextText: {fileID: 643685922}
 --- !u!1 &687784831
 GameObject:
   m_ObjectHideFlags: 0

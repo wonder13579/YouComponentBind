@@ -5,22 +5,23 @@ using UnityEngine.UI;
 // 此文件由YouComponentBind生成，请勿修改。可参考YouComponentBindWindow
 public partial class FirstWindow : YouBindBase
 {
-    private FirstWindowView view;
+    [UnityEngine.SerializeField]
+    private FirstWindowView view = new FirstWindowView();
 
     public virtual void Reset()
     {
-        view.Texttip23424 = transform.Find("AllType/tip23424").GetComponent<Text>();
-        view.RawRawImage = transform.Find("AllType/RawImage").GetComponent<RawImage>();
-        view.ButtonButton = transform.Find("AllType/Button").GetComponent<Button>();
-        view.TextText2 = transform.Find("AllType/Button/Text").GetComponent<Text>();
-        view.ToggleToggle = transform.Find("AllType/Toggle").GetComponent<Toggle>();
-        view.Text2 = transform.Find("AllType/Toggle/Label").GetComponent<Text>();
-        view.TextLabel = transform.Find("AllType/Dropdown/Label").GetComponent<Text>();
-        view.ToggleItem = transform.Find("AllType/Dropdown/Template/Viewport/Content/Item").GetComponent<Toggle>();
-        view.TextItemLabel = transform.Find("AllType/Dropdown/Template/Viewport/Content/Item/ItemLabel").GetComponent<Text>();
-        view.InputInputField = transform.Find("AllType/InputField").GetComponent<InputField>();
-        view.TextPlaceholder = transform.Find("AllType/InputField/Placeholder").GetComponent<Text>();
-        view.TextText = transform.Find("AllType/InputField/Text").GetComponent<Text>();
+        view.Texttip23424 = transform.Find("AllType/tip23424")?.GetComponent<Text>();
+        view.RawRawImage = transform.Find("AllType/RawImage")?.GetComponent<RawImage>();
+        view.ButtonButton = transform.Find("AllType/Button")?.GetComponent<Button>();
+        view.TextText2 = transform.Find("AllType/Button/Text2")?.GetComponent<Text>();
+        view.ToggleToggle = transform.Find("AllType/Toggle")?.GetComponent<Toggle>();
+        view.Text2 = transform.Find("AllType/Toggle/2")?.GetComponent<Text>();
+        view.TextLabel = transform.Find("AllType/Dropdown/Label")?.GetComponent<Text>();
+        view.ToggleItem = transform.Find("AllType/Dropdown/Template/Viewport/Content/Item")?.GetComponent<Toggle>();
+        view.TextItemLabel = transform.Find("AllType/Dropdown/Template/Viewport/Content/Item/ItemLabel")?.GetComponent<Text>();
+        view.InputInputField = transform.Find("AllType/InputField")?.GetComponent<InputField>();
+        view.TextPlaceholder = transform.Find("AllType/InputField/Placeholder")?.GetComponent<Text>();
+        view.TextText = transform.Find("AllType/InputField/Text")?.GetComponent<Text>();
 
     }
 
@@ -43,6 +44,7 @@ public partial class FirstWindow : YouBindBase
     }
 }
 
+[System.Serializable]
 public partial class FirstWindowView
 {
     public Text Texttip23424;

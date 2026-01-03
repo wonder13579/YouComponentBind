@@ -7,7 +7,6 @@ namespace YouComponentBind
 {
     public class YouBindConfigManager
     {
-        public static string CSharpGenCodePath = Application.dataPath + "/Plugins/YouComponentBind/Gen";
         // 缓存
         private readonly Dictionary<Type, YouComponentBindConfig>
             bindConfigDict = new Dictionary<Type, YouComponentBindConfig>();
@@ -59,7 +58,6 @@ namespace YouComponentBind
 
         private void Init()
         {
-            // 前缀功能可能要干掉了
             AddConfig(typeof(Transform), "TF", false);
             AddConfig(typeof(RectTransform), "RTF", false);
             AddConfig(typeof(GameObject), "GO", false);
@@ -68,16 +66,16 @@ namespace YouComponentBind
             AddConfig(typeof(RawImage), "Raw");
             AddConfig(typeof(Button), "Button", eventArray: new[]
             {
-                new YouEventBindConfig("onClick", "On@EventName@Click", "    void On@EventName@Click();")
+                new YouEventBindConfig("onClick", "On@EventName@Click", "void On@EventName@Click()")
             });
             AddConfig(typeof(Toggle), "Toggle", eventArray: new[]
             {
-                new YouEventBindConfig("onValueChanged", "On@EventName@ValueChanged", "    void On@EventName@ValueChanged(bool value);")
+                new YouEventBindConfig("onValueChanged", "On@EventName@ValueChanged", "void On@EventName@ValueChanged(bool value)")
             });
             AddConfig(typeof(InputField), "Input", eventArray: new[]
             {
-                new YouEventBindConfig("onValueChanged", "On@EventName@ValueChanged", "    void On@EventName@ValueChanged(string value);"),
-                new YouEventBindConfig("onEndEdit", "On@EventName@EndEdit", "    void On@EventName@EndEdit(string value);")
+                new YouEventBindConfig("onValueChanged", "On@EventName@ValueChanged", "void On@EventName@ValueChanged(string value)"),
+                new YouEventBindConfig("onEndEdit", "On@EventName@EndEdit", "void On@EventName@EndEdit(string value)")
             });
             bindConfigList.ForEach(p => { bindConfigDict[p.bindType] = p; });
         }

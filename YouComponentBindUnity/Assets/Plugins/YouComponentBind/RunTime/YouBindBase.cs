@@ -58,7 +58,6 @@ namespace YouComponentBind
     {
         public bool genCode;
         public string eventName; // onClick
-        [NonSerialized] public ComponentBindInfo targetInfo;
     }
 #endif
 }
