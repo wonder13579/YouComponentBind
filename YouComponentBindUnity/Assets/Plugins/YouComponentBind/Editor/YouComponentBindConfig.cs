@@ -7,6 +7,7 @@ namespace YouComponentBind
 {
     public class YouBindConfigManager
     {
+        public static string CSharpGenCodePath = Application.dataPath + "/Plugins/YouComponentBind/Gen";
         // 缓存
         private readonly Dictionary<Type, YouComponentBindConfig>
             bindConfigDict = new Dictionary<Type, YouComponentBindConfig>();
@@ -16,7 +17,7 @@ namespace YouComponentBind
 
         public YouComponentBindConfig GetBindConfig(Type componentType)
         {
-            if(componentType == null)
+            if (componentType == null)
                 return null;
             if (bindConfigList.Count <= 0)
                 Init();
@@ -35,6 +36,13 @@ namespace YouComponentBind
             }
             bindConfigDict[componentType] = ans;
             return ans;
+        }
+
+        public YouEventBindConfig GetEventConfig(Type componentType, string eventName)
+        {
+            var componentConfig = GetBindConfig(componentType);
+            if (componentConfig?.eventArray == null) return null;
+            return Array.Find(componentConfig.eventArray, p => p.eventName == eventName);
         }
 
         public void AddConfig(Type type, string prefix = null, bool autoBind = true,
@@ -60,16 +68,16 @@ namespace YouComponentBind
             AddConfig(typeof(RawImage), "Raw");
             AddConfig(typeof(Button), "Button", eventArray: new[]
             {
-                new YouEventBindConfig("onClick")
+                new YouEventBindConfig("onClick", "On@XXX@Click")
             });
             AddConfig(typeof(Toggle), "Toggle", eventArray: new[]
             {
-                new YouEventBindConfig("onValueChanged")
+                new YouEventBindConfig("onValueChanged", "On@XXX@ValueChanged")
             });
             AddConfig(typeof(InputField), "Input", eventArray: new[]
             {
-                new YouEventBindConfig("onValueChange"),
-                new YouEventBindConfig("onEndEdit")
+                new YouEventBindConfig("onValueChange", "On@XXX@ValueChanged"),
+                new YouEventBindConfig("onEndEdit", "On@XXX@EndEdit")
             });
             bindConfigList.ForEach(p => { bindConfigDict[p.bindType] = p; });
         }
@@ -106,10 +114,12 @@ namespace YouComponentBind
     {
         public bool autoGenerate = true; // 扫描时默认加入此事件
         public string eventName;
+        public string eventFuncFormat;
 
-        public YouEventBindConfig(string name, bool autoGenerate = true)
+        public YouEventBindConfig(string eventName, string eventFuncFormat, bool autoGenerate = true)
         {
-            eventName = name;
+            this.eventName = eventName;
+            this.eventFuncFormat = eventFuncFormat;
             this.autoGenerate = autoGenerate;
         }
 

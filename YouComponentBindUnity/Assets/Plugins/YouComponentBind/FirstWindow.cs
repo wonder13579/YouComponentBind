@@ -1,6 +1,6 @@
 using System;
 
-public partial class FirstWindow : IFirstWindowEventFunction
+public partial class ExampleWindow : IExampleWindowEventFunction
 {
     public void OnClickExitButton()
     {

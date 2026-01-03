@@ -63,6 +63,13 @@ namespace YouComponentBind
                 YouComponentBindController.Instance.SetRootBindBase(rootBindBase);
                 YouComponentBindController.Instance.ScanComponent();
             }
+
+            if (GUILayout.Button("生成代码"))
+            {
+                // 生成代码
+                var path = $"{YouBindConfigManager.CSharpGenCodePath}/{rootBindBase.transform.name}.cs";
+                YouComponentBindCodeGenerater.Instance.DoGenerate(rootBindBase, path);
+            }
             var obj = EditorGUILayout.ObjectField("拖入组件手动添加", null, typeof(Object), true);
             if (obj)
             {
