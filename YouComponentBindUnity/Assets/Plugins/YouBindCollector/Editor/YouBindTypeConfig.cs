@@ -3,25 +3,25 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace YouComponentBind
+namespace YouBindCollector
 {
-    public class YouBindConfigManager
+    public class YouBindTypeConfigManager
     {
         // 缓存
-        private readonly Dictionary<Type, YouObjectBindConfig>
-            bindConfigDict = new Dictionary<Type, YouObjectBindConfig>();
+        private readonly Dictionary<Type, YouBindTypeConfig>
+            bindConfigDict = new Dictionary<Type, YouBindTypeConfig>();
 
-        private readonly List<YouObjectBindConfig> bindConfigList = new List<YouObjectBindConfig>();
-        public static YouBindConfigManager Instance { get; private set; } = new YouBindConfigManager();
+        private readonly List<YouBindTypeConfig> bindConfigList = new List<YouBindTypeConfig>();
+        public static YouBindTypeConfigManager Instance { get; private set; } = new YouBindTypeConfigManager();
 
-        public YouObjectBindConfig GetBindConfig(Type componentType)
+        public YouBindTypeConfig GetBindConfig(Type componentType)
         {
             if (componentType == null)
                 return null;
             if (bindConfigList.Count <= 0)
                 Init();
             // 缓存
-            YouObjectBindConfig ans = null;
+            YouBindTypeConfig ans = null;
             if (bindConfigDict.TryGetValue(componentType, out ans))
                 return ans;
             // 支持继承
@@ -31,7 +31,7 @@ namespace YouComponentBind
             // 无配置
             if (ans == null)
             {
-                ans = YouObjectBindConfig.Default(componentType);
+                ans = YouBindTypeConfig.Default(componentType);
             }
             bindConfigDict[componentType] = ans;
             return ans;
@@ -47,7 +47,7 @@ namespace YouComponentBind
         public void AddConfig(Type type, string prefix = null, bool autoBind = true,
             YouEventBindConfig[] eventArray = null)
         {
-            bindConfigList.Add(new YouObjectBindConfig
+            bindConfigList.Add(new YouBindTypeConfig
             {
                 bindType = type,
                 prefix = prefix,
@@ -83,7 +83,7 @@ namespace YouComponentBind
 
     // 用于定义组件如何生成。可对每种组件单独写功能。
     // 配置不用ScriptableObject，代码文件对查引用更友好
-    public class YouObjectBindConfig : IYouCodeBindGenerate
+    public class YouBindTypeConfig : IYouCodeBindGenerate
     {
         public bool autoBind; // 扫描时默认加入组件列表
         public string prefix;
@@ -91,9 +91,9 @@ namespace YouComponentBind
         public YouEventBindConfig[] eventArray; // 支持生成的事件列表
 
         // 给没有配置的生成一个默认配置
-        public static YouObjectBindConfig Default(Type bindType)
+        public static YouBindTypeConfig Default(Type bindType)
         {
-            return new YouObjectBindConfig()
+            return new YouBindTypeConfig()
             {
                 autoBind = false,
                 prefix = bindType.Name,

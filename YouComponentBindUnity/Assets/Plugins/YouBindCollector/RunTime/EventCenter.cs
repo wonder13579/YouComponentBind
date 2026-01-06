@@ -4,7 +4,7 @@ using Object = System.Object;
 
 // 把界面的事件注册也放这里
 // 先留接口
-namespace YouComponentBind
+namespace YouBindCollector
 {
     public static class YouEventCenter
     {

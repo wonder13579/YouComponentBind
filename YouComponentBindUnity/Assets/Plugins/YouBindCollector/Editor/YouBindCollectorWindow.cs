@@ -1,12 +1,13 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text.RegularExpressions;
 using UnityEditor;
 using UnityEngine;
 
-namespace YouComponentBind
+namespace YouBindCollector
 {
     // 绑定器编辑器代码
     public class YouBindCollectorWindow : EditorWindow
@@ -42,7 +43,7 @@ namespace YouComponentBind
 
         private void OnSelectionChange()
         {
-            var bind = GetFirstComponentInParent<YouBindCollector>(Selection.activeTransform);
+            var bind = YouBindCollectorController.GetFirstComponentInParent<YouBindCollector>(Selection.activeTransform);
             if (rootBindBase != bind)
             {
                 rootBindBase = bind;
@@ -61,11 +62,11 @@ namespace YouComponentBind
                 EditorGUILayout.ObjectField("目标根物体", null, typeof(GameObject), false);
             else
                 EditorGUILayout.ObjectField("目标根物体", rootBindBase.gameObject, typeof(GameObject), false);
-            var refreshAfterGenCode = EditorPrefs.GetBool(YouGlobalDefine.YouComponentBind_RefreshAfterGenCode, true);
+            var refreshAfterGenCode = EditorPrefs.GetBool(YouBindGlobalDefine.YouComponentBind_RefreshAfterGenCode, true);
             var newRefreshAfterGenCode = EditorGUILayout.Toggle("更新代码后立即刷新", refreshAfterGenCode);
             if (refreshAfterGenCode != newRefreshAfterGenCode)
             {
-                EditorPrefs.SetBool(YouGlobalDefine.YouComponentBind_RefreshAfterGenCode, newRefreshAfterGenCode);
+                EditorPrefs.SetBool(YouBindGlobalDefine.YouComponentBind_RefreshAfterGenCode, newRefreshAfterGenCode);
             }
 
             if (GUILayout.Button("新增绑定流程"))
@@ -84,7 +85,12 @@ namespace YouComponentBind
             if (GUILayout.Button("生成代码"))
             {
                 // 生成代码
-                YouBindCollectorCodeGenerater.Instance.DoGenerate(rootBindBase);
+                YouBindCodeGenerater.Instance.DoGenerate(rootBindBase);
+            }
+
+            if (GUILayout.Button("删除代码"))
+            {
+                DeleteCodeFile();
             }
 
             var obj = EditorGUILayout.ObjectField("拖入组件手动添加", null, typeof(UnityEngine.Object), true);
@@ -92,9 +98,10 @@ namespace YouComponentBind
             {
                 // 进行组件增删前重建下缓存
                 YouBindCollectorController.Instance.SetRootBindBase(rootBindBase);
-                YouBindCollectorController.Instance.AddBindComponent(obj, enableNoConfig: true, showMessage: true);
+                YouBindCollectorController.Instance.AddBindComponent(obj);
                 Repaint();
             }
+            ShowAppendContent();
 
             EditorGUILayout.BeginHorizontal();
 
@@ -103,6 +110,7 @@ namespace YouComponentBind
             ApplySelectFieldName();
 
             // 显示组件列表
+            ResetFieldNameSet();
             scrollPosition = GUILayout.BeginScrollView(scrollPosition);
             foreach (var bindInfo in showComponentBindInfoList)
                 ShowBindObjectInfo(bindInfo);
@@ -120,16 +128,21 @@ namespace YouComponentBind
             currentBindComponentInfo = info;
             GUILayout.BeginHorizontal();
             info.genCode = GUILayout.Toggle(info.genCode, "", GUILayout.Width(20));
-            // 调试搜索功能
-            // GUILayout.Label(info.commonSubsequenceCount.ToString(), GUILayout.Width(20));
+            //调试搜索功能
+            //GUILayout.Label(info.searchPriority.ToString(), GUILayout.Width(20));
             // 调试类型序列化
             //GUILayout.Label(info.bindType?.Name, GUILayout.Width(50));
 
             // 显示字段名和快速改字段名支持
+            var isNameValid = IsNameValid(info.fieldName);
+            var oldColor = GUI.color;
+            if (!isNameValid)
+                GUI.color = Color.red;
             var newFieldName = EditorGUILayout.TextField(info.fieldName, GUILayout.Width(100));
+            GUI.color = oldColor;
             if (newFieldName != info.fieldName)
             {
-                var config = YouBindConfigManager.Instance.GetBindConfig(info.bindType);
+                var config = YouBindTypeConfigManager.Instance.GetBindConfig(info.bindType);
                 Debug.Log("" + info.bindType + config);
                 newFieldName = Regex.Replace(newFieldName, "^" + config.prefix, "");
                 var transform = YouBindCollectorController.GetObjectTransform(info.bindObject);
@@ -198,8 +211,8 @@ namespace YouComponentBind
                 dragEndIndex = index;
                 if (oldDragEndIndex != dragEndIndex)
                 {
-                    YouBindCollectorController.Instance.SwapEvent(currentBindComponentInfo, oldDragEndIndex, dragStartIndex);
-                    YouBindCollectorController.Instance.SwapEvent(currentBindComponentInfo, dragEndIndex, dragStartIndex);
+                    YouBindCollectorController.SwapEvent(currentBindComponentInfo, oldDragEndIndex, dragStartIndex);
+                    YouBindCollectorController.SwapEvent(currentBindComponentInfo, dragEndIndex, dragStartIndex);
                     Repaint();
                 }
             }
@@ -210,6 +223,48 @@ namespace YouComponentBind
                 dragingComponentBindInfo = null;
                 Repaint();
             }
+        }
+
+        private void ShowAppendContent()
+        {
+            var go = Selection.activeGameObject;
+            if (go == null) return;
+            ShowAppendContentItem(go);
+            var bindObjectArray = go.GetComponents<Component>();
+            foreach (var bindObject in bindObjectArray)
+            {
+                ShowAppendContentItem(bindObject);
+            }
+        }
+
+        private void ShowAppendContentItem(UnityEngine.Object bindObject)
+        {
+            if(bindObject == null) return;
+            var bindType = bindObject.GetType();
+            var joined = rootBindBase?.joinedObjectSet?.Contains(bindObject);
+            if (joined == true)
+            {
+                var bindInfo = rootBindBase.bindInfoList.Find(p => p.bindObject == bindObject);
+                joined = bindInfo?.genCode;
+            }
+            var showName = (joined == true ? "【已加入】" : "") + bindType.Name;
+            if (!GUILayout.Button(showName)) return;
+            if (rootBindBase == null)
+            {
+                Debug.LogError("未找到收集器");
+                return;
+            }
+            if (joined == true)
+            {
+                YouBindCollectorController.Instance.SetRootBindBase(rootBindBase);
+                YouBindCollectorController.Instance.RemoveBindComponent(bindObject);
+            }
+            else
+            {
+                YouBindCollectorController.Instance.SetRootBindBase(rootBindBase);
+                YouBindCollectorController.Instance.AddBindComponent(bindObject);
+            }
+            Repaint();
         }
 
         // 搜索时显示的是一个独立列表，此时如果修改原始数据，列表不会更新
@@ -223,17 +278,8 @@ namespace YouComponentBind
                 return;
             }
 
-            showComponentBindInfoList = new List<BindObjectInfo>();
-            for (var i = 0; i < rootBindBase.bindInfoList.Count; i++)
-            {
-                var info = rootBindBase.bindInfoList[i];
-                info.searchPriority = YouBindCollectorController.Search(
-                    info.fieldName, searchString);
-                if (info.searchPriority > 0) showComponentBindInfoList.Add(info);
-            }
-
-            showComponentBindInfoList.Sort((a, b) =>
-                b.searchPriority - a.searchPriority);
+            showComponentBindInfoList = YouBindCollectorController.SearchSort(
+                rootBindBase.bindInfoList, p => p.fieldName, searchString);
             Repaint();
         }
 
@@ -264,18 +310,46 @@ namespace YouComponentBind
             EditorGUILayout.TextField("选中物体", showFieldName);
         }
 
-        // 按照遍历父物体的顺序查找组件，包括自己的组件
-        public static T GetFirstComponentInParent<T>(Transform target) where T : YouBindCollector
+        #region 字段命名提示
+        Dictionary<string, int> fieldNameDict = new Dictionary<string, int>();
+        Regex identifierRegex = new Regex(@"^[a-zA-Z_][a-zA-Z0-9_]*$");
+        public void ResetFieldNameSet()
         {
-            while (target != null)
+            fieldNameDict.Clear();
+            foreach (var bindInfo in rootBindBase.bindInfoList)
             {
-                var bindBase = target.GetComponent<T>();
-                if (bindBase)
-                    return bindBase;
-                target = target.parent;
+                int count;
+                fieldNameDict.TryGetValue(bindInfo.fieldName, out count);
+                fieldNameDict[bindInfo.fieldName] = count + 1;
             }
+        }
+        public bool IsNameValid(string fieldName)
+        {
+            var result = identifierRegex.Match(fieldName);
+            if (result == null)
+                return false;
+            int count;
+            fieldNameDict.TryGetValue(fieldName, out count);
+            if (count > 1)
+                return false;
+            return result.Success;
+        }
+        #endregion
 
-            return null;
+        // 清理代码文件，点错的时候用
+        public void DeleteCodeFile()
+        {
+            if (rootBindBase == null)
+                return;
+            var message = $"警告！将删除生成代码文件，点击确认继续\n" +
+                $"将删除：{rootBindBase.targetClassName}.cs\n" +
+                $"{rootBindBase.targetClassName}.g.cs";
+            if (!EditorUtility.DisplayDialog("确认", message, "确认", "取消"))
+            {
+                return;
+            }
+            File.Delete(YouBindGlobalDefine.GetCSharpGenCodeFilePath(rootBindBase.targetClassName));
+            File.Delete(YouBindGlobalDefine.GetCSharpCustomCodeFilePath(rootBindBase.targetClassName));
         }
     }
 }

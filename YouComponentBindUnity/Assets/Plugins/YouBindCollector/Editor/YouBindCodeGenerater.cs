@@ -3,17 +3,19 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using UnityEditor;
 using UnityEngine;
 
-namespace YouComponentBind
+namespace YouBindCollector
 {
     // 这里用来做代码生成 C#代码生成
-    public class YouBindCollectorCodeGenerater
+    public class YouBindCodeGenerater
     {
-        public static YouBindCollectorCodeGenerater Instance { get; private set; } = new YouBindCollectorCodeGenerater();
+        public static YouBindCodeGenerater Instance { get; private set; } = new YouBindCodeGenerater();
         private CSharpGenCodeFileGenerater CSharpGenCodeGenerater = new CSharpGenCodeFileGenerater();
         private CSharpCustomCodeFileGenerater CSharpCustomCodeFileGenerater = new CSharpCustomCodeFileGenerater();
+        private List<CodeGeneraterBase> codeGeneraterList = new List<CodeGeneraterBase>();
         public YouBindCollector rootBindBase { get; set; }
 
         public void DoGenerate(YouBindCollector rootBindBase)
@@ -25,11 +27,15 @@ namespace YouComponentBind
                 Debug.LogError("生成失败 rootBindBase为空");
                 return;
             }
-            CSharpGenCodeGenerater.Clear();
-            CSharpGenCodeGenerater.className = rootBindBase.transform.name;
+            codeGeneraterList.Clear();
+            codeGeneraterList.Add(CSharpGenCodeGenerater);
+            var customFilePath = YouBindGlobalDefine.GetCSharpCustomCodeFilePath(rootBindBase.targetClassName);
+            if (!File.Exists(customFilePath))
+                codeGeneraterList.Add(CSharpCustomCodeFileGenerater);
 
-            CSharpCustomCodeFileGenerater.Clear();
-            CSharpCustomCodeFileGenerater.className = rootBindBase.transform.name;
+            codeGeneraterList.ForEach(p => p.Clear());
+            codeGeneraterList.ForEach(p => p.className = rootBindBase.targetClassName);
+
             for (int i = 0; i < rootBindBase.bindInfoList.Count; i++)
             {
                 var bindInfo = rootBindBase.bindInfoList[i];
@@ -39,24 +45,20 @@ namespace YouComponentBind
                     continue;
                 }
 
-                CSharpGenCodeGenerater.AppendObject(bindInfo);
-                CSharpCustomCodeFileGenerater.AppendObject(bindInfo);
+                codeGeneraterList.ForEach(p => p.AppendObject(bindInfo));
                 if (bindInfo?.eventInfoList == null || bindInfo.eventInfoList.Count <= 0)
                     continue;
                 var fieldName = bindInfo.fieldName;
                 for (int j = 0; j < bindInfo.eventInfoList.Count; j++)
                 {
                     var eventInfo = bindInfo.eventInfoList[j];
-                    CSharpGenCodeGenerater.AppendEvent(bindInfo, eventInfo);
-                    CSharpCustomCodeFileGenerater.AppendEvent(bindInfo, eventInfo);
+                    codeGeneraterList.ForEach(p => p.AppendEvent(bindInfo, eventInfo));
                 }
             }
-            CSharpGenCodeGenerater.ExportCodeFile();
-            CSharpCustomCodeFileGenerater.ExportCodeFile();
+            codeGeneraterList.ForEach(p => p.ExportCodeFile());
+            codeGeneraterList.ForEach(p => p.Clear());
 
-            CSharpGenCodeGenerater.Clear();
-            CSharpCustomCodeFileGenerater.Clear();
-            var refreshAfterGenCode = EditorPrefs.GetBool(YouGlobalDefine.YouComponentBind_RefreshAfterGenCode, true);
+            var refreshAfterGenCode = EditorPrefs.GetBool(YouBindGlobalDefine.YouComponentBind_RefreshAfterGenCode, true);
             if (refreshAfterGenCode)
                 AssetDatabase.Refresh();
         }
@@ -77,34 +79,84 @@ namespace YouComponentBind
         }
     }
 
-    // 生成.g.cs文件
-    public class CSharpGenCodeFileGenerater
+    public class CodeGeneraterBase
     {
         public string className;
         public string outputFilePath;
-        // 命名空间收集
-        private List<string> nameSpaceList = new List<string>();
+        protected List<string> nameSpaceList = new List<string>();
+        protected StringBuilder[] codeContentBuilder = null;
+        protected virtual int builderCount => 0;
+
+        public virtual void Clear()
+        {
+            if (codeContentBuilder == null)
+                codeContentBuilder = new StringBuilder[builderCount];
+            for (int i = 0; i < builderCount; i++)
+            {
+                if (codeContentBuilder[i] == null)
+                    codeContentBuilder[i] = new StringBuilder();
+            }
+            className = "";
+            outputFilePath = "";
+            nameSpaceList.Clear();
+            nameSpaceList.Add("UnityEngine");
+            foreach (var builder in codeContentBuilder)
+                builder.Clear();
+        }
+        public virtual void AppendObject(BindObjectInfo bindInfo) { }
+        public virtual void AppendEvent(BindObjectInfo bindInfo, BindEventInfo eventInfo) { }
+        public virtual void ExportCodeFile()
+        {
+            // 清理最后的空行
+            for (int i = 0; i < builderCount; i++)
+            {
+                var builder = codeContentBuilder[i];
+                if (builder == null)
+                    continue;
+                while (true)
+                {
+                    if (builder.Length < 1)
+                        break;
+                    var lastChar = builder[builder.Length - 1];
+                    if (lastChar != '\n' && lastChar != '\r')
+                        break;
+                    builder.Remove(builder.Length - 1, 1);
+                }
+            }
+        }
+
+    }
+
+    // 生成.g.cs文件
+    public class CSharpGenCodeFileGenerater : CodeGeneraterBase
+    {
         // 字段赋值代码块
-        private StringBuilder fieldAssignmentBuilder = new StringBuilder();
+        private StringBuilder fieldAssignmentBuilder => codeContentBuilder[0];
         // 消息注册代码块
-        private StringBuilder addListenerBuilder = new StringBuilder();
+        private StringBuilder addListenerBuilder => codeContentBuilder[1];
         // 消息注销代码块
-        private StringBuilder removeListenerBuilder = new StringBuilder();
+        private StringBuilder removeListenerBuilder => codeContentBuilder[2];
         // 字段定义代码块
-        private StringBuilder fieldDefinitionBuilder = new StringBuilder();
+        private StringBuilder fieldDefinitionBuilder => codeContentBuilder[3];
         // 事件定义代码块
-        private StringBuilder eventDefinitionBuilder = new StringBuilder();
+        private StringBuilder eventDefinitionBuilder => codeContentBuilder[4];
+        protected override int builderCount => 5;
         // 代码基础模板
         private string templeteCSharpGenCode =
     @"@NameSpace@
-
-// 此文件由YouComponentBind生成，请勿修改。可参考YouComponentBindWindow
+// 此文件由YouBindCollector生成，请勿修改。可参考YouBindCollectorWindow
 public partial class @ClassName@
 {
-    [UnityEngine.SerializeField]
+    [SerializeField]
     private @ClassName@View view = new @ClassName@View();
 
     public virtual void Reset()
+    {
+        InitializeView();
+    }
+
+    [ContextMenu(""为view上引用的字段赋值""), ExecuteInEditMode]
+    public void InitializeView()
     {
 @FieldAssignment@
     }
@@ -132,20 +184,7 @@ public interface I@ClassName@EventFunction
 }
 ";
 
-
-        public void Clear()
-        {
-            className = "";
-            nameSpaceList.Clear();
-            nameSpaceList.Add("YouComponentBind");
-            fieldAssignmentBuilder.Clear();
-            addListenerBuilder.Clear();
-            removeListenerBuilder.Clear();
-            fieldDefinitionBuilder.Clear();
-            eventDefinitionBuilder.Clear();
-        }
-
-        public void AppendObject(BindObjectInfo bindInfo)
+        public override void AppendObject(BindObjectInfo bindInfo)
         {
             if (bindInfo?.bindType == null) return;
             if (!bindInfo.genCode) return;
@@ -155,7 +194,7 @@ public interface I@ClassName@EventFunction
                 nameSpaceList.Add(nameSpace);
             // 不使用保存的relativePath，重新获取更稳定。
             var objectTF = YouBindCollectorController.GetObjectTransform(bindInfo.bindObject);
-            var root = YouBindCollectorCodeGenerater.Instance.rootBindBase?.transform;
+            var root = YouBindCodeGenerater.Instance.rootBindBase?.transform;
             var relativePath = YouBindCollectorController.GetRelativePath(objectTF, root);
             // 我们需要对GameObject和Transform进行单独处理
             if (bindInfo.bindType == typeof(GameObject))
@@ -187,11 +226,11 @@ public interface I@ClassName@EventFunction
                 $"    public {bindInfo.bindType.Name} {bindInfo.fieldName};");
         }
 
-        public void AppendEvent(BindObjectInfo bindInfo, BindEventInfo eventInfo)
+        public override void AppendEvent(BindObjectInfo bindInfo, BindEventInfo eventInfo)
         {
             if (bindInfo == null || eventInfo == null) return;
             var fieldName = bindInfo.fieldName;
-            var eventConfig = YouBindConfigManager.Instance.GetEventConfig(
+            var eventConfig = YouBindTypeConfigManager.Instance.GetEventConfig(
                 bindInfo.bindType, eventInfo.eventName);
             if (eventConfig == null) return;
 
@@ -208,8 +247,9 @@ public interface I@ClassName@EventFunction
             eventDefinitionBuilder.AppendLine(eventDefinitionStr);
         }
 
-        public void ExportCodeFile()
+        public override void ExportCodeFile()
         {
+            base.ExportCodeFile();
             var resultBuilder = new StringBuilder(templeteCSharpGenCode);
             var nameSpaceContent = string.Concat(nameSpaceList.Select(nameSpace => $"using {nameSpace};\r\n"));
             resultBuilder.Replace("@ClassName@", className);
@@ -221,46 +261,40 @@ public interface I@ClassName@EventFunction
             resultBuilder.Replace("@EventDefinition@", eventDefinitionBuilder.ToString());
 
             if (string.IsNullOrEmpty(outputFilePath))
-                outputFilePath = YouGlobalDefine.GetCSharpGenCodeFilePath(className);
-            YouBindCollectorCodeGenerater.SaveToFile(outputFilePath, resultBuilder.ToString(), true);
+                outputFilePath = YouBindGlobalDefine.GetCSharpGenCodeFilePath(className);
+            YouBindCodeGenerater.SaveToFile(outputFilePath, resultBuilder.ToString(), true);
             Debug.Log("代码生成完毕，保存路径为" + outputFilePath);
         }
     }
 
     // 生成.cs文件
-    public class CSharpCustomCodeFileGenerater
+    public class CSharpCustomCodeFileGenerater : CodeGeneraterBase
     {
-        public string className;
-        public string outputFilePath;
         // 事件定义代码块
-        private StringBuilder eventDefinitionBuilder = new StringBuilder();
+        private StringBuilder eventDefinitionBuilder => codeContentBuilder[0];
+        protected override int builderCount => 1;
         // 代码基础模板
         private string templeteCSharpGenCode =
     @"using UnityEngine;
 
-
-// 此文件由YouComponentBind生成，但是不会覆盖，请将您的逻辑放在这里。
+// 此文件由YouBindCollector生成，但是不会覆盖，可将您的逻辑放在这里。
 // 新增事件后，可用IDE补全IFirstWindowEventFunction接口，添加新事件。
 public partial class @ClassName@ : MonoBehaviour, I@ClassName@EventFunction
 {
 @EventDefinition@
 }
 ";
-        public void Clear()
-        {
-            eventDefinitionBuilder.Clear();
-        }
 
-        public void AppendObject(BindObjectInfo bindInfo)
+        public override void AppendObject(BindObjectInfo bindInfo)
         {
             // 不需要处理
         }
 
-        public void AppendEvent(BindObjectInfo bindInfo, BindEventInfo eventInfo)
+        public override void AppendEvent(BindObjectInfo bindInfo, BindEventInfo eventInfo)
         {
             if (bindInfo == null || eventInfo == null) return;
             var fieldName = bindInfo.fieldName;
-            var eventConfig = YouBindConfigManager.Instance.GetEventConfig(
+            var eventConfig = YouBindTypeConfigManager.Instance.GetEventConfig(
                 bindInfo.bindType, eventInfo.eventName);
             if (eventConfig == null) return;
             /*    public void OnInputInputFieldEndEdit(string value)
@@ -281,14 +315,15 @@ public partial class @ClassName@ : MonoBehaviour, I@ClassName@EventFunction
             eventDefinitionBuilder.AppendLine();
         }
 
-        public void ExportCodeFile()
+        public override void ExportCodeFile()
         {
+            base.ExportCodeFile();
             var resultBuilder = new StringBuilder(templeteCSharpGenCode);
             resultBuilder.Replace("@ClassName@", className);
             resultBuilder.Replace("@EventDefinition@", eventDefinitionBuilder.ToString());
             if (string.IsNullOrEmpty(outputFilePath))
-                outputFilePath = YouGlobalDefine.GetCSharpCustomCodeFilePath(className);
-            YouBindCollectorCodeGenerater.SaveToFile(outputFilePath, resultBuilder.ToString(), false);
+                outputFilePath = YouBindGlobalDefine.GetCSharpCustomCodeFilePath(className);
+            YouBindCodeGenerater.SaveToFile(outputFilePath, resultBuilder.ToString(), false);
             Debug.Log("代码生成完毕，保存路径为" + outputFilePath);
         }
     }

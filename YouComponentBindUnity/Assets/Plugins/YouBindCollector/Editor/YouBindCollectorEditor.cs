@@ -1,7 +1,7 @@
 using UnityEditor;
 using UnityEngine;
 
-namespace YouComponentBind
+namespace YouBindCollector
 {
     [CustomEditor(typeof(YouBindCollector), true)]
     public class YouBindCollectorEditor : Editor
