@@ -3,14 +3,13 @@ using UnityEngine.UI;
 
 
 // 此文件由YouComponentBind生成，请勿修改。可参考YouComponentBindWindow
-public partial class FirstWindow : YouBindBase
+public partial class FirstWindow
 {
     [UnityEngine.SerializeField]
     private FirstWindowView view = new FirstWindowView();
 
     public virtual void Reset()
     {
-        view.Texttip23424 = transform.Find("AllType/tip23424")?.GetComponent<Text>();
         view.RawRawImage = transform.Find("AllType/RawImage")?.GetComponent<RawImage>();
         view.ButtonButton = transform.Find("AllType/Button")?.GetComponent<Button>();
         view.TextText2 = transform.Find("AllType/Button/Text2")?.GetComponent<Text>();
@@ -22,6 +21,7 @@ public partial class FirstWindow : YouBindBase
         view.InputInputField = transform.Find("AllType/InputField")?.GetComponent<InputField>();
         view.TextPlaceholder = transform.Find("AllType/InputField/Placeholder")?.GetComponent<Text>();
         view.TextText = transform.Find("AllType/InputField/Text")?.GetComponent<Text>();
+        view.Texttip23424 = transform.Find("AllType/tip23424")?.GetComponent<Text>();
 
     }
 
@@ -30,6 +30,7 @@ public partial class FirstWindow : YouBindBase
         view.ButtonButton.onClick.AddListener(OnButtonButtonClick);
         view.ToggleToggle.onValueChanged.AddListener(OnToggleToggleValueChanged);
         view.ToggleItem.onValueChanged.AddListener(OnToggleItemValueChanged);
+        view.InputInputField.onValueChanged.AddListener(OnInputInputFieldValueChanged);
         view.InputInputField.onEndEdit.AddListener(OnInputInputFieldEndEdit);
 
     }
@@ -39,6 +40,7 @@ public partial class FirstWindow : YouBindBase
         view.ButtonButton.onClick.RemoveListener(OnButtonButtonClick);
         view.ToggleToggle.onValueChanged.RemoveListener(OnToggleToggleValueChanged);
         view.ToggleItem.onValueChanged.RemoveListener(OnToggleItemValueChanged);
+        view.InputInputField.onValueChanged.RemoveListener(OnInputInputFieldValueChanged);
         view.InputInputField.onEndEdit.RemoveListener(OnInputInputFieldEndEdit);
 
     }
@@ -47,7 +49,6 @@ public partial class FirstWindow : YouBindBase
 [System.Serializable]
 public partial class FirstWindowView
 {
-    public Text Texttip23424;
     public RawImage RawRawImage;
     public Button ButtonButton;
     public Text TextText2;
@@ -59,6 +60,7 @@ public partial class FirstWindowView
     public InputField InputInputField;
     public Text TextPlaceholder;
     public Text TextText;
+    public Text Texttip23424;
 
 }
 
@@ -67,6 +69,7 @@ public interface IFirstWindowEventFunction
     void OnButtonButtonClick();
     void OnToggleToggleValueChanged(bool value);
     void OnToggleItemValueChanged(bool value);
+    void OnInputInputFieldValueChanged(string value);
     void OnInputInputFieldEndEdit(string value);
 
 }

@@ -2,20 +2,23 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using UnityEngine;
+using UnityEditor;
 using Object = UnityEngine.Object;
 
 namespace YouComponentBind
 {
-    public partial class YouBindBase : MonoBehaviour
+    [DisallowMultipleComponent]
+    public partial class YouBindCollector : MonoBehaviour
     {
 #if UNITY_EDITOR
-        public List<ComponentBindInfo> bindInfoList = new List<ComponentBindInfo>();
+        public List<BindObjectInfo> bindInfoList = new List<BindObjectInfo>();
 #endif
     }
 
 #if UNITY_EDITOR
+    // 想保存到prefab上的数据，不能放Editor
     [Serializable]
-    public class ComponentBindInfo
+    public class BindObjectInfo
     {
         public string fieldName;
 
@@ -25,6 +28,7 @@ namespace YouComponentBind
             get { return GetBindType(); }
             set { SetBindType(value); }
         }// type似乎不会被序列化，我们需要存类型名
+        [SerializeField]
         private string typeFullName;
         public Object bindObject;// 可能是component也可能是GameObject
         public bool genCode;

@@ -51,11 +51,13 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-     <Compile Include="Assets\YouComponentBind\FirstWindow.cs" />
-     <Compile Include="Assets\YouComponentBind\RunTime\EventCenter.cs" />
-     <Compile Include="Assets\YouComponentBind\RunTime\FirstWindow.g.cs" />
-     <Compile Include="Assets\YouComponentBind\RunTime\MyImage.cs" />
-     <Compile Include="Assets\YouComponentBind\RunTime\YouBindBase.cs" />
+     <Compile Include="Assets\Example\Scripts\Gen\ExampleWindow.cs" />
+     <Compile Include="Assets\Example\Scripts\Gen\ExampleWindow.g.cs" />
+     <Compile Include="Assets\Example\Scripts\Gen\FirstWindow.cs" />
+     <Compile Include="Assets\Example\Scripts\Gen\FirstWindow.g.cs" />
+     <Compile Include="Assets\Example\Scripts\Gen\FirstWindow2.cs" />
+     <Compile Include="Assets\Example\Scripts\Gen\FirstWindow2.g.cs" />
+     <Compile Include="Assets\Example\Scripts\MyImage.cs" />
  <Reference Include="UnityEngine.UI">
  <HintPath>C:/_root/APP/unity/Editor/2017.4.0f1/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
  </Reference>
@@ -95,6 +97,10 @@
  <Reference Include="UnityEngine.StandardEvents">
  <HintPath>C:/ProgramData/Unity/cache/packages/packages.unity.com/com.unity.standardevents@1.0.10/UnityEngine.StandardEvents.dll</HintPath>
  </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="Assembly-CSharp-firstpass.csproj">
+      <Project>{A8CB06E6-6DDD-F397-BDEB-C6B0F56FF0CA}</Project>      <Name>Assembly-CSharp-firstpass</Name>    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -1,9 +1,10 @@
 using YouComponentBind;
+using UnityEngine;
 
 
 // 此文件由YouComponentBind生成，但是不会覆盖，请将您的逻辑放在这里。
 // 新增事件后，可用IDE补全IFirstWindowEventFunction接口，添加新事件。
-public partial class FirstWindow : YouBindBase, IFirstWindowEventFunction
+public partial class FirstWindow : MonoBehaviour, IFirstWindowEventFunction
 {
     public void OnButtonButtonClick()
     {
@@ -25,5 +26,8 @@ public partial class FirstWindow : YouBindBase, IFirstWindowEventFunction
         throw new System.NotImplementedException();
     }
 
-
+    public void OnInputInputFieldValueChanged(string value)
+    {
+        throw new System.NotImplementedException();
+    }
 }

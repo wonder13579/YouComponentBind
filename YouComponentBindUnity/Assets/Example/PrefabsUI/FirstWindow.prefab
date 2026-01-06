@@ -55,7 +55,8 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 224974653450262586}
-  - component: {fileID: 114907308773506100}
+  - component: {fileID: 114765277067826608}
+  - component: {fileID: 114183630879794050}
   m_Layer: 5
   m_Name: FirstWindow
   m_TagString: Untagged
@@ -75,6 +76,21 @@ GameObject:
   - component: {fileID: 114155590031272012}
   m_Layer: 5
   m_Name: Handle
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!1 &1145856282046918
+GameObject:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 4523852670992092}
+  m_Layer: 5
+  m_Name: transformAndGameObject
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -295,6 +311,21 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 0
+--- !u!1 &1364105338676624
+GameObject:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 224124469483676178}
+  m_Layer: 5
+  m_Name: rectTransform
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
 --- !u!1 &1409797591411954
 GameObject:
   m_ObjectHideFlags: 1
@@ -425,7 +456,7 @@ GameObject:
   - component: {fileID: 222671866047088688}
   - component: {fileID: 114655692847805822}
   m_Layer: 5
-  m_Name: Label
+  m_Name: 2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -673,7 +704,7 @@ GameObject:
   - component: {fileID: 222898343954865780}
   - component: {fileID: 114667232145320396}
   m_Layer: 5
-  m_Name: Text
+  m_Name: Text2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -756,7 +787,7 @@ GameObject:
   - component: {fileID: 222721700328178534}
   - component: {fileID: 114258499975811830}
   m_Layer: 5
-  m_Name: Item Label
+  m_Name: ItemLabel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -780,6 +811,19 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!4 &4523852670992092
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1145856282046918}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 224448631576387652}
+  m_RootOrder: 11
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &114019385105798664
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1074,6 +1118,112 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_ShowMaskGraphic: 0
+--- !u!114 &114183630879794050
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1110283542971286}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1f0a64315b17d8442a60ff07f14be885, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bindInfoList:
+  - fieldName: Texttip23424
+    typeFullName: UnityEngine.UI.Text, UnityEngine.UI, Version=1.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+    bindObject: {fileID: 114722822780312498}
+    genCode: 1
+    relativePath: AllType/tip23424
+    eventInfoList: []
+  - fieldName: RawRawImage
+    typeFullName: UnityEngine.UI.RawImage, UnityEngine.UI, Version=1.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+    bindObject: {fileID: 114176955484195702}
+    genCode: 1
+    relativePath: AllType/RawImage
+    eventInfoList: []
+  - fieldName: ButtonButton
+    typeFullName: UnityEngine.UI.Button, UnityEngine.UI, Version=1.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+    bindObject: {fileID: 114361405961222090}
+    genCode: 1
+    relativePath: AllType/Button
+    eventInfoList:
+    - genCode: 1
+      eventName: onClick
+  - fieldName: TextText2
+    typeFullName: UnityEngine.UI.Text, UnityEngine.UI, Version=1.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+    bindObject: {fileID: 114667232145320396}
+    genCode: 1
+    relativePath: AllType/Button/Text2
+    eventInfoList: []
+  - fieldName: ToggleToggle
+    typeFullName: UnityEngine.UI.Toggle, UnityEngine.UI, Version=1.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+    bindObject: {fileID: 114019385105798664}
+    genCode: 1
+    relativePath: AllType/Toggle
+    eventInfoList:
+    - genCode: 1
+      eventName: onValueChanged
+  - fieldName: Text2
+    typeFullName: UnityEngine.UI.Text, UnityEngine.UI, Version=1.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+    bindObject: {fileID: 114655692847805822}
+    genCode: 1
+    relativePath: AllType/Toggle/2
+    eventInfoList: []
+  - fieldName: TextLabel
+    typeFullName: UnityEngine.UI.Text, UnityEngine.UI, Version=1.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+    bindObject: {fileID: 114759373148042252}
+    genCode: 1
+    relativePath: AllType/Dropdown/Label
+    eventInfoList: []
+  - fieldName: ToggleItem
+    typeFullName: UnityEngine.UI.Toggle, UnityEngine.UI, Version=1.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+    bindObject: {fileID: 114124942715933520}
+    genCode: 1
+    relativePath: AllType/Dropdown/Template/Viewport/Content/Item
+    eventInfoList:
+    - genCode: 1
+      eventName: onValueChanged
+  - fieldName: TextItemLabel
+    typeFullName: UnityEngine.UI.Text, UnityEngine.UI, Version=1.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+    bindObject: {fileID: 114258499975811830}
+    genCode: 1
+    relativePath: AllType/Dropdown/Template/Viewport/Content/Item/ItemLabel
+    eventInfoList: []
+  - fieldName: InputInputField
+    typeFullName: UnityEngine.UI.InputField, UnityEngine.UI, Version=1.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+    bindObject: {fileID: 114746786205815572}
+    genCode: 1
+    relativePath: AllType/InputField
+    eventInfoList:
+    - genCode: 1
+      eventName: onValueChanged
+    - genCode: 1
+      eventName: onEndEdit
+  - fieldName: TextPlaceholder
+    typeFullName: UnityEngine.UI.Text, UnityEngine.UI, Version=1.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+    bindObject: {fileID: 114302913004097502}
+    genCode: 1
+    relativePath: AllType/InputField/Placeholder
+    eventInfoList: []
+  - fieldName: TextText
+    typeFullName: UnityEngine.UI.Text, UnityEngine.UI, Version=1.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+    bindObject: {fileID: 114446018974674534}
+    genCode: 1
+    relativePath: AllType/InputField/Text
+    eventInfoList: []
 --- !u!114 &114190530961349650
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1994,6 +2144,30 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: Option A
+--- !u!114 &114765277067826608
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1110283542971286}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ea3d699070e0dce4490dfe8a3ccb8dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  view:
+    Texttip23424: {fileID: 114722822780312498}
+    RawRawImage: {fileID: 114176955484195702}
+    ButtonButton: {fileID: 114361405961222090}
+    TextText2: {fileID: 114667232145320396}
+    ToggleToggle: {fileID: 114019385105798664}
+    Text2: {fileID: 114655692847805822}
+    TextLabel: {fileID: 114759373148042252}
+    ToggleItem: {fileID: 114124942715933520}
+    TextItemLabel: {fileID: 114258499975811830}
+    InputInputField: {fileID: 114746786205815572}
+    TextPlaceholder: {fileID: 114302913004097502}
+    TextText: {fileID: 114446018974674534}
 --- !u!114 &114843716040756216
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2133,88 +2307,6 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
---- !u!114 &114907308773506100
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1110283542971286}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1f0a64315b17d8442a60ff07f14be885, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  bindInfoList:
-  - fieldName: Texttip23424
-    bindObject: {fileID: 114722822780312498}
-    genCode: 1
-    relativePath: AllType/tip23424
-    eventInfoList: []
-  - fieldName: RawRawImage
-    bindObject: {fileID: 114176955484195702}
-    genCode: 1
-    relativePath: AllType/RawImage
-    eventInfoList: []
-  - fieldName: ButtonButton
-    bindObject: {fileID: 114361405961222090}
-    genCode: 1
-    relativePath: AllType/Button
-    eventInfoList:
-    - genCode: 1
-      eventName: onClick
-  - fieldName: TextText
-    bindObject: {fileID: 114667232145320396}
-    genCode: 1
-    relativePath: AllType/Button/Text
-    eventInfoList: []
-  - fieldName: ToggleToggle
-    bindObject: {fileID: 114019385105798664}
-    genCode: 1
-    relativePath: AllType/Toggle
-    eventInfoList:
-    - genCode: 1
-      eventName: onValueChanged
-  - fieldName: TextLabel
-    bindObject: {fileID: 114655692847805822}
-    genCode: 1
-    relativePath: AllType/Toggle/Label
-    eventInfoList: []
-  - fieldName: TextLabel
-    bindObject: {fileID: 114759373148042252}
-    genCode: 1
-    relativePath: AllType/Dropdown/Label
-    eventInfoList: []
-  - fieldName: ToggleItem
-    bindObject: {fileID: 114124942715933520}
-    genCode: 1
-    relativePath: AllType/Dropdown/Template/Viewport/Content/Item
-    eventInfoList:
-    - genCode: 1
-      eventName: onValueChanged
-  - fieldName: TextItem Label
-    bindObject: {fileID: 114258499975811830}
-    genCode: 1
-    relativePath: AllType/Dropdown/Template/Viewport/Content/Item/Item Label
-    eventInfoList: []
-  - fieldName: InputInputField
-    bindObject: {fileID: 114746786205815572}
-    genCode: 1
-    relativePath: AllType/InputField
-    eventInfoList:
-    - genCode: 1
-      eventName: onValueChange
-    - genCode: 1
-      eventName: onEndEdit
-  - fieldName: TextPlaceholder
-    bindObject: {fileID: 114302913004097502}
-    genCode: 1
-    relativePath: AllType/InputField/Placeholder
-    eventInfoList: []
-  - fieldName: TextText
-    bindObject: {fileID: 114446018974674534}
-    genCode: 1
-    relativePath: AllType/InputField/Text
-    eventInfoList: []
 --- !u!114 &114910253846875456
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2581,6 +2673,24 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 160, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!224 &224124469483676178
+RectTransform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1364105338676624}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 224448631576387652}
+  m_RootOrder: 12
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &224155625619459732
 RectTransform:
   m_ObjectHideFlags: 1
@@ -2879,6 +2989,8 @@ RectTransform:
   - {fileID: 224753437846916448}
   - {fileID: 224512670137786364}
   - {fileID: 224696720074497774}
+  - {fileID: 4523852670992092}
+  - {fileID: 224124469483676178}
   m_Father: {fileID: 224974653450262586}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

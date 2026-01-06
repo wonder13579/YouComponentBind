@@ -4,7 +4,7 @@ using YouComponentBind;
 
 // 此文件为生成代码的参考模板，指示生成目标
 // @类名改改@
-public partial class ExampleWindow : YouBindBase
+public partial class ExampleWindow : YouComponentBind.YouBindCollector
 {
     // 序列化出来的控件，统一放view里，保持类字段整洁
     // 私有的，不要直接访问其他界面的控件！
