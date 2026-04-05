@@ -37,8 +37,8 @@ namespace YouBindCollector
 
             // 重建缓存
             rootBindBase.joinedObjectSet.Clear();
-            rootBindBase.joinedTransformSet.Clear();
             SortBindObjectInfo(rootBindBase);
+            YouBindHierarchyMark.NotifyCollectorChanged(rootBindBase);
         }
 
         // 一边扫描一边生成路径
@@ -74,6 +74,7 @@ namespace YouBindCollector
                 {
                     Debug.Log("打开组件的代码生成" + type);
                     bindInfo.genCode = true;
+                    YouBindHierarchyMark.NotifyCollectorChanged(rootBindBase);
                     return;
                 }
                 Debug.LogError("此物体已经被添加到绑定列表中了" + bindObject, bindObject);
@@ -96,10 +97,12 @@ namespace YouBindCollector
 
             resultList.Add(componentInfo);
             rootBindBase.joinedObjectSet.Add(bindObject);
-            rootBindBase.joinedTransformSet.Clear();
 
             if (!fromAutoScan)
+            {
                 SortBindObjectInfo(rootBindBase);
+                YouBindHierarchyMark.NotifyCollectorChanged(rootBindBase);
+            }
         }
 
         public void RemoveBindComponent(Object bindObject)
@@ -111,6 +114,7 @@ namespace YouBindCollector
 
         public void RemoveBindComponent(BindObjectInfo info)
         {
+            if (info?.bindObject == null) return;
             bool isAutoBind = false;
             var type = info.bindObject.GetType();
             var bindConfig = YouBindTypeConfigManager.Instance.GetBindConfig(type);
@@ -126,9 +130,9 @@ namespace YouBindCollector
             {
                 rootBindBase.bindInfoList.Remove(info);
                 rootBindBase.joinedObjectSet.Remove(info.bindObject);
-                rootBindBase.joinedTransformSet.Clear();
             }
             SortBindObjectInfo(rootBindBase);
+            YouBindHierarchyMark.NotifyCollectorChanged(rootBindBase);
         }
 
         // 为组件添加默认事件

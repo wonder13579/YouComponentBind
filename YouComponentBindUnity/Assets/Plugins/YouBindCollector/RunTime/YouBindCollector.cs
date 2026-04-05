@@ -1,12 +1,11 @@
 using System;
 using System.Collections.Generic;
-using System.Reflection;
 using UnityEngine;
-using UnityEditor;
 using Object = UnityEngine.Object;
 
 namespace YouBindCollector
 {
+    // 组件引用的存储结构。
     [DisallowMultipleComponent]
     public partial class YouBindCollector : MonoBehaviour
     {
@@ -18,10 +17,6 @@ namespace YouBindCollector
         [NonSerialized]
         private readonly HashSet<Object> _joinedObjectSet = new HashSet<Object>();
         public HashSet<Object> joinedObjectSet => GetJoinedObjectSet();
-
-        [NonSerialized]
-        private readonly HashSet<Transform> _joinedTransformSet = new HashSet<Transform>();
-        public HashSet<Transform> joinedTransformSet => GetJoinedTransformSet();
 
         public HashSet<Object> GetJoinedObjectSet()
         {
@@ -36,28 +31,6 @@ namespace YouBindCollector
             return _joinedObjectSet;
         }
 
-        public HashSet<Transform> GetJoinedTransformSet()
-        {
-            if (_joinedTransformSet.Count <= 0 && bindInfoList.Count > 0)
-            {
-                bindInfoList.ForEach(p =>
-                {
-                    if (!p.genCode)
-                        return;
-                    if (p?.bindObject == null)
-                        return;
-                    var tf = (p?.bindObject as Component)?.transform ?? (p?.bindObject as GameObject)?.transform;
-                    if (tf == null)
-                        return;
-                    _joinedTransformSet.Add(tf);
-                });
-            }
-            return _joinedTransformSet;
-        }
-        public void ClearJoinedTransformSet()
-        {
-            _joinedTransformSet.Clear();
-        }
         public enum SortOrder : int
         {
             TypeAndName = 0,//先按类型然后是字段名
@@ -83,7 +56,9 @@ namespace YouBindCollector
         }// type似乎不会被序列化，我们需要存类型名
         [SerializeField]
         private string typeFullName;
+        
         public Object bindObject;// 可能是component也可能是GameObject
+        // 标记是否会生成。如果是自动添加的，需要加到列表中然后关掉它，防止自动扫描时重复添加。
         public bool genCode;
 
         public string relativePath;

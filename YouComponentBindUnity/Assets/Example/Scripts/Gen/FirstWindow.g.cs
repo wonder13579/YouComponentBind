@@ -16,18 +16,14 @@ public partial class FirstWindow
     public void InitializeView()
     {
         view.ButtonButton = transform.Find("AllType/Button")?.GetComponent<Button>();
-        view.ButtonButton2 = transform.Find("AllType/Button2")?.GetComponent<Button>();
-        view.CanvasRenderer2 = transform.Find("AllType/Toggle/2")?.GetComponent<CanvasRenderer>();
-        view.CanvasRendererRawImage = transform.Find("AllType/RawImage")?.GetComponent<CanvasRenderer>();
-        view.GORawImage = transform.Find("AllType/RawImage")?.gameObject;
         view.InputInputField = transform.Find("AllType/InputField")?.GetComponent<InputField>();
-        view.RawRawImage2 = transform.Find("AllType/RawImage2")?.GetComponent<RawImage>();
+        view.RawRawImage = transform.Find("AllType/RawImage")?.GetComponent<RawImage>();
         view.Text2 = transform.Find("AllType/Toggle/2")?.GetComponent<Text>();
         view.TextItemLabel = transform.Find("AllType/Dropdown/Template/Viewport/Content/Item/ItemLabel")?.GetComponent<Text>();
+        view.TextLabel = transform.Find("AllType/Dropdown/Label")?.GetComponent<Text>();
         view.TextPlaceholder = transform.Find("AllType/InputField/Placeholder")?.GetComponent<Text>();
         view.TextText = transform.Find("AllType/InputField/Text")?.GetComponent<Text>();
-        view.TextText2 = transform.Find("AllType/Button2/Text2")?.GetComponent<Text>();
-        view.TextText3 = transform.Find("AllType/Button/Text3")?.GetComponent<Text>();
+        view.TextText2 = transform.Find("AllType/Button/Text2")?.GetComponent<Text>();
         view.Texttip23424 = transform.Find("AllType/tip23424")?.GetComponent<Text>();
         view.ToggleItem = transform.Find("AllType/Dropdown/Template/Viewport/Content/Item")?.GetComponent<Toggle>();
         view.ToggleToggle = transform.Find("AllType/Toggle")?.GetComponent<Toggle>();
@@ -36,7 +32,6 @@ public partial class FirstWindow
     public virtual void OnEnable()
     {
         view.ButtonButton.onClick.AddListener(OnButtonButtonClick);
-        view.ButtonButton2.onClick.AddListener(OnButtonButton2Click);
         view.InputInputField.onValueChanged.AddListener(OnInputInputFieldValueChanged);
         view.InputInputField.onEndEdit.AddListener(OnInputInputFieldEndEdit);
         view.ToggleItem.onValueChanged.AddListener(OnToggleItemValueChanged);
@@ -46,7 +41,6 @@ public partial class FirstWindow
     public virtual void OnDisable()
     {
         view.ButtonButton.onClick.RemoveListener(OnButtonButtonClick);
-        view.ButtonButton2.onClick.RemoveListener(OnButtonButton2Click);
         view.InputInputField.onValueChanged.RemoveListener(OnInputInputFieldValueChanged);
         view.InputInputField.onEndEdit.RemoveListener(OnInputInputFieldEndEdit);
         view.ToggleItem.onValueChanged.RemoveListener(OnToggleItemValueChanged);
@@ -58,18 +52,14 @@ public partial class FirstWindow
 public partial class FirstWindowView
 {
     public Button ButtonButton;
-    public Button ButtonButton2;
-    public CanvasRenderer CanvasRenderer2;
-    public CanvasRenderer CanvasRendererRawImage;
-    public GameObject GORawImage;
     public InputField InputInputField;
-    public RawImage RawRawImage2;
+    public RawImage RawRawImage;
     public Text Text2;
     public Text TextItemLabel;
+    public Text TextLabel;
     public Text TextPlaceholder;
     public Text TextText;
     public Text TextText2;
-    public Text TextText3;
     public Text Texttip23424;
     public Toggle ToggleItem;
     public Toggle ToggleToggle;
@@ -78,7 +68,6 @@ public partial class FirstWindowView
 public interface IFirstWindowEventFunction
 {
     void OnButtonButtonClick();
-    void OnButtonButton2Click();
     void OnInputInputFieldValueChanged(string value);
     void OnInputInputFieldEndEdit(string value);
     void OnToggleItemValueChanged(bool value);

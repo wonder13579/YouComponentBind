@@ -21,7 +21,7 @@ public partial class ExampleWindow : YouBindCollector.YouBindCollector
         // @事件注册@
         view.btnExitButton.onClick.AddListener(OnClickExitButton);
         view.tglAutoToggle.onValueChanged.AddListener(OnValueChangedAutoToggle);
-        YouEventCenter.AddListener("OnPlayerLogin", OnPlayerLogin);
+        // YouEventCenter.AddListener("OnPlayerLogin", OnPlayerLogin);
     }
 
     public virtual void OnDisable()
@@ -29,7 +29,7 @@ public partial class ExampleWindow : YouBindCollector.YouBindCollector
         // @事件注销@
         view.btnExitButton.onClick.RemoveListener(OnClickExitButton);
         view.tglAutoToggle.onValueChanged.RemoveListener(OnValueChangedAutoToggle);
-        YouEventCenter.RemoveListener("OnPlayerLogin", OnPlayerLogin);
+        // YouEventCenter.RemoveListener("OnPlayerLogin", OnPlayerLogin);
     }
 }
 

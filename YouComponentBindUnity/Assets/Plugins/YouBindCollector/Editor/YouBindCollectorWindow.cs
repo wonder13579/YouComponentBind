@@ -127,7 +127,12 @@ namespace YouBindCollector
         {
             currentBindComponentInfo = info;
             GUILayout.BeginHorizontal();
+            var oldGenCode = info.genCode;
             info.genCode = GUILayout.Toggle(info.genCode, "", GUILayout.Width(20));
+            if (oldGenCode != info.genCode)
+            {
+                YouBindHierarchyMark.NotifyCollectorChanged(rootBindBase);
+            }
             //调试搜索功能
             //GUILayout.Label(info.searchPriority.ToString(), GUILayout.Width(20));
             // 调试类型序列化
