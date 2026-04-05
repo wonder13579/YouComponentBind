@@ -11,7 +11,7 @@ namespace YouBindCollector
             var targetComponent = target as YouBindCollector;
 
             GUILayout.BeginHorizontal();
-            if (GUILayout.Button("更新代码", GUILayout.Height(30)))
+            if (GUILayout.Button("一键更新代码", GUILayout.Height(30)))
             {
                 YouBindCollectorController.Instance.UpdateCode(targetComponent);
             }

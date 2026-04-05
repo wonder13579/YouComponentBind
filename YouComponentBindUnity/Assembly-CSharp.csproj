@@ -41,10 +41,6 @@
     <ImplicitlyExpandDesignTimeFacades>false</ImplicitlyExpandDesignTimeFacades>
   </PropertyGroup>
   <ItemGroup>
-     <Compile Include="Assets\Example\Scripts\Gen\ExampleWindow.g.cs" />
-     <Compile Include="Assets\Example\Scripts\Gen\FirstWindow2.cs" />
-     <Compile Include="Assets\Example\Scripts\Gen\FirstWindow2.g.cs" />
-     <Compile Include="Assets\Example\Scripts\Gen\ExampleWindow.cs" />
      <Compile Include="Assets\Example\Scripts\Gen\FirstWindow.g.cs" />
      <Compile Include="Assets\Example\Scripts\Gen\FirstWindow.cs" />
      <Folder Include="Assets" />

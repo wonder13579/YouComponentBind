@@ -9,12 +9,6 @@ public partial class FirstWindow : MonoBehaviour, IFirstWindowEventFunction
         throw new System.NotImplementedException();
     }
 
-    public void OnButtonButton2Click()
-    {
-
-        throw new System.NotImplementedException();
-    }
-
     public void OnInputInputFieldValueChanged(string value)
     {
         throw new System.NotImplementedException();

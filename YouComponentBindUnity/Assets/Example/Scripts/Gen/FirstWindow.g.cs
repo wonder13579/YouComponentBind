@@ -17,10 +17,10 @@ public partial class FirstWindow
     {
         view.ButtonButton = transform.Find("AllType/Button")?.GetComponent<Button>();
         view.GOtransformAndGameObject = transform.Find("AllType/transformAndGameObject")?.gameObject;
-        view.InputInputField = transform.Find("AllType/InputField")?.GetComponent<InputField>();
+        view.InputInputField = transform.Find("")?.GetComponent<InputField>();
         view.RawRawImage = transform.Find("AllType/RawImage")?.GetComponent<RawImage>();
         view.Text2 = transform.Find("AllType/Toggle/2")?.GetComponent<Text>();
-        view.TextItemLabel = transform.Find("AllType/Dropdown/Template/Viewport/Content/Item/ItemLabel")?.GetComponent<Text>();
+        view.TextItemLabel = transform.Find("")?.GetComponent<Text>();
         view.TextLabel = transform.Find("AllType/Dropdown/Label")?.GetComponent<Text>();
         view.TextPlaceholder = transform.Find("AllType/InputField/Placeholder")?.GetComponent<Text>();
         view.TextText = transform.Find("AllType/InputField/Text")?.GetComponent<Text>();
