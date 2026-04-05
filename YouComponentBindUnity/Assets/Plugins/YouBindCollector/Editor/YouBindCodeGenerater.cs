@@ -229,6 +229,7 @@ public interface I@ClassName@EventFunction
         public override void AppendEvent(BindObjectInfo bindInfo, BindEventInfo eventInfo)
         {
             if (bindInfo == null || eventInfo == null) return;
+            if (!bindInfo.genCode || !eventInfo.genCode) return;
             var fieldName = bindInfo.fieldName;
             var eventConfig = YouBindTypeConfigManager.Instance.GetEventConfig(
                 bindInfo.bindType, eventInfo.eventName);

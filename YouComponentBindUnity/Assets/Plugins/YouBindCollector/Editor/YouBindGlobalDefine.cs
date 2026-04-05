@@ -2,6 +2,7 @@
 
 namespace YouBindCollector
 {
+    // 将一些自定义内容集中到这里，方便接入项目时根据需要修改。
     public static class YouBindGlobalDefine
     {
         public static string YouComponentBind_RefreshAfterGenCode = "YouComponentBind_RefreshAfterGenCode";
@@ -17,11 +18,13 @@ namespace YouBindCollector
             return $"{Application.dataPath}/Example/Scripts/Gen/{className}.cs";
         }
 
+        // 生成类的命名
         public static string GetTargetClassName(YouBindCollector collector)
         {
             return collector.transform.name;
         }
 
+        // 生成组件的命名
         public static string GetFieldName(BindObjectInfo bindInfo, YouBindTypeConfig bindConfig = null, Transform objectTF = null)
         {
             if (bindInfo == null)
