@@ -6,6 +6,7 @@ namespace YouBindCollector
     public static class YouBindGlobalDefine
     {
         public static string YouComponentBind_RefreshAfterGenCode = "YouComponentBind_RefreshAfterGenCode";
+        public static string YouComponentBind_ShowHierarchyMarkInEditMode = "YouComponentBind_ShowHierarchyMarkInEditMode";
 
         // .g.cs文件输出目录。就是不能手动修改的
         public static string GetCSharpGenCodeFilePath(string className)
@@ -32,7 +33,7 @@ namespace YouBindCollector
             if (bindConfig == null)
                 bindConfig = YouBindTypeConfigManager.Instance.GetBindConfig(bindInfo.bindType);
             if (objectTF == null)
-                objectTF = YouBindCollectorController.GetObjectTransform(bindInfo.bindObject);
+                objectTF = YouBindUtils.GetObjectTransform(bindInfo.bindObject);
             return bindConfig?.prefix + objectTF?.name;
         }
     }

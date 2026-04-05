@@ -61,14 +61,23 @@ namespace YouBindCollector
         // 标记是否会生成。如果是自动添加的，需要加到列表中然后关掉它，防止自动扫描时重复添加。
         public bool genCode;
 
+        // 生成代码时使用的路径是实时获取的，防止路径错误。保留这个用来检查路径是否修改。
         public string relativePath;
         public List<BindEventInfo> eventInfoList = new List<BindEventInfo>();
-        [NonSerialized] public int searchPriority; // 仅给编辑界面使用，存储搜索权重
-        [NonSerialized] public bool foldout = false; // 仅给编辑界面使用，存储是否展开
+        // [NonSerialized] public int searchPriority; // 仅给编辑界面使用，存储搜索权重
+        // [NonSerialized] public bool foldout = false; // 仅给编辑界面使用，存储是否展开
 
         public Transform GetTransform()
         {
-            return (bindObject as Component)?.transform ?? (bindObject as GameObject)?.transform;
+            if (bindObject == null) return null;
+
+            var component = bindObject as Component;
+            if (component != null) return component.transform;
+
+            var gameObject = bindObject as GameObject;
+            if (gameObject != null) return gameObject.transform;
+
+            return null;
         }
 
         public Type GetBindType()

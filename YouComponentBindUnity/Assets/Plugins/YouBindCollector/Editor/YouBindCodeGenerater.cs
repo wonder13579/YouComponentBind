@@ -193,9 +193,9 @@ public interface I@ClassName@EventFunction
             if (!nameSpaceList.Contains(nameSpace))
                 nameSpaceList.Add(nameSpace);
             // 不使用保存的relativePath，重新获取更稳定。
-            var objectTF = YouBindCollectorController.GetObjectTransform(bindInfo.bindObject);
+            var objectTF = YouBindUtils.GetObjectTransform(bindInfo.bindObject);
             var root = YouBindCodeGenerater.Instance.rootBindBase?.transform;
-            var relativePath = YouBindCollectorController.GetRelativePath(objectTF, root);
+            var relativePath = YouBindUtils.GetRelativePath(objectTF, root);
             // 我们需要对GameObject和Transform进行单独处理
             if (bindInfo.bindType == typeof(GameObject))
             {

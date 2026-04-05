@@ -19,6 +19,12 @@ namespace YouBindCollector
         private Vector2 scrollPosition = Vector2.zero;
         private string searchString = "";
         private BindObjectInfo waitDeleteBindInfo;
+        private int operationTabIndex = 0;
+        private static readonly string[] OperationTabTitleArray = { "新增组件", "更多功能", "设置" };
+        private static readonly Color MissingRefColorDark = new Color(1f, 0.75f, 0.2f, 1f);
+        private static readonly Color MissingRefColorLight = new Color(0.75f, 0.2f, 0f, 1f);
+        private const float RightPanelWidth = 240f;
+        private const float MinWindowWidth = 600f;
 
         public YouBindCollector rootBindBase
         {
@@ -34,16 +40,28 @@ namespace YouBindCollector
         {
             var window = GetWindow<YouBindCollectorWindow>("YouComponentBindWindow");
             window.titleContent = new GUIContent("组件绑定工具 YouComponentBind");
+            window.ApplyMinWindowWidth();
         }
 
         private void Awake()
         {
+            ApplyMinWindowWidth();
             OnSelectionChange();
+        }
+
+        private void OnEnable()
+        {
+            ApplyMinWindowWidth();
+        }
+
+        private void ApplyMinWindowWidth()
+        {
+            minSize = new Vector2(MinWindowWidth, minSize.y);
         }
 
         private void OnSelectionChange()
         {
-            var bind = YouBindCollectorController.GetFirstComponentInParent<YouBindCollector>(Selection.activeTransform);
+            var bind = YouBindUtils.GetFirstComponentInParent<YouBindCollector>(Selection.activeTransform);
             if (rootBindBase != bind)
             {
                 rootBindBase = bind;
@@ -58,60 +76,32 @@ namespace YouBindCollector
         {
             if (rootBindBase == null)
                 OnSelectionChange();
-            if (rootBindBase == null)
-                EditorGUILayout.ObjectField("目标根物体", null, typeof(GameObject), false);
-            else
-                EditorGUILayout.ObjectField("目标根物体", rootBindBase.gameObject, typeof(GameObject), false);
-            var refreshAfterGenCode = EditorPrefs.GetBool(YouBindGlobalDefine.YouComponentBind_RefreshAfterGenCode, true);
-            var newRefreshAfterGenCode = EditorGUILayout.Toggle("更新代码后立即刷新", refreshAfterGenCode);
-            if (refreshAfterGenCode != newRefreshAfterGenCode)
-            {
-                EditorPrefs.SetBool(YouBindGlobalDefine.YouComponentBind_RefreshAfterGenCode, newRefreshAfterGenCode);
-            }
-
-            if (GUILayout.Button("新增绑定流程"))
-            {
-                YouBindCollectorController.Instance.UpdateCode(rootBindBase);
-            }
-
-            if (!rootBindBase) return;
-
-            if (GUILayout.Button("自动扫描"))
-            {
-                // 进行组件增删前重建下缓存
-                YouBindCollectorController.Instance.ScanComponent(rootBindBase);
-            }
-
-            if (GUILayout.Button("生成代码"))
-            {
-                // 生成代码
-                YouBindCodeGenerater.Instance.DoGenerate(rootBindBase);
-            }
-
-            if (GUILayout.Button("删除代码"))
-            {
-                DeleteCodeFile();
-            }
-
-            var obj = EditorGUILayout.ObjectField("拖入组件手动添加", null, typeof(UnityEngine.Object), true);
-            if (obj)
-            {
-                // 进行组件增删前重建下缓存
-                YouBindCollectorController.Instance.SetRootBindBase(rootBindBase);
-                YouBindCollectorController.Instance.AddBindComponent(obj);
-                Repaint();
-            }
-            ShowAppendContent();
 
             EditorGUILayout.BeginHorizontal();
+            DrawLeftComponentListPanel();
+            GUILayout.Space(6f);
+            DrawRightToolbarPanel();
+            EditorGUILayout.EndHorizontal();
+        }
+
+        private void DrawLeftComponentListPanel()
+        {
+            EditorGUILayout.BeginVertical("box", GUILayout.ExpandWidth(true), GUILayout.ExpandHeight(true));
+            GUILayout.Label("引用组件列表", EditorStyles.boldLabel);
+
+            if (!rootBindBase)
+            {
+                EditorGUILayout.HelpBox("请选择带有 YouBindCollector 的目标根物体。", MessageType.Info);
+                EditorGUILayout.EndVertical();
+                return;
+            }
 
             ShowSearchGUI();
-
             ApplySelectFieldName();
 
             // 显示组件列表
             ResetFieldNameSet();
-            scrollPosition = GUILayout.BeginScrollView(scrollPosition);
+            scrollPosition = GUILayout.BeginScrollView(scrollPosition, GUILayout.ExpandHeight(true));
             foreach (var bindInfo in showComponentBindInfoList)
                 ShowBindObjectInfo(bindInfo);
 
@@ -121,6 +111,110 @@ namespace YouBindCollector
                 waitDeleteBindInfo = null;
             }
             GUILayout.EndScrollView();
+            EditorGUILayout.EndVertical();
+        }
+
+        private void DrawRightToolbarPanel()
+        {
+            EditorGUILayout.BeginVertical("box", GUILayout.Width(RightPanelWidth), GUILayout.ExpandHeight(true));
+            if (rootBindBase == null)
+                EditorGUILayout.ObjectField("目标根物体", null, typeof(GameObject), false);
+            else
+                EditorGUILayout.ObjectField("目标根物体", rootBindBase.gameObject, typeof(GameObject), false);
+            GUILayout.Space(4f);
+            DrawOperationPanel();
+            EditorGUILayout.EndVertical();
+        }
+
+        private void DrawOperationPanel()
+        {
+            operationTabIndex = GUILayout.Toolbar(operationTabIndex, OperationTabTitleArray);
+            if (operationTabIndex < 0 || operationTabIndex >= OperationTabTitleArray.Length)
+                operationTabIndex = 0;
+            GUILayout.Space(4f);
+
+            switch (operationTabIndex)
+            {
+                case 0:
+                    DrawAddComponentPanel();
+                    break;
+                case 1:
+                    DrawFunctionPanel();
+                    break;
+                case 2:
+                    DrawSettingPanel();
+                    break;
+                default:
+                    DrawAddComponentPanel();
+                    break;
+            }
+        }
+
+        private void DrawAddComponentPanel()
+        {
+            using (new EditorGUI.DisabledScope(!rootBindBase))
+            {
+                if (GUILayout.Button("生成代码"))
+                {
+                    // 生成代码
+                    YouBindCodeGenerater.Instance.DoGenerate(rootBindBase);
+                }
+                var obj = EditorGUILayout.ObjectField("拖入组件手动添加", null, typeof(UnityEngine.Object), true);
+                if (obj)
+                {
+                    // 进行组件增删前重建下缓存
+                    YouBindCollectorController.Instance.SetRootBindBase(rootBindBase);
+                    YouBindCollectorController.Instance.AddBindComponent(obj);
+                    Repaint();
+                }
+                ShowAppendContent();
+            }
+        }
+
+        private void DrawFunctionPanel()
+        {
+            if (GUILayout.Button("新增绑定流程"))
+            {
+                YouBindCollectorController.Instance.UpdateCode(rootBindBase);
+            }
+
+            using (new EditorGUI.DisabledScope(!rootBindBase))
+            {
+                if (GUILayout.Button("自动扫描"))
+                {
+                    // 进行组件增删前重建下缓存
+                    YouBindCollectorController.Instance.ScanComponent(rootBindBase);
+                }
+
+                if (GUILayout.Button("生成代码"))
+                {
+                    // 生成代码
+                    YouBindCodeGenerater.Instance.DoGenerate(rootBindBase);
+                }
+
+                if (GUILayout.Button("删除代码"))
+                {
+                    DeleteCodeFile();
+                }
+            }
+        }
+
+        private void DrawSettingPanel()
+        {
+            var refreshAfterGenCode = EditorPrefs.GetBool(YouBindGlobalDefine.YouComponentBind_RefreshAfterGenCode, true);
+            var newRefreshAfterGenCode = EditorGUILayout.Toggle("更新代码后立即刷新", refreshAfterGenCode);
+            if (refreshAfterGenCode != newRefreshAfterGenCode)
+            {
+                EditorPrefs.SetBool(YouBindGlobalDefine.YouComponentBind_RefreshAfterGenCode, newRefreshAfterGenCode);
+            }
+
+            var showHierarchyMark = EditorPrefs.GetBool(YouBindGlobalDefine.YouComponentBind_ShowHierarchyMarkInEditMode, true);
+            var newShowHierarchyMark = EditorGUILayout.Toggle("编辑模式显示代码引用红*", showHierarchyMark);
+            if (showHierarchyMark != newShowHierarchyMark)
+            {
+                EditorPrefs.SetBool(YouBindGlobalDefine.YouComponentBind_ShowHierarchyMarkInEditMode, newShowHierarchyMark);
+                YouBindHierarchyMark.RefreshDisplaySetting();
+            }
         }
 
         public void ShowBindObjectInfo(BindObjectInfo info)
@@ -150,7 +244,7 @@ namespace YouBindCollector
                 var config = YouBindTypeConfigManager.Instance.GetBindConfig(info.bindType);
                 Debug.Log("" + info.bindType + config);
                 newFieldName = Regex.Replace(newFieldName, "^" + config.prefix, "");
-                var transform = YouBindCollectorController.GetObjectTransform(info.bindObject);
+                var transform = YouBindUtils.GetObjectTransform(info.bindObject);
                 transform.name = newFieldName;
                 info.fieldName = config.prefix + newFieldName;
             }
@@ -162,33 +256,39 @@ namespace YouBindCollector
             else if (info.bindObject as GameObject)
                 EditorGUILayout.ObjectField(info.bindObject, typeof(GameObject), false, GUILayout.Width(200));
             else
-                // Debug.LogError("引用丢失");
-                GUILayout.Label("", "引用丢失", GUILayout.Width(200));
-            if (GUILayout.Button("\u00D7", GUILayout.Width(20))) // ×
             {
-                waitDeleteBindInfo = info;
-                return;
+                // 引用失效时显示文本提示，避免把字符串当作GUIStyle名称。
+                var oldContentColor = GUI.contentColor;
+                GUI.contentColor = EditorGUIUtility.isProSkin ? MissingRefColorDark : MissingRefColorLight;
+                GUILayout.Label("引用丢失", EditorStyles.boldLabel, GUILayout.Width(200));
+                GUI.contentColor = oldContentColor;
             }
+            // if (GUILayout.Button("\u00D7", GUILayout.Width(20))) // ×
+            // {
+            //     waitDeleteBindInfo = info;
+            //     return;
+            // }
 
             // 显示事件列表
-            if (GUILayout.Button(info.foldout ? "-" : "+", GUILayout.Width(20))) info.foldout = !info.foldout;
-            var showEventStr = "";
-            if (info?.eventInfoList != null && info.eventInfoList.Count > 0)
-                showEventStr = string.Concat(
-                    info.eventInfoList.Select(
-                        p => p.eventName + ", "));
+            // if (GUILayout.Button(info.foldout ? "-" : "+", GUILayout.Width(20))) info.foldout = !info.foldout;
+            // var showEventStr = "";
+            // if (info?.eventInfoList != null && info.eventInfoList.Count > 0)
+            //     showEventStr = string.Concat(
+            //         info.eventInfoList.Select(
+            //             p => p.eventName + ", "));
 
-            GUILayout.Label(showEventStr);
+            // GUILayout.Label(showEventStr);
             GUILayout.EndHorizontal();
 
-            if (info.foldout)
-                for (var index = 0; index < info.eventInfoList.Count; index++)
-                    ShowEventBindInfo(index);
+            // if (info.foldout)
+            for (var index = 0; index < info.eventInfoList.Count; index++)
+                ShowEventBindInfo(index);
         }
 
         private void ShowEventBindInfo(int index)
         {
             GUILayout.BeginHorizontal();
+            GUILayout.Space(50f);
             var eventInfo = currentBindComponentInfo.eventInfoList[index];
             var eventName = eventInfo.eventName;
             var showNameStr = eventName;
@@ -283,7 +383,7 @@ namespace YouBindCollector
                 return;
             }
 
-            showComponentBindInfoList = YouBindCollectorController.SearchSort(
+            showComponentBindInfoList = YouBindUtils.SearchSort(
                 rootBindBase.bindInfoList, p => p.fieldName, searchString);
             Repaint();
         }
@@ -291,6 +391,7 @@ namespace YouBindCollector
         private void ShowSearchGUI()
         {
             // 字段名搜索和显示选中物体字段名
+            EditorGUILayout.BeginHorizontal();
             var newSearchString = EditorGUILayout.TextField("搜索", searchString);
             if (GUILayout.Button("\u00D7", GUILayout.Width(20)))// ×
             {
@@ -305,7 +406,7 @@ namespace YouBindCollector
             var selectInfo = showComponentBindInfoList.Find(p =>
             {
                 var component = p.bindObject;
-                var tf = YouBindCollectorController.GetObjectTransform(component);
+                var tf = YouBindUtils.GetObjectTransform(component);
                 if (tf == Selection.activeTransform)
                     return true;
                 return false;

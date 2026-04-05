@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
+using YouBindCollector;
 
 #if UNITY_2021_2_OR_NEWER
 using UnityEditor.SceneManagement;
@@ -41,8 +42,7 @@ public class YouBindHierarchyMark
 
     private static void OnPrefabStageOpened(PrefabStage prefabStage)
     {
-        SetHierarchyHook(true);
-        RebuildCache();
+        SyncHierarchyHookWithPrefabStage();
     }
 
     private static void OnPrefabStageClosing(PrefabStage prefabStage)
@@ -54,11 +54,22 @@ public class YouBindHierarchyMark
     private static void SyncHierarchyHookWithPrefabStage()
     {
         var hasPrefabStage = PrefabStageUtility.GetCurrentPrefabStage() != null;
-        SetHierarchyHook(hasPrefabStage);
-        if (hasPrefabStage)
+        var shouldHook = hasPrefabStage && IsHierarchyMarkEnabled();
+        SetHierarchyHook(shouldHook);
+        if (shouldHook)
             RebuildCache();
         else
             ClearCache();
+    }
+
+    private static bool IsHierarchyMarkEnabled()
+    {
+        return EditorPrefs.GetBool(YouBindGlobalDefine.YouComponentBind_ShowHierarchyMarkInEditMode, true);
+    }
+
+    public static void RefreshDisplaySetting()
+    {
+        SyncHierarchyHookWithPrefabStage();
     }
 
     private static void SetHierarchyHook(bool shouldHook)
