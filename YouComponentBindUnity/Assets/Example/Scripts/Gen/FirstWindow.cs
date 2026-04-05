@@ -11,6 +11,7 @@ public partial class FirstWindow : MonoBehaviour, IFirstWindowEventFunction
 
     public void OnButtonButton2Click()
     {
+
         throw new System.NotImplementedException();
     }
 

@@ -51,11 +51,26 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-     <Compile Include="Assets\YouComponentBind\Editor\BindShow.cs" />
-     <Compile Include="Assets\YouComponentBind\Editor\YouComponentBindCodeGenerater.cs" />
-     <Compile Include="Assets\YouComponentBind\Editor\YouComponentBindConfig.cs" />
-     <Compile Include="Assets\YouComponentBind\Editor\YouComponentBindController.cs" />
-     <Compile Include="Assets\YouComponentBind\Editor\YouComponentBindWindow.cs" />
+     <Compile Include="Assets\Example\xlua\Editor\ExampleConfig.cs" />
+     <Compile Include="Assets\Example\xlua\Editor\XLuaUnityDefaultConfig.cs" />
+     <Compile Include="Assets\Example\xlua\Src\Editor\Generator.cs" />
+     <Compile Include="Assets\Example\xlua\Src\Editor\Hotfix.cs" />
+     <Compile Include="Assets\Example\xlua\Src\Editor\LinkXmlGen\LinkXmlGen.cs" />
+     <Compile Include="Assets\Example\xlua\Src\Editor\Report.cs" />
+     <Compile Include="Assets\Example\xlua\Src\Editor\TemplateRef.cs" />
+     <None Include="Assets\Example\xlua\Src\Editor\LinkXmlGen\LinkXmlGen.tpl.txt" />
+     <None Include="Assets\Example\xlua\Src\Editor\Template\LuaClassWrapGCM.tpl.txt" />
+     <None Include="Assets\Example\xlua\Src\Editor\Template\LuaWrapPusher.tpl.txt" />
+     <None Include="Assets\Example\xlua\Src\Editor\Template\LuaDelegateBridge.tpl.txt" />
+     <None Include="Assets\Example\xlua\Src\Editor\Template\TemplateCommon.lua.txt" />
+     <None Include="Assets\Example\xlua\Src\Editor\Template\LuaEnumWrap.tpl.txt" />
+     <None Include="Assets\Example\xlua\Src\Editor\Template\LuaDelegateWrap.tpl.txt" />
+     <None Include="Assets\Example\xlua\Src\Editor\Template\LuaRegisterGCM.tpl.txt" />
+     <None Include="Assets\Example\xlua\Src\Editor\Template\LuaRegister.tpl.txt" />
+     <None Include="Assets\Example\xlua\Src\Editor\Template\LuaInterfaceBridge.tpl.txt" />
+     <None Include="Assets\Example\xlua\Src\Editor\Template\LuaClassWrap.tpl.txt" />
+     <None Include="Assets\Example\xlua\Src\Editor\Template\LuaEnumWrapGCM.tpl.txt" />
+     <None Include="Assets\Example\xlua\Src\Editor\Template\PackUnpack.tpl.txt" />
  <Reference Include="UnityEngine.UI">
  <HintPath>C:/_root/APP/unity/Editor/2017.4.0f1/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
  </Reference>
@@ -142,8 +157,12 @@
  </Reference>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="Assembly-CSharp-firstpass.csproj">
+      <Project>{A8CB06E6-6DDD-F397-BDEB-C6B0F56FF0CA}</Project>      <Name>Assembly-CSharp-firstpass</Name>    </ProjectReference>
     <ProjectReference Include="Assembly-CSharp.csproj">
       <Project>{9C7ED4D8-06A3-972E-F1CA-E5C711BEC4B7}</Project>      <Name>Assembly-CSharp</Name>    </ProjectReference>
+    <ProjectReference Include="Assembly-CSharp-Editor-firstpass.csproj">
+      <Project>{7600F1CD-F07A-6F9C-1001-773B64DC1450}</Project>      <Name>Assembly-CSharp-Editor-firstpass</Name>    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
