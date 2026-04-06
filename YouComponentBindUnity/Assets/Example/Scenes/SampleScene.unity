@@ -688,6 +688,17 @@ MonoBehaviour:
     eventInfoList: []
   sortOrder: 0
   customSortInitialized: 0
+--- !u!114 &1506333024 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2124544027, guid: 1501fc89bbdc13843a2239fb6fa746e1, type: 3}
+  m_PrefabInstance: {fileID: 2124544012}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c5e0148207276f247a0cd55cefd12682, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &2124544012
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -705,11 +716,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2124544027, guid: 1501fc89bbdc13843a2239fb6fa746e1, type: 3}
       propertyPath: bindInfoList.Array.size
-      value: 17
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 2124544027, guid: 1501fc89bbdc13843a2239fb6fa746e1, type: 3}
       propertyPath: bindInfoList.Array.data[0].genCode
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2124544027, guid: 1501fc89bbdc13843a2239fb6fa746e1, type: 3}
       propertyPath: bindInfoList.Array.data[14].genCode
@@ -724,12 +735,16 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2124544027, guid: 1501fc89bbdc13843a2239fb6fa746e1, type: 3}
+      propertyPath: bindInfoList.Array.data[0].fieldName
+      value: Text_tip23424
+      objectReference: {fileID: 0}
+    - target: {fileID: 2124544027, guid: 1501fc89bbdc13843a2239fb6fa746e1, type: 3}
       propertyPath: bindInfoList.Array.data[0].joinIndex
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2124544027, guid: 1501fc89bbdc13843a2239fb6fa746e1, type: 3}
       propertyPath: bindInfoList.Array.data[1].fieldName
-      value: GOtransformAndGameObject
+      value: Raw_RawImage
       objectReference: {fileID: 0}
     - target: {fileID: 2124544027, guid: 1501fc89bbdc13843a2239fb6fa746e1, type: 3}
       propertyPath: bindInfoList.Array.data[1].joinIndex
@@ -737,7 +752,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2124544027, guid: 1501fc89bbdc13843a2239fb6fa746e1, type: 3}
       propertyPath: bindInfoList.Array.data[2].fieldName
-      value: InputInputField
+      value: Button_Button
       objectReference: {fileID: 0}
     - target: {fileID: 2124544027, guid: 1501fc89bbdc13843a2239fb6fa746e1, type: 3}
       propertyPath: bindInfoList.Array.data[2].joinIndex
@@ -745,7 +760,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2124544027, guid: 1501fc89bbdc13843a2239fb6fa746e1, type: 3}
       propertyPath: bindInfoList.Array.data[3].fieldName
-      value: RawRawImage
+      value: Text_Text2
       objectReference: {fileID: 0}
     - target: {fileID: 2124544027, guid: 1501fc89bbdc13843a2239fb6fa746e1, type: 3}
       propertyPath: bindInfoList.Array.data[3].joinIndex
@@ -753,7 +768,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2124544027, guid: 1501fc89bbdc13843a2239fb6fa746e1, type: 3}
       propertyPath: bindInfoList.Array.data[4].fieldName
-      value: Text2
+      value: Toggle_Toggle
       objectReference: {fileID: 0}
     - target: {fileID: 2124544027, guid: 1501fc89bbdc13843a2239fb6fa746e1, type: 3}
       propertyPath: bindInfoList.Array.data[4].joinIndex
@@ -761,7 +776,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2124544027, guid: 1501fc89bbdc13843a2239fb6fa746e1, type: 3}
       propertyPath: bindInfoList.Array.data[5].fieldName
-      value: TextItemLabel
+      value: Text_2
       objectReference: {fileID: 0}
     - target: {fileID: 2124544027, guid: 1501fc89bbdc13843a2239fb6fa746e1, type: 3}
       propertyPath: bindInfoList.Array.data[5].joinIndex
@@ -769,7 +784,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2124544027, guid: 1501fc89bbdc13843a2239fb6fa746e1, type: 3}
       propertyPath: bindInfoList.Array.data[6].fieldName
-      value: TextLabel
+      value: Text_Label
       objectReference: {fileID: 0}
     - target: {fileID: 2124544027, guid: 1501fc89bbdc13843a2239fb6fa746e1, type: 3}
       propertyPath: bindInfoList.Array.data[6].joinIndex
@@ -777,7 +792,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2124544027, guid: 1501fc89bbdc13843a2239fb6fa746e1, type: 3}
       propertyPath: bindInfoList.Array.data[7].fieldName
-      value: TextPlaceholder
+      value: Toggle_Item
       objectReference: {fileID: 0}
     - target: {fileID: 2124544027, guid: 1501fc89bbdc13843a2239fb6fa746e1, type: 3}
       propertyPath: bindInfoList.Array.data[7].joinIndex
@@ -785,7 +800,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2124544027, guid: 1501fc89bbdc13843a2239fb6fa746e1, type: 3}
       propertyPath: bindInfoList.Array.data[8].fieldName
-      value: TextText
+      value: Text_Placeholder
       objectReference: {fileID: 0}
     - target: {fileID: 2124544027, guid: 1501fc89bbdc13843a2239fb6fa746e1, type: 3}
       propertyPath: bindInfoList.Array.data[8].joinIndex
@@ -793,12 +808,16 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2124544027, guid: 1501fc89bbdc13843a2239fb6fa746e1, type: 3}
       propertyPath: bindInfoList.Array.data[9].fieldName
-      value: TextText2
+      value: Text_Text
       objectReference: {fileID: 0}
     - target: {fileID: 2124544027, guid: 1501fc89bbdc13843a2239fb6fa746e1, type: 3}
       propertyPath: bindInfoList.Array.data[9].joinIndex
       value: 9
       objectReference: {fileID: 0}
+    - target: {fileID: 2124544027, guid: 1501fc89bbdc13843a2239fb6fa746e1, type: 3}
+      propertyPath: bindInfoList.Array.data[0].bindObject
+      value: 
+      objectReference: {fileID: 2124544026}
     - target: {fileID: 2124544027, guid: 1501fc89bbdc13843a2239fb6fa746e1, type: 3}
       propertyPath: bindInfoList.Array.data[10].fieldName
       value: Texttip23424
@@ -858,23 +877,23 @@ PrefabInstance:
     - target: {fileID: 2124544027, guid: 1501fc89bbdc13843a2239fb6fa746e1, type: 3}
       propertyPath: bindInfoList.Array.data[1].bindObject
       value: 
-      objectReference: {fileID: 2124544017}
+      objectReference: {fileID: 2124544025}
     - target: {fileID: 2124544027, guid: 1501fc89bbdc13843a2239fb6fa746e1, type: 3}
       propertyPath: bindInfoList.Array.data[2].bindObject
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 2124544017}
     - target: {fileID: 2124544027, guid: 1501fc89bbdc13843a2239fb6fa746e1, type: 3}
       propertyPath: bindInfoList.Array.data[3].bindObject
       value: 
-      objectReference: {fileID: 2124544025}
+      objectReference: {fileID: 2124544022}
     - target: {fileID: 2124544027, guid: 1501fc89bbdc13843a2239fb6fa746e1, type: 3}
       propertyPath: bindInfoList.Array.data[4].bindObject
       value: 
-      objectReference: {fileID: 2124544021}
+      objectReference: {fileID: 2124544016}
     - target: {fileID: 2124544027, guid: 1501fc89bbdc13843a2239fb6fa746e1, type: 3}
       propertyPath: bindInfoList.Array.data[5].bindObject
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 2124544021}
     - target: {fileID: 2124544027, guid: 1501fc89bbdc13843a2239fb6fa746e1, type: 3}
       propertyPath: bindInfoList.Array.data[6].bindObject
       value: 
@@ -882,15 +901,15 @@ PrefabInstance:
     - target: {fileID: 2124544027, guid: 1501fc89bbdc13843a2239fb6fa746e1, type: 3}
       propertyPath: bindInfoList.Array.data[7].bindObject
       value: 
-      objectReference: {fileID: 2124544019}
+      objectReference: {fileID: 2124544015}
     - target: {fileID: 2124544027, guid: 1501fc89bbdc13843a2239fb6fa746e1, type: 3}
       propertyPath: bindInfoList.Array.data[8].bindObject
       value: 
-      objectReference: {fileID: 2124544018}
+      objectReference: {fileID: 2124544019}
     - target: {fileID: 2124544027, guid: 1501fc89bbdc13843a2239fb6fa746e1, type: 3}
       propertyPath: bindInfoList.Array.data[9].bindObject
       value: 
-      objectReference: {fileID: 2124544022}
+      objectReference: {fileID: 2124544018}
     - target: {fileID: 2124544027, guid: 1501fc89bbdc13843a2239fb6fa746e1, type: 3}
       propertyPath: bindInfoList.Array.data[10].bindObject
       value: 
@@ -920,39 +939,53 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 2124544013}
     - target: {fileID: 2124544027, guid: 1501fc89bbdc13843a2239fb6fa746e1, type: 3}
-      propertyPath: bindInfoList.Array.data[1].relativePath
-      value: AllType/transformAndGameObject
+      propertyPath: bindInfoList.Array.data[0].relativePath
+      value: AllType/tip23424
       objectReference: {fileID: 0}
     - target: {fileID: 2124544027, guid: 1501fc89bbdc13843a2239fb6fa746e1, type: 3}
-      propertyPath: bindInfoList.Array.data[2].relativePath
-      value: AllType/InputField
-      objectReference: {fileID: 0}
-    - target: {fileID: 2124544027, guid: 1501fc89bbdc13843a2239fb6fa746e1, type: 3}
-      propertyPath: bindInfoList.Array.data[2].typeFullName
-      value: UnityEngine.UI.InputField, UnityEngine.UI, Version=1.0.0.0, Culture=neutral,
-        PublicKeyToken=null
-      objectReference: {fileID: 0}
-    - target: {fileID: 2124544027, guid: 1501fc89bbdc13843a2239fb6fa746e1, type: 3}
-      propertyPath: bindInfoList.Array.data[3].relativePath
-      value: AllType/RawImage
-      objectReference: {fileID: 0}
-    - target: {fileID: 2124544027, guid: 1501fc89bbdc13843a2239fb6fa746e1, type: 3}
-      propertyPath: bindInfoList.Array.data[3].typeFullName
-      value: UnityEngine.UI.RawImage, UnityEngine.UI, Version=1.0.0.0, Culture=neutral,
-        PublicKeyToken=null
-      objectReference: {fileID: 0}
-    - target: {fileID: 2124544027, guid: 1501fc89bbdc13843a2239fb6fa746e1, type: 3}
-      propertyPath: bindInfoList.Array.data[4].relativePath
-      value: AllType/Toggle/2
-      objectReference: {fileID: 0}
-    - target: {fileID: 2124544027, guid: 1501fc89bbdc13843a2239fb6fa746e1, type: 3}
-      propertyPath: bindInfoList.Array.data[4].typeFullName
+      propertyPath: bindInfoList.Array.data[0].typeFullName
       value: UnityEngine.UI.Text, UnityEngine.UI, Version=1.0.0.0, Culture=neutral,
         PublicKeyToken=null
       objectReference: {fileID: 0}
     - target: {fileID: 2124544027, guid: 1501fc89bbdc13843a2239fb6fa746e1, type: 3}
+      propertyPath: bindInfoList.Array.data[1].relativePath
+      value: AllType/RawImage
+      objectReference: {fileID: 0}
+    - target: {fileID: 2124544027, guid: 1501fc89bbdc13843a2239fb6fa746e1, type: 3}
+      propertyPath: bindInfoList.Array.data[1].typeFullName
+      value: UnityEngine.UI.RawImage, UnityEngine.UI, Version=1.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      objectReference: {fileID: 0}
+    - target: {fileID: 2124544027, guid: 1501fc89bbdc13843a2239fb6fa746e1, type: 3}
+      propertyPath: bindInfoList.Array.data[2].relativePath
+      value: AllType/Button
+      objectReference: {fileID: 0}
+    - target: {fileID: 2124544027, guid: 1501fc89bbdc13843a2239fb6fa746e1, type: 3}
+      propertyPath: bindInfoList.Array.data[2].typeFullName
+      value: UnityEngine.UI.Button, UnityEngine.UI, Version=1.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      objectReference: {fileID: 0}
+    - target: {fileID: 2124544027, guid: 1501fc89bbdc13843a2239fb6fa746e1, type: 3}
+      propertyPath: bindInfoList.Array.data[3].relativePath
+      value: AllType/Button/Text2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2124544027, guid: 1501fc89bbdc13843a2239fb6fa746e1, type: 3}
+      propertyPath: bindInfoList.Array.data[3].typeFullName
+      value: UnityEngine.UI.Text, UnityEngine.UI, Version=1.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      objectReference: {fileID: 0}
+    - target: {fileID: 2124544027, guid: 1501fc89bbdc13843a2239fb6fa746e1, type: 3}
+      propertyPath: bindInfoList.Array.data[4].relativePath
+      value: AllType/Toggle
+      objectReference: {fileID: 0}
+    - target: {fileID: 2124544027, guid: 1501fc89bbdc13843a2239fb6fa746e1, type: 3}
+      propertyPath: bindInfoList.Array.data[4].typeFullName
+      value: UnityEngine.UI.Toggle, UnityEngine.UI, Version=1.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      objectReference: {fileID: 0}
+    - target: {fileID: 2124544027, guid: 1501fc89bbdc13843a2239fb6fa746e1, type: 3}
       propertyPath: bindInfoList.Array.data[5].relativePath
-      value: AllType/Dropdown/Template/Viewport/Content/Item/ItemLabel
+      value: AllType/Toggle/2
       objectReference: {fileID: 0}
     - target: {fileID: 2124544027, guid: 1501fc89bbdc13843a2239fb6fa746e1, type: 3}
       propertyPath: bindInfoList.Array.data[5].typeFullName
@@ -964,16 +997,36 @@ PrefabInstance:
       value: AllType/Dropdown/Label
       objectReference: {fileID: 0}
     - target: {fileID: 2124544027, guid: 1501fc89bbdc13843a2239fb6fa746e1, type: 3}
+      propertyPath: bindInfoList.Array.data[6].typeFullName
+      value: UnityEngine.UI.Text, UnityEngine.UI, Version=1.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      objectReference: {fileID: 0}
+    - target: {fileID: 2124544027, guid: 1501fc89bbdc13843a2239fb6fa746e1, type: 3}
       propertyPath: bindInfoList.Array.data[7].relativePath
-      value: AllType/InputField/Placeholder
+      value: AllType/Dropdown/Template/Viewport/Content/Item
+      objectReference: {fileID: 0}
+    - target: {fileID: 2124544027, guid: 1501fc89bbdc13843a2239fb6fa746e1, type: 3}
+      propertyPath: bindInfoList.Array.data[7].typeFullName
+      value: UnityEngine.UI.Toggle, UnityEngine.UI, Version=1.0.0.0, Culture=neutral,
+        PublicKeyToken=null
       objectReference: {fileID: 0}
     - target: {fileID: 2124544027, guid: 1501fc89bbdc13843a2239fb6fa746e1, type: 3}
       propertyPath: bindInfoList.Array.data[8].relativePath
-      value: AllType/InputField/Text
+      value: AllType/InputField/Placeholder
+      objectReference: {fileID: 0}
+    - target: {fileID: 2124544027, guid: 1501fc89bbdc13843a2239fb6fa746e1, type: 3}
+      propertyPath: bindInfoList.Array.data[8].typeFullName
+      value: UnityEngine.UI.Text, UnityEngine.UI, Version=1.0.0.0, Culture=neutral,
+        PublicKeyToken=null
       objectReference: {fileID: 0}
     - target: {fileID: 2124544027, guid: 1501fc89bbdc13843a2239fb6fa746e1, type: 3}
       propertyPath: bindInfoList.Array.data[9].relativePath
-      value: AllType/Button/Text2
+      value: AllType/InputField/Text
+      objectReference: {fileID: 0}
+    - target: {fileID: 2124544027, guid: 1501fc89bbdc13843a2239fb6fa746e1, type: 3}
+      propertyPath: bindInfoList.Array.data[9].typeFullName
+      value: UnityEngine.UI.Text, UnityEngine.UI, Version=1.0.0.0, Culture=neutral,
+        PublicKeyToken=null
       objectReference: {fileID: 0}
     - target: {fileID: 2124544027, guid: 1501fc89bbdc13843a2239fb6fa746e1, type: 3}
       propertyPath: bindInfoList.Array.data[10].relativePath
@@ -1030,11 +1083,39 @@ PrefabInstance:
         Culture=neutral, PublicKeyToken=null
       objectReference: {fileID: 0}
     - target: {fileID: 2124544027, guid: 1501fc89bbdc13843a2239fb6fa746e1, type: 3}
+      propertyPath: bindInfoList.Array.data[0].eventInfoList.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2124544027, guid: 1501fc89bbdc13843a2239fb6fa746e1, type: 3}
+      propertyPath: bindInfoList.Array.data[1].eventInfoList.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2124544027, guid: 1501fc89bbdc13843a2239fb6fa746e1, type: 3}
       propertyPath: bindInfoList.Array.data[2].eventInfoList.Array.size
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2124544027, guid: 1501fc89bbdc13843a2239fb6fa746e1, type: 3}
       propertyPath: bindInfoList.Array.data[3].eventInfoList.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2124544027, guid: 1501fc89bbdc13843a2239fb6fa746e1, type: 3}
+      propertyPath: bindInfoList.Array.data[4].eventInfoList.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2124544027, guid: 1501fc89bbdc13843a2239fb6fa746e1, type: 3}
+      propertyPath: bindInfoList.Array.data[6].eventInfoList.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2124544027, guid: 1501fc89bbdc13843a2239fb6fa746e1, type: 3}
+      propertyPath: bindInfoList.Array.data[7].eventInfoList.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2124544027, guid: 1501fc89bbdc13843a2239fb6fa746e1, type: 3}
+      propertyPath: bindInfoList.Array.data[8].eventInfoList.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2124544027, guid: 1501fc89bbdc13843a2239fb6fa746e1, type: 3}
+      propertyPath: bindInfoList.Array.data[9].eventInfoList.Array.size
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2124544027, guid: 1501fc89bbdc13843a2239fb6fa746e1, type: 3}
@@ -1058,11 +1139,35 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2124544027, guid: 1501fc89bbdc13843a2239fb6fa746e1, type: 3}
+      propertyPath: bindInfoList.Array.data[1].eventInfoList.Array.data[0].genCode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2124544027, guid: 1501fc89bbdc13843a2239fb6fa746e1, type: 3}
       propertyPath: bindInfoList.Array.data[3].eventInfoList.Array.data[0].genCode
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2124544027, guid: 1501fc89bbdc13843a2239fb6fa746e1, type: 3}
       propertyPath: bindInfoList.Array.data[3].eventInfoList.Array.data[1].genCode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2124544027, guid: 1501fc89bbdc13843a2239fb6fa746e1, type: 3}
+      propertyPath: bindInfoList.Array.data[4].eventInfoList.Array.data[0].genCode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2124544027, guid: 1501fc89bbdc13843a2239fb6fa746e1, type: 3}
+      propertyPath: bindInfoList.Array.data[6].eventInfoList.Array.data[0].genCode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2124544027, guid: 1501fc89bbdc13843a2239fb6fa746e1, type: 3}
+      propertyPath: bindInfoList.Array.data[7].eventInfoList.Array.data[0].genCode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2124544027, guid: 1501fc89bbdc13843a2239fb6fa746e1, type: 3}
+      propertyPath: bindInfoList.Array.data[8].eventInfoList.Array.data[0].genCode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2124544027, guid: 1501fc89bbdc13843a2239fb6fa746e1, type: 3}
+      propertyPath: bindInfoList.Array.data[9].eventInfoList.Array.data[0].genCode
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2124544027, guid: 1501fc89bbdc13843a2239fb6fa746e1, type: 3}
@@ -1078,12 +1183,40 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2124544027, guid: 1501fc89bbdc13843a2239fb6fa746e1, type: 3}
+      propertyPath: bindInfoList.Array.data[1].eventInfoList.Array.data[0].eventName
+      value: onClick
+      objectReference: {fileID: 0}
+    - target: {fileID: 2124544027, guid: 1501fc89bbdc13843a2239fb6fa746e1, type: 3}
+      propertyPath: bindInfoList.Array.data[2].eventInfoList.Array.data[0].eventName
+      value: onClick
+      objectReference: {fileID: 0}
+    - target: {fileID: 2124544027, guid: 1501fc89bbdc13843a2239fb6fa746e1, type: 3}
       propertyPath: bindInfoList.Array.data[3].eventInfoList.Array.data[0].eventName
       value: onValueChanged
       objectReference: {fileID: 0}
     - target: {fileID: 2124544027, guid: 1501fc89bbdc13843a2239fb6fa746e1, type: 3}
       propertyPath: bindInfoList.Array.data[3].eventInfoList.Array.data[1].eventName
       value: onEndEdit
+      objectReference: {fileID: 0}
+    - target: {fileID: 2124544027, guid: 1501fc89bbdc13843a2239fb6fa746e1, type: 3}
+      propertyPath: bindInfoList.Array.data[4].eventInfoList.Array.data[0].eventName
+      value: onValueChanged
+      objectReference: {fileID: 0}
+    - target: {fileID: 2124544027, guid: 1501fc89bbdc13843a2239fb6fa746e1, type: 3}
+      propertyPath: bindInfoList.Array.data[6].eventInfoList.Array.data[0].eventName
+      value: onValueChanged
+      objectReference: {fileID: 0}
+    - target: {fileID: 2124544027, guid: 1501fc89bbdc13843a2239fb6fa746e1, type: 3}
+      propertyPath: bindInfoList.Array.data[7].eventInfoList.Array.data[0].eventName
+      value: onValueChanged
+      objectReference: {fileID: 0}
+    - target: {fileID: 2124544027, guid: 1501fc89bbdc13843a2239fb6fa746e1, type: 3}
+      propertyPath: bindInfoList.Array.data[8].eventInfoList.Array.data[0].eventName
+      value: onValueChanged
+      objectReference: {fileID: 0}
+    - target: {fileID: 2124544027, guid: 1501fc89bbdc13843a2239fb6fa746e1, type: 3}
+      propertyPath: bindInfoList.Array.data[9].eventInfoList.Array.data[0].eventName
+      value: onValueChanged
       objectReference: {fileID: 0}
     - target: {fileID: 2124544027, guid: 1501fc89bbdc13843a2239fb6fa746e1, type: 3}
       propertyPath: bindInfoList.Array.data[13].eventInfoList.Array.data[0].eventName
@@ -1253,6 +1386,46 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 570993621854685668, guid: 1501fc89bbdc13843a2239fb6fa746e1, type: 3}
+      propertyPath: view.TextText
+      value: 
+      objectReference: {fileID: 2124544018}
+    - target: {fileID: 570993621854685668, guid: 1501fc89bbdc13843a2239fb6fa746e1, type: 3}
+      propertyPath: view.TextLabel
+      value: 
+      objectReference: {fileID: 2124544020}
+    - target: {fileID: 570993621854685668, guid: 1501fc89bbdc13843a2239fb6fa746e1, type: 3}
+      propertyPath: view.TextText2
+      value: 
+      objectReference: {fileID: 2124544022}
+    - target: {fileID: 570993621854685668, guid: 1501fc89bbdc13843a2239fb6fa746e1, type: 3}
+      propertyPath: view.GORawImage
+      value: 
+      objectReference: {fileID: 2124544024}
+    - target: {fileID: 570993621854685668, guid: 1501fc89bbdc13843a2239fb6fa746e1, type: 3}
+      propertyPath: view.ToggleItem
+      value: 
+      objectReference: {fileID: 2124544015}
+    - target: {fileID: 570993621854685668, guid: 1501fc89bbdc13843a2239fb6fa746e1, type: 3}
+      propertyPath: view.RTFRawImage
+      value: 
+      objectReference: {fileID: 2124544023}
+    - target: {fileID: 570993621854685668, guid: 1501fc89bbdc13843a2239fb6fa746e1, type: 3}
+      propertyPath: view.Texttip23424
+      value: 
+      objectReference: {fileID: 2124544026}
+    - target: {fileID: 570993621854685668, guid: 1501fc89bbdc13843a2239fb6fa746e1, type: 3}
+      propertyPath: view.RTFFirstWindow
+      value: 
+      objectReference: {fileID: 2124544013}
+    - target: {fileID: 570993621854685668, guid: 1501fc89bbdc13843a2239fb6fa746e1, type: 3}
+      propertyPath: view.TextPlaceholder
+      value: 
+      objectReference: {fileID: 2124544019}
+    - target: {fileID: 570993621854685668, guid: 1501fc89bbdc13843a2239fb6fa746e1, type: 3}
+      propertyPath: view.YouBindCollectorFirstWindow
+      value: 
+      objectReference: {fileID: 1506333024}
     m_RemovedComponents:
     - {fileID: 114765277067826608, guid: 1501fc89bbdc13843a2239fb6fa746e1, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 1501fc89bbdc13843a2239fb6fa746e1, type: 3}
@@ -1288,11 +1461,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9085046f02f69544eb97fd06b6048fe2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!1 &2124544017 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1145856282046918, guid: 1501fc89bbdc13843a2239fb6fa746e1, type: 3}
+--- !u!114 &2124544017 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 114361405961222090, guid: 1501fc89bbdc13843a2239fb6fa746e1, type: 3}
   m_PrefabInstance: {fileID: 2124544012}
   m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &2124544018 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 114446018974674534, guid: 1501fc89bbdc13843a2239fb6fa746e1, type: 3}

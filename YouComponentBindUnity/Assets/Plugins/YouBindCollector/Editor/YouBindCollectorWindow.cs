@@ -161,9 +161,30 @@ namespace YouBindCollector
                 EditorGUILayout.ObjectField("目标根物体", null, typeof(GameObject), false);
             else
                 EditorGUILayout.ObjectField("目标根物体", rootBindBase.gameObject, typeof(GameObject), false);
+            DrawTargetClassNameField();
             GUILayout.Space(4f);
             DrawOperationPanel();
             EditorGUILayout.EndVertical();
+        }
+
+        private void DrawTargetClassNameField()
+        {
+            if (rootBindBase == null)
+            {
+                using (new EditorGUI.DisabledScope(true))
+                {
+                    EditorGUILayout.TextField("Target ClassName", "");
+                }
+                return;
+            }
+
+            var oldTargetClassName = rootBindBase.targetClassName ?? "";
+            var newTargetClassName = EditorGUILayout.TextField("Target ClassName", oldTargetClassName);
+            if (newTargetClassName == oldTargetClassName) return;
+
+            Undo.RecordObject(rootBindBase, "YouBindCollector Change TargetClassName");
+            rootBindBase.targetClassName = newTargetClassName;
+            EditorUtility.SetDirty(rootBindBase);
         }
 
         private void DrawOperationPanel()

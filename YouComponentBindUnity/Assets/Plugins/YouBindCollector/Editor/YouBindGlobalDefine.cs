@@ -35,7 +35,7 @@ namespace YouBindCollector
                 bindConfig = YouBindTypeConfigManager.Instance.GetBindConfig(bindInfo.bindType);
             if (objectTF == null)
                 objectTF = YouBindUtils.GetObjectTransform(bindInfo.bindObject);
-            return bindConfig?.prefix + objectTF?.name;
+            return bindConfig?.prefix + "_" + objectTF?.name;
         }
     }
 }

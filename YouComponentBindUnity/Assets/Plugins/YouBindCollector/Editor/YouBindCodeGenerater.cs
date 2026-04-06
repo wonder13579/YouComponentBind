@@ -197,6 +197,7 @@ public interface I@ClassName@EventFunction
             var root = YouBindCodeGenerater.Instance.rootBindBase?.transform;
             var relativePath = YouBindUtils.GetRelativePath(objectTF, root);
             var hasRelativePath = !string.IsNullOrEmpty(relativePath);
+            var bindTypeName = GetTypeNameForCode(bindInfo.bindType);
             // 我们需要对GameObject和Transform进行单独处理
             if (bindInfo.bindType == typeof(GameObject))
             {
@@ -230,13 +231,32 @@ public interface I@ClassName@EventFunction
                 fieldAssignmentBuilder.AppendLine(
                     hasRelativePath
                         //        view.btnExitButton = transform.Find("a/b/c")?.GetComponent<Button>();
-                        ? $"        view.{bindInfo.fieldName} = transform.Find(\"{relativePath}\")?.GetComponent<{bindInfo.bindType.Name}>();"
+                        ? $"        view.{bindInfo.fieldName} = transform.Find(\"{relativePath}\")?.GetComponent<{bindTypeName}>();"
                         //        view.btnExitButton = GetComponent<Button>();
-                        : $"        view.{bindInfo.fieldName} = GetComponent<{bindInfo.bindType.Name}>();");
+                        : $"        view.{bindInfo.fieldName} = GetComponent<{bindTypeName}>();");
             }
             fieldDefinitionBuilder.AppendLine(
                 //    public Button btnExitButton;
-                $"    public {bindInfo.bindType.Name} {bindInfo.fieldName};");
+                $"    public {bindTypeName} {bindInfo.fieldName};");
+        }
+
+        private static string GetTypeNameForCode(System.Type type)
+        {
+            if (type == null) return "global::System.Object";
+
+            if (!type.IsGenericType)
+            {
+                var fullName = (type.FullName ?? type.Name).Replace("+", ".");
+                return $"global::{fullName}";
+            }
+
+            var genericTypeName = type.GetGenericTypeDefinition().FullName ?? type.Name;
+            var splitIndex = genericTypeName.IndexOf('`');
+            if (splitIndex >= 0)
+                genericTypeName = genericTypeName.Substring(0, splitIndex);
+            genericTypeName = genericTypeName.Replace("+", ".");
+            var genericArgs = string.Join(", ", type.GetGenericArguments().Select(GetTypeNameForCode));
+            return $"global::{genericTypeName}<{genericArgs}>";
         }
 
         public override void AppendEvent(BindObjectInfo bindInfo, BindEventInfo eventInfo)

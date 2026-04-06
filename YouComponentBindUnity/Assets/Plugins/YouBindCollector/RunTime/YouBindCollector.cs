@@ -10,13 +10,12 @@ namespace YouBindCollector
     public partial class YouBindCollector : MonoBehaviour
     {
 #if UNITY_EDITOR
-        public string targetClassName;
-        public List<BindObjectInfo> bindInfoList = new List<BindObjectInfo>();
-        public SortOrder sortOrder = SortOrder.TypeAndName;
+        [HideInInspector] public string targetClassName;
+        [HideInInspector] public List<BindObjectInfo> bindInfoList = new List<BindObjectInfo>();
+        [HideInInspector] public SortOrder sortOrder = SortOrder.TypeAndName;
         [HideInInspector] public bool customSortInitialized;
 
-        [NonSerialized]
-        private readonly HashSet<Object> _joinedObjectSet = new HashSet<Object>();
+        [NonSerialized] private readonly HashSet<Object> _joinedObjectSet = new HashSet<Object>();
         public HashSet<Object> joinedObjectSet => GetJoinedObjectSet();
 
         public HashSet<Object> GetJoinedObjectSet()
@@ -29,15 +28,16 @@ namespace YouBindCollector
                         _joinedObjectSet.Add(p.bindObject);
                 });
             }
+
             return _joinedObjectSet;
         }
 
         public enum SortOrder : int
         {
-            TypeAndName = 0,//先按类型然后是字段名
-            Name = 1,//字段名
-            JoinOrder = 2,//按加入顺序
-            Custom = 3,//不自动排序
+            TypeAndName = 0, //先按类型然后是字段名
+            Name = 1, //字段名
+            JoinOrder = 2, //按加入顺序
+            Custom = 3, //不自动排序
         }
 #endif
     }
@@ -50,22 +50,26 @@ namespace YouBindCollector
         public string fieldName;
 
         [NonSerialized] private Type _bindType;
+
         public Type bindType
         {
             get { return GetBindType(); }
             set { SetBindType(value); }
-        }// type似乎不会被序列化，我们需要存类型名
-        [SerializeField]
-        private string typeFullName;
-        
-        public Object bindObject;// 可能是component也可能是GameObject
+        } // type似乎不会被序列化，我们需要存类型名
+
+        [SerializeField] private string typeFullName;
+
+        public Object bindObject; // 可能是component也可能是GameObject
+
         // 标记是否会生成。如果是自动添加的，需要加到列表中然后关掉它，防止自动扫描时重复添加。
         public bool genCode;
+
         // 记录加入顺序，用于JoinOrder排序。旧数据默认-1，会在编辑器里自动补齐。
         public int joinIndex = -1;
 
         // 生成代码时使用的路径是实时获取的，防止路径错误。保留这个用来检查路径是否修改。
         public string relativePath;
+
         public List<BindEventInfo> eventInfoList = new List<BindEventInfo>();
         // [NonSerialized] public int searchPriority; // 仅给编辑界面使用，存储搜索权重
         // [NonSerialized] public bool foldout = false; // 仅给编辑界面使用，存储是否展开
