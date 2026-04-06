@@ -10,10 +10,10 @@ namespace YouBindCollector
     public partial class YouBindCollector : MonoBehaviour
     {
 #if UNITY_EDITOR
-        [HideInInspector] public string targetClassName;
-        [HideInInspector] public List<BindObjectInfo> bindInfoList = new List<BindObjectInfo>();
-        [HideInInspector] public SortOrder sortOrder = SortOrder.TypeAndName;
-        [HideInInspector] public bool customSortInitialized;
+        public string targetClassName;
+        public List<BindObjectInfo> bindInfoList = new List<BindObjectInfo>();
+        public SortOrder sortOrder = SortOrder.TypeAndName;
+        public bool customSortInitialized;
 
         [NonSerialized] private readonly HashSet<Object> _joinedObjectSet = new HashSet<Object>();
         public HashSet<Object> joinedObjectSet => GetJoinedObjectSet();

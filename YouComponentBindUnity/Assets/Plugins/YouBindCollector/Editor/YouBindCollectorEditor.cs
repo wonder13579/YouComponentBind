@@ -15,11 +15,12 @@ namespace YouBindCollector
             {
                 YouBindCollectorController.Instance.UpdateCode(targetComponent);
             }
-            if (GUILayout.Button("打开工具箱", GUILayout.Height(20), GUILayout.Width(70)))
+            if (GUILayout.Button("打开工具箱", GUILayout.Height(30)))
                 YouBindCollectorWindow.OpenWindow(targetComponent);
 
             GUILayout.EndHorizontal();
-            DrawDefaultInspector();
+            // 隐藏字段属性显示。这样在debug下还是能看到的。
+            // DrawDefaultInspector();
         }
     }
 }

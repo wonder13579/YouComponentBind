@@ -1,6 +1,5 @@
 using UnityEngine;
 using UnityEngine.UI;
-using YouBindCollector;
 
 // 此文件由YouBindCollector生成，请勿修改。可参考YouBindCollectorWindow
 public partial class FirstWindow
@@ -16,68 +15,51 @@ public partial class FirstWindow
     [ContextMenu("为view上引用的字段赋值"), ExecuteInEditMode]
     public void InitializeView()
     {
-        view.GOtransformAndGameObject = transform.Find("AllType/transformAndGameObject")?.gameObject;
-        view.InputInputField = GetComponent<global::UnityEngine.UI.InputField>();
-        view.RawRawImage = transform.Find("AllType/RawImage")?.GetComponent<global::UnityEngine.UI.RawImage>();
-        view.Text2 = transform.Find("AllType/Toggle/2")?.GetComponent<global::UnityEngine.UI.Text>();
-        view.TextItemLabel = GetComponent<global::UnityEngine.UI.Text>();
-        view.TextLabel = transform.Find("AllType/Dropdown/Label")?.GetComponent<global::UnityEngine.UI.Text>();
-        view.TextPlaceholder = transform.Find("AllType/InputField/Placeholder")?.GetComponent<global::UnityEngine.UI.Text>();
-        view.TextText = transform.Find("AllType/InputField/Text")?.GetComponent<global::UnityEngine.UI.Text>();
-        view.TextText2 = transform.Find("AllType/Button/Text2")?.GetComponent<global::UnityEngine.UI.Text>();
-        view.Texttip23424 = transform.Find("AllType/tip23424")?.GetComponent<global::UnityEngine.UI.Text>();
-        view.ToggleItem = transform.Find("AllType/Dropdown/Template/Viewport/Content/Item")?.GetComponent<global::UnityEngine.UI.Toggle>();
-        view.ToggleToggle = transform.Find("AllType/Toggle")?.GetComponent<global::UnityEngine.UI.Toggle>();
-        view.TFtransformAndGameObject = transform.Find("AllType/transformAndGameObject");
-        view.RTFRawImage = transform.Find("AllType/RawImage") as RectTransform;
-        view.GORawImage = transform.Find("AllType/RawImage")?.gameObject;
-        view.RTFFirstWindow = transform as RectTransform;
-        view.YouBindCollectorFirstWindow = GetComponent<global::YouBindCollector.YouBindCollector>();
+        view.Text_tip23424 = transform.Find("AllType/tip23424")?.GetComponent<global::UnityEngine.UI.Text>();
+        view.Raw_RawImage = transform.Find("AllType/RawImage")?.GetComponent<global::UnityEngine.UI.RawImage>();
+        view.Button_Button = transform.Find("AllType/Button")?.GetComponent<global::UnityEngine.UI.Button>();
+        view.Text_Text2 = transform.Find("AllType/Button/Text2")?.GetComponent<global::UnityEngine.UI.Text>();
+        view.Toggle_Toggle = transform.Find("AllType/Toggle")?.GetComponent<global::UnityEngine.UI.Toggle>();
+        view.Text_2 = transform.Find("AllType/Toggle/2")?.GetComponent<global::UnityEngine.UI.Text>();
+        view.Text_Label = transform.Find("AllType/Dropdown/Label")?.GetComponent<global::UnityEngine.UI.Text>();
+        view.Toggle_Item = transform.Find("AllType/Dropdown/Template/Viewport/Content/Item")?.GetComponent<global::UnityEngine.UI.Toggle>();
+        view.Text_Placeholder = transform.Find("AllType/InputField/Placeholder")?.GetComponent<global::UnityEngine.UI.Text>();
+        view.Text_Text = transform.Find("AllType/InputField/Text")?.GetComponent<global::UnityEngine.UI.Text>();
     }
 
     public virtual void OnEnable()
     {
-        view.InputInputField.onValueChanged.AddListener(OnInputInputFieldValueChanged);
-        view.InputInputField.onEndEdit.AddListener(OnInputInputFieldEndEdit);
-        view.ToggleItem.onValueChanged.AddListener(OnToggleItemValueChanged);
-        view.ToggleToggle.onValueChanged.AddListener(OnToggleToggleValueChanged);
+        view.Button_Button.onClick.AddListener(OnButton_ButtonClick);
+        view.Toggle_Toggle.onValueChanged.AddListener(OnToggle_ToggleValueChanged);
+        view.Toggle_Item.onValueChanged.AddListener(OnToggle_ItemValueChanged);
     }
 
     public virtual void OnDisable()
     {
-        view.InputInputField.onValueChanged.RemoveListener(OnInputInputFieldValueChanged);
-        view.InputInputField.onEndEdit.RemoveListener(OnInputInputFieldEndEdit);
-        view.ToggleItem.onValueChanged.RemoveListener(OnToggleItemValueChanged);
-        view.ToggleToggle.onValueChanged.RemoveListener(OnToggleToggleValueChanged);
+        view.Button_Button.onClick.RemoveListener(OnButton_ButtonClick);
+        view.Toggle_Toggle.onValueChanged.RemoveListener(OnToggle_ToggleValueChanged);
+        view.Toggle_Item.onValueChanged.RemoveListener(OnToggle_ItemValueChanged);
     }
 }
 
 [System.Serializable]
 public partial class FirstWindowView
 {
-    public global::UnityEngine.GameObject GOtransformAndGameObject;
-    public global::UnityEngine.UI.InputField InputInputField;
-    public global::UnityEngine.UI.RawImage RawRawImage;
-    public global::UnityEngine.UI.Text Text2;
-    public global::UnityEngine.UI.Text TextItemLabel;
-    public global::UnityEngine.UI.Text TextLabel;
-    public global::UnityEngine.UI.Text TextPlaceholder;
-    public global::UnityEngine.UI.Text TextText;
-    public global::UnityEngine.UI.Text TextText2;
-    public global::UnityEngine.UI.Text Texttip23424;
-    public global::UnityEngine.UI.Toggle ToggleItem;
-    public global::UnityEngine.UI.Toggle ToggleToggle;
-    public global::UnityEngine.Transform TFtransformAndGameObject;
-    public global::UnityEngine.RectTransform RTFRawImage;
-    public global::UnityEngine.GameObject GORawImage;
-    public global::UnityEngine.RectTransform RTFFirstWindow;
-    public global::YouBindCollector.YouBindCollector YouBindCollectorFirstWindow;
+    public global::UnityEngine.UI.Text Text_tip23424;
+    public global::UnityEngine.UI.RawImage Raw_RawImage;
+    public global::UnityEngine.UI.Button Button_Button;
+    public global::UnityEngine.UI.Text Text_Text2;
+    public global::UnityEngine.UI.Toggle Toggle_Toggle;
+    public global::UnityEngine.UI.Text Text_2;
+    public global::UnityEngine.UI.Text Text_Label;
+    public global::UnityEngine.UI.Toggle Toggle_Item;
+    public global::UnityEngine.UI.Text Text_Placeholder;
+    public global::UnityEngine.UI.Text Text_Text;
 }
 
 public interface IFirstWindowEventFunction
 {
-    void OnInputInputFieldValueChanged(string value);
-    void OnInputInputFieldEndEdit(string value);
-    void OnToggleItemValueChanged(bool value);
-    void OnToggleToggleValueChanged(bool value);
+    void OnButton_ButtonClick();
+    void OnToggle_ToggleValueChanged(bool value);
+    void OnToggle_ItemValueChanged(bool value);
 }

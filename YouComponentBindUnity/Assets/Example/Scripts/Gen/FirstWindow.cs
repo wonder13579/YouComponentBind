@@ -28,4 +28,19 @@ public partial class FirstWindow : MonoBehaviour, IFirstWindowEventFunction
     {
         throw new System.NotImplementedException();
     }
+
+    public void OnButton_ButtonClick()
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public void OnToggle_ToggleValueChanged(bool value)
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public void OnToggle_ItemValueChanged(bool value)
+    {
+        throw new System.NotImplementedException();
+    }
 }
