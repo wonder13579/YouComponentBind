@@ -14,6 +14,7 @@ namespace YouBindCollector
 
         private Vector2 scrollPosition = Vector2.zero;
         private readonly CheckNodePathChange checkNodePathChange = new();
+        private readonly CheckMissingReference checkMissingReference = new();
 
         public void DoAllCheck(YouBindCollector rootBindBase = null)
         {
@@ -23,6 +24,7 @@ namespace YouBindCollector
             this.rootBindBase = rootBindBase;
             var newErrorList = new List<CheckerErrorBase>();
             checkNodePathChange.Check(rootBindBase, newErrorList);
+            checkMissingReference.Check(rootBindBase, newErrorList);
             errorList = newErrorList;
         }
 
@@ -112,13 +114,13 @@ namespace YouBindCollector
                 errorList.Add(new CheckerErrorBase
                 {
                     refObject = bindInfo.bindObject,
-                    message = $"路径已修改: {savedPath} -> {currentPath}",
-                    autoFixFunc = () => AutoFixPathChange(collector, bindInfo)
+                    message = $"路径被修改，需要更新代码: {savedPath} -> {currentPath}",
+                    autoFixFunc = () => AutoFixPathChange(collector)
                 });
             }
         }
 
-        private static bool AutoFixPathChange(YouBindCollector collector, BindObjectInfo bindInfo)
+        private static bool AutoFixPathChange(YouBindCollector collector)
         {
             if (collector == null) return false;
             if (collector.bindInfoList == null) return false;
@@ -137,6 +139,88 @@ namespace YouBindCollector
                 info.relativePath = tf == null ? string.Empty : YouBindUtils.GetRelativePath(tf, root);
             }
 
+            EditorUtility.SetDirty(collector);
+            return true;
+        }
+    }
+
+    // 检查引用是否丢失（bindObject为空）
+    public class CheckMissingReference
+    {
+        public void Check(YouBindCollector collector, List<CheckerErrorBase> errorList)
+        {
+            if (collector == null || errorList == null) return;
+            if (collector.bindInfoList == null || collector.bindInfoList.Count <= 0) return;
+
+            for (var i = 0; i < collector.bindInfoList.Count; i++)
+            {
+                var bindInfo = collector.bindInfoList[i];
+                if (bindInfo == null) continue;
+                if (bindInfo.bindObject != null) continue;
+
+                var bindTypeName = bindInfo.bindType?.Name ?? "UnknownType";
+                var savedPath = bindInfo.relativePath ?? string.Empty;
+                errorList.Add(new CheckerErrorBase
+                {
+                    refObject = collector.gameObject,
+                    message = $"引用丢失，可尝试重新查找: 字段[{bindInfo.fieldName}] 类型[{bindTypeName}] 路径[{savedPath}]",
+                    autoFixFunc = () => TryRestoreBySavedPath(collector, bindInfo)
+                });
+            }
+        }
+
+        private static bool TryRestoreBySavedPath(YouBindCollector collector, BindObjectInfo bindInfo)
+        {
+            if (collector == null || bindInfo == null)
+            {
+                Debug.LogWarning("快速修复失败：collector 或 bindInfo 为空。");
+                return false;
+            }
+
+            var savedPath = bindInfo.relativePath ?? string.Empty;
+            var root = collector.transform;
+            Transform targetTf;
+            if (string.IsNullOrEmpty(savedPath))
+                targetTf = root;
+            else
+                targetTf = root.Find(savedPath);
+
+            if (targetTf == null)
+            {
+                Debug.LogWarning($"快速修复失败：找不到保存路径对应的节点。路径={savedPath}", collector);
+                return false;
+            }
+
+            var bindType = bindInfo.bindType;
+            if (bindType == null)
+            {
+                Debug.LogWarning($"快速修复失败：字段类型为空。字段={bindInfo.fieldName}", collector);
+                return false;
+            }
+
+            Object resolvedObject = null;
+            if (bindType == typeof(GameObject))
+                resolvedObject = targetTf.gameObject;
+            else if (bindType == typeof(Transform))
+                resolvedObject = targetTf;
+            else if (bindType == typeof(RectTransform))
+                resolvedObject = targetTf as RectTransform;
+            else if (typeof(Component).IsAssignableFrom(bindType))
+                resolvedObject = targetTf.GetComponent(bindType);
+            else
+            {
+                Debug.LogWarning($"快速修复失败：不支持的引用类型。类型={bindType}", collector);
+                return false;
+            }
+
+            if (resolvedObject == null)
+            {
+                Debug.LogWarning($"快速修复失败：路径存在，但缺少对应组件。路径={savedPath} 类型={bindType}", targetTf);
+                return false;
+            }
+
+            Undo.RecordObject(collector, "YouBindCollector Restore Missing Reference");
+            bindInfo.bindObject = resolvedObject;
             EditorUtility.SetDirty(collector);
             return true;
         }

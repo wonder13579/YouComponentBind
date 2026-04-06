@@ -124,7 +124,7 @@ RectTransform:
   m_Children:
   - {fileID: 224777009947672870}
   m_Father: {fileID: 224448631576387652}
-  m_RootOrder: 4
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -243,7 +243,8 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 224448631576387652}
+  - {fileID: 224338730499738040}
+  - {fileID: 56008986604185949}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -272,7 +273,7 @@ MonoBehaviour:
     bindObject: {fileID: 114722822780312498}
     genCode: 1
     joinIndex: 0
-    relativePath: AllType/tip23424
+    relativePath: GameObject/AllType/tip23424
     eventInfoList: []
   - fieldName: Raw_RawImage
     typeFullName: UnityEngine.UI.RawImage, UnityEngine.UI, Version=1.0.0.0, Culture=neutral,
@@ -280,7 +281,7 @@ MonoBehaviour:
     bindObject: {fileID: 114176955484195702}
     genCode: 1
     joinIndex: 1
-    relativePath: AllType/RawImage
+    relativePath: GameObject/AllType/RawImage
     eventInfoList: []
   - fieldName: Button_Button
     typeFullName: UnityEngine.UI.Button, UnityEngine.UI, Version=1.0.0.0, Culture=neutral,
@@ -288,7 +289,7 @@ MonoBehaviour:
     bindObject: {fileID: 114361405961222090}
     genCode: 1
     joinIndex: 2
-    relativePath: AllType/Button
+    relativePath: GameObject/AllType/Button
     eventInfoList:
     - genCode: 1
       eventName: onClick
@@ -298,7 +299,7 @@ MonoBehaviour:
     bindObject: {fileID: 114667232145320396}
     genCode: 1
     joinIndex: 3
-    relativePath: AllType/Button/Text2
+    relativePath: GameObject/AllType/Button/Text2
     eventInfoList: []
   - fieldName: Toggle_Toggle
     typeFullName: UnityEngine.UI.Toggle, UnityEngine.UI, Version=1.0.0.0, Culture=neutral,
@@ -306,7 +307,7 @@ MonoBehaviour:
     bindObject: {fileID: 114019385105798664}
     genCode: 1
     joinIndex: 4
-    relativePath: AllType/Toggle
+    relativePath: GameObject/AllType/Toggle
     eventInfoList:
     - genCode: 1
       eventName: onValueChanged
@@ -316,7 +317,7 @@ MonoBehaviour:
     bindObject: {fileID: 114655692847805822}
     genCode: 1
     joinIndex: 5
-    relativePath: AllType/Toggle/2
+    relativePath: GameObject/AllType/Toggle/2
     eventInfoList: []
   - fieldName: Text_Label
     typeFullName: UnityEngine.UI.Text, UnityEngine.UI, Version=1.0.0.0, Culture=neutral,
@@ -324,7 +325,7 @@ MonoBehaviour:
     bindObject: {fileID: 114759373148042252}
     genCode: 1
     joinIndex: 6
-    relativePath: AllType/Dropdown/Label
+    relativePath: GameObject/AllType/Dropdown/Label
     eventInfoList: []
   - fieldName: Toggle_Item
     typeFullName: UnityEngine.UI.Toggle, UnityEngine.UI, Version=1.0.0.0, Culture=neutral,
@@ -332,7 +333,7 @@ MonoBehaviour:
     bindObject: {fileID: 114124942715933520}
     genCode: 1
     joinIndex: 7
-    relativePath: AllType/Dropdown/Template/Viewport/Content/Item
+    relativePath: GameObject/AllType/Dropdown/Template/Viewport/Content/Item
     eventInfoList:
     - genCode: 1
       eventName: onValueChanged
@@ -342,7 +343,7 @@ MonoBehaviour:
     bindObject: {fileID: 114302913004097502}
     genCode: 1
     joinIndex: 8
-    relativePath: AllType/InputField/Placeholder
+    relativePath: GameObject/AllType/InputField/Placeholder
     eventInfoList: []
   - fieldName: Text_Text
     typeFullName: UnityEngine.UI.Text, UnityEngine.UI, Version=1.0.0.0, Culture=neutral,
@@ -350,7 +351,7 @@ MonoBehaviour:
     bindObject: {fileID: 114446018974674534}
     genCode: 1
     joinIndex: 9
-    relativePath: AllType/InputField/Text
+    relativePath: GameObject/AllType/InputField/Text
     eventInfoList: []
   sortOrder: 2
   customSortInitialized: 1
@@ -482,7 +483,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 224448631576387652}
-  m_RootOrder: 11
+  m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1148839714477042
 GameObject:
@@ -876,7 +877,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 224448631576387652}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -988,7 +989,7 @@ RectTransform:
   - {fileID: 224157647311648078}
   - {fileID: 224700750124288922}
   m_Father: {fileID: 224448631576387652}
-  m_RootOrder: 9
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -1178,7 +1179,7 @@ RectTransform:
   - {fileID: 224840376320100606}
   - {fileID: 224791153697261142}
   m_Father: {fileID: 224448631576387652}
-  m_RootOrder: 5
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -1448,7 +1449,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 224448631576387652}
-  m_RootOrder: 12
+  m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -1603,7 +1604,7 @@ RectTransform:
   - {fileID: 224445525943840988}
   - {fileID: 224891955611450152}
   m_Father: {fileID: 224448631576387652}
-  m_RootOrder: 10
+  m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -1793,7 +1794,7 @@ RectTransform:
   - {fileID: 224675714899634854}
   - {fileID: 224864093441960916}
   m_Father: {fileID: 224448631576387652}
-  m_RootOrder: 8
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -2507,7 +2508,7 @@ RectTransform:
   - {fileID: 224691324891346902}
   - {fileID: 224155625619459732}
   m_Father: {fileID: 224448631576387652}
-  m_RootOrder: 6
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -2752,12 +2753,11 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1772200524780272}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 224338730499738040}
   - {fileID: 224214423101201332}
   - {fileID: 224815488301011184}
   - {fileID: 224403502480337904}
@@ -2770,7 +2770,7 @@ RectTransform:
   - {fileID: 224696720074497774}
   - {fileID: 4523852670992092}
   - {fileID: 224124469483676178}
-  m_Father: {fileID: 224974653450262586}
+  m_Father: {fileID: 224338730499738040}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
@@ -3037,7 +3037,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 224448631576387652}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -3183,12 +3183,13 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1892752784961774}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 224448631576387652}
+  m_Children:
+  - {fileID: 224448631576387652}
+  m_Father: {fileID: 224974653450262586}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
@@ -3307,7 +3308,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 224448631576387652}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -3618,7 +3619,7 @@ RectTransform:
   m_Children:
   - {fileID: 224863668355995352}
   m_Father: {fileID: 224448631576387652}
-  m_RootOrder: 7
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -3712,3 +3713,39 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
+--- !u!1 &5700639827048348155
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 56008986604185949}
+  m_Layer: 5
+  m_Name: GameObject
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &56008986604185949
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5700639827048348155}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 224974653450262586}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
