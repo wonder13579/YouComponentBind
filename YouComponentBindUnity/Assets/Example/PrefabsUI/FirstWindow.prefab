@@ -266,115 +266,94 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   targetClassName: FirstWindow
   bindInfoList:
-  - fieldName: ButtonButton
-    typeFullName: UnityEngine.UI.Button, UnityEngine.UI, Version=1.0.0.0, Culture=neutral,
-      PublicKeyToken=null
-    bindObject: {fileID: 114361405961222090}
-    genCode: 1
-    relativePath: AllType/Button
-    eventInfoList:
-    - genCode: 1
-      eventName: onClick
-  - fieldName: GOtransformAndGameObject
-    typeFullName: UnityEngine.GameObject, UnityEngine.CoreModule, Version=0.0.0.0,
-      Culture=neutral, PublicKeyToken=null
-    bindObject: {fileID: 1145856282046918}
-    genCode: 1
-    relativePath: AllType/transformAndGameObject
-    eventInfoList: []
-  - fieldName: InputInputField
-    typeFullName: UnityEngine.UI.InputField, UnityEngine.UI, Version=1.0.0.0, Culture=neutral,
-      PublicKeyToken=null
-    bindObject: {fileID: 0}
-    genCode: 1
-    relativePath: AllType/InputField
-    eventInfoList:
-    - genCode: 1
-      eventName: onValueChanged
-    - genCode: 1
-      eventName: onEndEdit
-  - fieldName: RawRawImage
-    typeFullName: UnityEngine.UI.RawImage, UnityEngine.UI, Version=1.0.0.0, Culture=neutral,
-      PublicKeyToken=null
-    bindObject: {fileID: 114176955484195702}
-    genCode: 1
-    relativePath: AllType/RawImage
-    eventInfoList: []
-  - fieldName: Text2
-    typeFullName: UnityEngine.UI.Text, UnityEngine.UI, Version=1.0.0.0, Culture=neutral,
-      PublicKeyToken=null
-    bindObject: {fileID: 114655692847805822}
-    genCode: 1
-    relativePath: AllType/Toggle/2
-    eventInfoList: []
-  - fieldName: TextItemLabel
-    typeFullName: UnityEngine.UI.Text, UnityEngine.UI, Version=1.0.0.0, Culture=neutral,
-      PublicKeyToken=null
-    bindObject: {fileID: 0}
-    genCode: 1
-    relativePath: AllType/Dropdown/Template/Viewport/Content/Item/ItemLabel
-    eventInfoList: []
-  - fieldName: TextLabel
-    typeFullName: UnityEngine.UI.Text, UnityEngine.UI, Version=1.0.0.0, Culture=neutral,
-      PublicKeyToken=null
-    bindObject: {fileID: 114759373148042252}
-    genCode: 1
-    relativePath: AllType/Dropdown/Label
-    eventInfoList: []
-  - fieldName: TextPlaceholder
-    typeFullName: UnityEngine.UI.Text, UnityEngine.UI, Version=1.0.0.0, Culture=neutral,
-      PublicKeyToken=null
-    bindObject: {fileID: 114302913004097502}
-    genCode: 1
-    relativePath: AllType/InputField/Placeholder
-    eventInfoList: []
-  - fieldName: TextText
-    typeFullName: UnityEngine.UI.Text, UnityEngine.UI, Version=1.0.0.0, Culture=neutral,
-      PublicKeyToken=null
-    bindObject: {fileID: 114446018974674534}
-    genCode: 1
-    relativePath: AllType/InputField/Text
-    eventInfoList: []
-  - fieldName: TextText2
-    typeFullName: UnityEngine.UI.Text, UnityEngine.UI, Version=1.0.0.0, Culture=neutral,
-      PublicKeyToken=null
-    bindObject: {fileID: 114667232145320396}
-    genCode: 1
-    relativePath: AllType/Button/Text2
-    eventInfoList: []
-  - fieldName: Texttip23424
+  - fieldName: Text_tip23424
     typeFullName: UnityEngine.UI.Text, UnityEngine.UI, Version=1.0.0.0, Culture=neutral,
       PublicKeyToken=null
     bindObject: {fileID: 114722822780312498}
     genCode: 1
+    joinIndex: 0
     relativePath: AllType/tip23424
     eventInfoList: []
-  - fieldName: ToggleItem
-    typeFullName: UnityEngine.UI.Toggle, UnityEngine.UI, Version=1.0.0.0, Culture=neutral,
+  - fieldName: Raw_RawImage
+    typeFullName: UnityEngine.UI.RawImage, UnityEngine.UI, Version=1.0.0.0, Culture=neutral,
       PublicKeyToken=null
-    bindObject: {fileID: 114124942715933520}
+    bindObject: {fileID: 114176955484195702}
     genCode: 1
-    relativePath: AllType/Dropdown/Template/Viewport/Content/Item
+    joinIndex: 1
+    relativePath: AllType/RawImage
+    eventInfoList: []
+  - fieldName: Button_Button
+    typeFullName: UnityEngine.UI.Button, UnityEngine.UI, Version=1.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+    bindObject: {fileID: 114361405961222090}
+    genCode: 1
+    joinIndex: 2
+    relativePath: AllType/Button
     eventInfoList:
     - genCode: 1
-      eventName: onValueChanged
-  - fieldName: ToggleToggle
+      eventName: onClick
+  - fieldName: Text_Text2
+    typeFullName: UnityEngine.UI.Text, UnityEngine.UI, Version=1.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+    bindObject: {fileID: 114667232145320396}
+    genCode: 1
+    joinIndex: 3
+    relativePath: AllType/Button/Text2
+    eventInfoList: []
+  - fieldName: Toggle_Toggle
     typeFullName: UnityEngine.UI.Toggle, UnityEngine.UI, Version=1.0.0.0, Culture=neutral,
       PublicKeyToken=null
     bindObject: {fileID: 114019385105798664}
     genCode: 1
+    joinIndex: 4
     relativePath: AllType/Toggle
     eventInfoList:
     - genCode: 1
       eventName: onValueChanged
-  - fieldName: TFtransformAndGameObject
-    typeFullName: UnityEngine.Transform, UnityEngine.CoreModule, Version=0.0.0.0,
-      Culture=neutral, PublicKeyToken=null
-    bindObject: {fileID: 4523852670992092}
+  - fieldName: Text_2
+    typeFullName: UnityEngine.UI.Text, UnityEngine.UI, Version=1.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+    bindObject: {fileID: 114655692847805822}
     genCode: 1
-    relativePath: AllType/transformAndGameObject
+    joinIndex: 5
+    relativePath: AllType/Toggle/2
     eventInfoList: []
-  sortOrder: 0
+  - fieldName: Text_Label
+    typeFullName: UnityEngine.UI.Text, UnityEngine.UI, Version=1.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+    bindObject: {fileID: 114759373148042252}
+    genCode: 1
+    joinIndex: 6
+    relativePath: AllType/Dropdown/Label
+    eventInfoList: []
+  - fieldName: Toggle_Item
+    typeFullName: UnityEngine.UI.Toggle, UnityEngine.UI, Version=1.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+    bindObject: {fileID: 114124942715933520}
+    genCode: 1
+    joinIndex: 7
+    relativePath: AllType/Dropdown/Template/Viewport/Content/Item
+    eventInfoList:
+    - genCode: 1
+      eventName: onValueChanged
+  - fieldName: Text_Placeholder
+    typeFullName: UnityEngine.UI.Text, UnityEngine.UI, Version=1.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+    bindObject: {fileID: 114302913004097502}
+    genCode: 1
+    joinIndex: 8
+    relativePath: AllType/InputField/Placeholder
+    eventInfoList: []
+  - fieldName: Text_Text
+    typeFullName: UnityEngine.UI.Text, UnityEngine.UI, Version=1.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+    bindObject: {fileID: 114446018974674534}
+    genCode: 1
+    joinIndex: 9
+    relativePath: AllType/InputField/Text
+    eventInfoList: []
+  sortOrder: 2
+  customSortInitialized: 1
 --- !u!114 &570993621854685668
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -388,20 +367,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   view:
-    ButtonButton: {fileID: 114361405961222090}
-    GOtransformAndGameObject: {fileID: 1145856282046918}
-    InputInputField: {fileID: 0}
-    RawRawImage: {fileID: 114176955484195702}
-    Text2: {fileID: 114655692847805822}
-    TextItemLabel: {fileID: 0}
-    TextLabel: {fileID: 114759373148042252}
-    TextPlaceholder: {fileID: 114302913004097502}
-    TextText: {fileID: 114446018974674534}
-    TextText2: {fileID: 114667232145320396}
-    Texttip23424: {fileID: 114722822780312498}
-    ToggleItem: {fileID: 114124942715933520}
-    ToggleToggle: {fileID: 114019385105798664}
-    TFtransformAndGameObject: {fileID: 4523852670992092}
+    Text_tip23424: {fileID: 114722822780312498}
+    Raw_RawImage: {fileID: 114176955484195702}
+    Button_Button: {fileID: 114361405961222090}
+    Text_Text2: {fileID: 114667232145320396}
+    Toggle_Toggle: {fileID: 114019385105798664}
+    Text_2: {fileID: 114655692847805822}
+    Text_Label: {fileID: 114759373148042252}
+    Toggle_Item: {fileID: 114124942715933520}
+    Text_Placeholder: {fileID: 114302913004097502}
+    Text_Text: {fileID: 114446018974674534}
 --- !u!1 &1118995215076080
 GameObject:
   m_ObjectHideFlags: 0

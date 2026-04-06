@@ -114,30 +114,7 @@ namespace YouBindCollector
         public void RemoveBindComponent(BindObjectInfo info)
         {
             if (info == null) return;
-            if (info.bindObject == null)
-            {
-                rootBindBase.bindInfoList.Remove(info);
-                rootBindBase.joinedObjectSet.Clear();
-                SortBindObjectInfo(rootBindBase);
-                YouBindHierarchyMark.NotifyCollectorChanged(rootBindBase);
-                return;
-            }
-            bool isAutoBind = false;
-            var type = info.bindObject.GetType();
-            var bindConfig = YouBindTypeConfigManager.Instance.GetBindConfig(type);
-            if (bindConfig != null)
-            {
-                isAutoBind = bindConfig.autoBind;
-            }
-            if (isAutoBind)
-            {
-                info.genCode = false;
-            }
-            else
-            {
-                rootBindBase.bindInfoList.Remove(info);
-                rootBindBase.joinedObjectSet.Remove(info.bindObject);
-            }
+            info.genCode = false;
             SortBindObjectInfo(rootBindBase);
             YouBindHierarchyMark.NotifyCollectorChanged(rootBindBase);
         }
