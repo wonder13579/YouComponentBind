@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Reflection;
 using UnityEditor;
 using UnityEngine;
 using Object = UnityEngine.Object;
@@ -15,6 +16,7 @@ namespace YouBindCollector
         private Vector2 scrollPosition = Vector2.zero;
         private readonly CheckNodePathChange checkNodePathChange = new();
         private readonly CheckMissingReference checkMissingReference = new();
+        private readonly CheckViewNullNode checkViewNullNode = new();
 
         public void DoAllCheck(YouBindCollector rootBindBase = null)
         {
@@ -25,6 +27,7 @@ namespace YouBindCollector
             var newErrorList = new List<CheckerErrorBase>();
             checkNodePathChange.Check(rootBindBase, newErrorList);
             checkMissingReference.Check(rootBindBase, newErrorList);
+            checkViewNullNode.Check(rootBindBase, newErrorList);
             errorList = newErrorList;
         }
 
@@ -222,6 +225,117 @@ namespace YouBindCollector
             Undo.RecordObject(collector, "YouBindCollector Restore Missing Reference");
             bindInfo.bindObject = resolvedObject;
             EditorUtility.SetDirty(collector);
+            return true;
+        }
+    }
+
+    // 检查生成组件的 view 中是否存在空引用字段
+    public class CheckViewNullNode
+    {
+        public void Check(YouBindCollector collector, List<CheckerErrorBase> errorList)
+        {
+            if (collector == null || errorList == null) return;
+            if (collector.gameObject == null) return;
+            if (string.IsNullOrEmpty(collector.targetClassName)) return;
+
+            var generatedComponent = collector.gameObject.GetComponent(collector.targetClassName);
+            if (generatedComponent == null)
+            {
+                errorList.Add(new CheckerErrorBase
+                {
+                    refObject = collector.gameObject,
+                    message = $"未找到生成组件 [{collector.targetClassName}]，需要更新代码并赋值引用。",
+                    autoFixFunc = () => AutoFixViewNullNode(collector)
+                });
+                return;
+            }
+
+            var viewField = generatedComponent.GetType().GetField("view",
+                BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
+            if (viewField == null)
+                return;
+
+            var viewObject = viewField.GetValue(generatedComponent);
+            if (viewObject == null)
+            {
+                errorList.Add(new CheckerErrorBase
+                {
+                    refObject = generatedComponent,
+                    message = $"生成组件 [{generatedComponent.GetType().Name}] 的 view 为空，需要更新代码并赋值引用。",
+                    autoFixFunc = () => AutoFixViewNullNode(collector)
+                });
+                return;
+            }
+
+            var nullFieldNameList = new List<string>();
+            var viewFieldArray = viewObject.GetType().GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
+            for (var i = 0; i < viewFieldArray.Length; i++)
+            {
+                var field = viewFieldArray[i];
+                if (!typeof(Object).IsAssignableFrom(field.FieldType))
+                    continue;
+
+                var value = field.GetValue(viewObject) as Object;
+                if (value == null)
+                    nullFieldNameList.Add(field.Name);
+            }
+
+            if (nullFieldNameList.Count <= 0)
+                return;
+
+            var previewCount = Math.Min(5, nullFieldNameList.Count);
+            var previewNameList = nullFieldNameList.GetRange(0, previewCount);
+            var preview = string.Join(", ", previewNameList);
+            if (nullFieldNameList.Count > previewCount)
+                preview += "...";
+
+            errorList.Add(new CheckerErrorBase
+            {
+                refObject = generatedComponent,
+                message = $"生成组件 view 中有空节点（{nullFieldNameList.Count} 个）：{preview}。需要更新代码并赋值引用。",
+                autoFixFunc = () => AutoFixViewNullNode(collector)
+            });
+        }
+
+        private static bool AutoFixViewNullNode(YouBindCollector collector)
+        {
+            if (collector == null) return false;
+
+            // 先更新代码
+            YouBindCodeGenerater.Instance.DoGenerate(collector);
+
+            // 再确保组件存在并执行引用赋值
+            var controller = YouBindCollectorController.Instance;
+            controller.SetRootBindBase(collector);
+
+            var generatedComponent = collector.gameObject.GetComponent(collector.targetClassName);
+            if (generatedComponent == null)
+                generatedComponent = controller.AddBindview(collector);
+            if (generatedComponent == null)
+            {
+                Debug.LogWarning($"快速修复失败：未找到并且无法添加生成组件 [{collector.targetClassName}]。", collector);
+                return false;
+            }
+
+            var initializeViewMethod = generatedComponent.GetType().GetMethod("InitializeView",
+                BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
+            if (initializeViewMethod == null)
+            {
+                Debug.LogWarning($"快速修复失败：生成组件 [{generatedComponent.GetType().Name}] 不存在 InitializeView 方法。", generatedComponent);
+                return false;
+            }
+
+            try
+            {
+                initializeViewMethod.Invoke(generatedComponent, null);
+            }
+            catch (Exception e)
+            {
+                Debug.LogWarning($"快速修复失败：调用 InitializeView 异常。{e.Message}", generatedComponent);
+                return false;
+            }
+
+            EditorUtility.SetDirty(generatedComponent);
             return true;
         }
     }

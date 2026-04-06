@@ -403,8 +403,8 @@ MonoBehaviour:
     Text_Placeholder: {fileID: 114302913004097502}
     Text_Text: {fileID: 114446018974674534}
     GO_Scrollbar: {fileID: 1980619227185590}
-    Text_Text222: {fileID: 0}
-    Text_Text333: {fileID: 0}
+    Text_Text222: {fileID: 5856844720192008603}
+    Text_Text333: {fileID: 4568228373849429981}
 --- !u!1 &1118995215076080
 GameObject:
   m_ObjectHideFlags: 0
