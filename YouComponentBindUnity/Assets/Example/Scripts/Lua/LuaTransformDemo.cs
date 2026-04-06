@@ -1,41 +1,52 @@
+using System;
 using UnityEngine;
 using XLua;
 
 namespace Example.LuaDemo
 {
+    // 提供测试用Lua环境
     public class LuaTransformDemo : MonoBehaviour
     {
-        [SerializeField] private Transform targetTransform;
-
-        private LuaEnv luaEnv;
-        private LuaFunction printTransformFunc;
-
-        private void Start()
+        public static LuaTransformDemo instance;
+        private void Awake()
         {
+            instance = this;
             luaEnv = new LuaEnv();
+        }
+        
+        private LuaEnv luaEnv;
 
+        /// <summary>
+        /// 其他地方调用这个来加载lua文件
+        /// </summary>
+        /// <param name="luaFilePath"></param>
+        public void LoadLuaFile(string luaFilePath)
+        {
             var luaAsset = LoadLuaAsset("Lua/Gen/FirstWindow");
-            var luaGenAsset = LoadLuaAsset("Lua/Gen/FirstWindow.g");
-            if (luaAsset == null || luaGenAsset == null)
+            if (luaAsset == null)
             {
                 Debug.LogError(
                     $"Lua file not found in Resources. ",
                     this);
                 return;
             }
-
-            luaEnv.DoString(luaGenAsset.text, luaGenAsset.name);
             luaEnv.DoString(luaAsset.text, luaAsset.name);
+        }
 
-            printTransformFunc = luaEnv.Global.Get<LuaFunction>("FirstWindow_Init");
-            if (printTransformFunc == null)
+        /// <summary>
+        /// 执行lua函数
+        /// </summary>
+        /// <param name="functionName"></param>
+        /// <param name="tf"></param>
+        public void DoLuaTransformFunction(string functionName, Transform tf)
+        {
+            var luaFunction = luaEnv.Global.Get<LuaFunction>("FirstWindow_Init");
+            if (luaFunction == null)
             {
-                Debug.LogError("Lua function not found: print_transform_from_cs", this);
+                Debug.LogError($"Lua luaFunction not found: {functionName}", this);
                 return;
             }
-
-            var tf = targetTransform != null ? targetTransform : transform;
-            printTransformFunc.Call(tf);
+            luaFunction.Call(tf);
         }
 
         private TextAsset LoadLuaAsset(string luaFilePath)
@@ -78,8 +89,6 @@ namespace Example.LuaDemo
 
         private void OnDestroy()
         {
-            printTransformFunc?.Dispose();
-            printTransformFunc = null;
 
             luaEnv?.Dispose();
             luaEnv = null;

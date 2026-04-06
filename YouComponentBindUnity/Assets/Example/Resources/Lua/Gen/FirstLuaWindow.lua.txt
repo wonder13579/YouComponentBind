@@ -1,0 +1,11 @@
+-- Generated once by YouBindCollector. This file will not be overwritten.
+function FirstLuaWindow_Init(root)
+    local view = FirstLuaWindow_InitializeView(root)
+    print("[FirstLuaWindow] Init done.")
+    if view ~= nil then
+        for key, value in pairs(view) do
+            print("[FirstLuaWindow] " .. key, value)
+        end
+    end
+    return view
+end

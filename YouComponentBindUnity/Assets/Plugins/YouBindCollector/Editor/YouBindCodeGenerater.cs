@@ -30,14 +30,20 @@ namespace YouBindCollector
                 return;
             }
             codeGeneraterList.Clear();
-            codeGeneraterList.Add(CSharpGenCodeGenerater);
-            var customFilePath = YouBindGlobalDefine.GetCSharpCustomCodeFilePath(rootBindBase.targetClassName);
-            if (!File.Exists(customFilePath))
-                codeGeneraterList.Add(CSharpCustomCodeFileGenerater);
-            codeGeneraterList.Add(LuaGenCodeGenerater);
-            var luaCustomFilePath = YouBindGlobalDefine.GetLuaCustomCodeFilePath(rootBindBase.targetClassName);
-            if (!File.Exists(luaCustomFilePath))
-                codeGeneraterList.Add(LuaCustomCodeFileGenerater);
+            if (rootBindBase.codeGenerateType == YouBindCollector.CodeGenerateType.CSharp)
+            {
+                codeGeneraterList.Add(CSharpGenCodeGenerater);
+                var customFilePath = YouBindGlobalDefine.GetCSharpCustomCodeFilePath(rootBindBase.targetClassName);
+                if (!File.Exists(customFilePath))
+                    codeGeneraterList.Add(CSharpCustomCodeFileGenerater);
+            }
+            else
+            {
+                codeGeneraterList.Add(LuaGenCodeGenerater);
+                var luaCustomFilePath = YouBindGlobalDefine.GetLuaCustomCodeFilePath(rootBindBase.targetClassName);
+                if (!File.Exists(luaCustomFilePath))
+                    codeGeneraterList.Add(LuaCustomCodeFileGenerater);
+            }
 
             codeGeneraterList.ForEach(p => p.Clear());
             codeGeneraterList.ForEach(p => p.className = rootBindBase.targetClassName);

@@ -13,7 +13,7 @@ function FirstWindow_InitializeView(root)
     view["Raw_RawImage"] = node_1 and node_1:GetComponent(typeof(CS.UnityEngine.UI.RawImage)) or nil
 
     local node_2 = root:Find("AllType/Button")
-    view["Button_Button"] = node_2 and node_2:GetComponent(typeof(CS.UnityEngine.UI.Button)) or nil
+    view.Button_Button = node_2 and node_2:GetComponent(typeof(CS.UnityEngine.UI.Button)) or nil
 
     local node_3 = root:Find("AllType/tip23424")
     view["Text_Text2"] = node_3 and node_3:GetComponent(typeof(CS.UnityEngine.UI.Text)) or nil

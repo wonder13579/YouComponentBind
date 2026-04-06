@@ -50,12 +50,14 @@
      <Folder Include="Assets\Example\Scripts\Gen" />
      <Folder Include="Assets\Example\Resources" />
      <None Include="Assets\Resources\BillingMode.json" />
+     <None Include="Assets\Example\Resources\Lua\Gen\FirstLuaWindow.bind.lua.txt" />
      <Folder Include="Assets\Example\Scripts" />
      <Folder Include="Assets\Example\Plugins" />
      <None Include="Assets\Example\Resources\Lua\transform_demo.lua.txt" />
      <Folder Include="Assets\Example" />
      <None Include="Assets\Example\Resources\Lua\Gen\FirstWindow.g.lua.txt" />
      <None Include="Assets\Example\Resources\Lua\Gen\FirstWindow.lua.txt" />
+     <None Include="Assets\Example\Resources\Lua\Gen\FirstLuaWindow.lua.txt" />
      <Folder Include="Assets\Example\Resources\Lua" />
      <Folder Include="Assets\Example\Scenes" />
      <Folder Include="Assets\Example\PrefabsUI" />

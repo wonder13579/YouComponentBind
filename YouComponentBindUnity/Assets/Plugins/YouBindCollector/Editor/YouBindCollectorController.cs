@@ -119,6 +119,18 @@ namespace YouBindCollector
             YouBindHierarchyMark.NotifyCollectorChanged(rootBindBase);
         }
 
+        public void RemoveBindComponentPermanently(BindObjectInfo info)
+        {
+            if (info == null || rootBindBase == null || resultList == null)
+                return;
+
+            resultList.Remove(info);
+            rootBindBase.joinedObjectSet.Clear();
+            SortBindObjectInfo(rootBindBase);
+            EditorUtility.SetDirty(rootBindBase);
+            YouBindHierarchyMark.NotifyCollectorChanged(rootBindBase);
+        }
+
         // 为组件添加默认事件
         public void AddComponentDefaultEvent(BindObjectInfo componentInfo)
         {
@@ -207,6 +219,8 @@ namespace YouBindCollector
             ScanComponent(bind);
             // 生成代码
             YouBindCodeGenerater.Instance.DoGenerate(rootBindBase);
+            if (rootBindBase.codeGenerateType != YouBindCollector.CodeGenerateType.CSharp)
+                return;
             // 添加绑定组件
             var view = AddBindview(bind);
             // 重新序列化

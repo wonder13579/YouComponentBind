@@ -2,10 +2,15 @@
 function FirstWindow_Init(root)
     local view = FirstWindow_InitializeView(root)
     print("[FirstWindow] Init done.")
+
     if view ~= nil then
         for key, value in pairs(view) do
             print("[FirstWindow] " .. key, value)
         end
     end
+    
+    view.Button_Button.onClick:AddListener(function()
+        print("[FirstWindow] Button_Button clicked.")
+    end)
     return view
 end

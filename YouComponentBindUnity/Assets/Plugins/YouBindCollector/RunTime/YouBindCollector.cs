@@ -11,6 +11,7 @@ namespace YouBindCollector
     {
 #if UNITY_EDITOR
         public string targetClassName;
+        public CodeGenerateType codeGenerateType = CodeGenerateType.CSharp;
         public List<BindObjectInfo> bindInfoList = new List<BindObjectInfo>();
         public SortOrder sortOrder = SortOrder.TypeAndName;
         public bool customSortInitialized;
@@ -38,6 +39,12 @@ namespace YouBindCollector
             Name = 1, //字段名
             JoinOrder = 2, //按加入顺序
             Custom = 3, //不自动排序
+        }
+
+        public enum CodeGenerateType : int
+        {
+            CSharp = 0,
+            Lua = 1,
         }
 #endif
     }

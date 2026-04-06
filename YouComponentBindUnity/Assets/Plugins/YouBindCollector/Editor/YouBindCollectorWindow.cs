@@ -22,6 +22,7 @@ namespace YouBindCollector
         private Vector2 scrollPosition = Vector2.zero;
         private string searchString = "";
         private BindObjectInfo waitDeleteBindInfo;
+        private BindObjectInfo waitDeleteMissingRefBindInfo;
         private int operationTabIndex = 0;
         private static readonly string[] OperationTabTitleArray = { "新增组件", "更多功能", "设置", "错误检测" };
         private static readonly Color MissingRefColorDark = new Color(1f, 0.75f, 0.2f, 1f);
@@ -134,6 +135,13 @@ namespace YouBindCollector
                 YouBindCollectorController.Instance.RemoveBindComponent(waitDeleteBindInfo);
                 waitDeleteBindInfo = null;
             }
+            if (waitDeleteMissingRefBindInfo != null)
+            {
+                Undo.RecordObject(rootBindBase, "YouBindCollector Delete Missing Reference");
+                YouBindCollectorController.Instance.RemoveBindComponentPermanently(waitDeleteMissingRefBindInfo);
+                waitDeleteMissingRefBindInfo = null;
+                ApplySearchStr(searchString);
+            }
             GUILayout.EndScrollView();
             EditorGUILayout.EndVertical();
         }
@@ -166,6 +174,7 @@ namespace YouBindCollector
             else
                 EditorGUILayout.ObjectField("目标根物体", rootBindBase.gameObject, typeof(GameObject), false);
             DrawTargetClassNameField();
+            DrawCodeGenerateTypeField();
             GUILayout.Space(4f);
             DrawOperationPanel();
             EditorGUILayout.EndVertical();
@@ -188,6 +197,26 @@ namespace YouBindCollector
 
             Undo.RecordObject(rootBindBase, "YouBindCollector Change TargetClassName");
             rootBindBase.targetClassName = newTargetClassName;
+            EditorUtility.SetDirty(rootBindBase);
+        }
+
+        private void DrawCodeGenerateTypeField()
+        {
+            if (rootBindBase == null)
+            {
+                using (new EditorGUI.DisabledScope(true))
+                {
+                    EditorGUILayout.EnumPopup("Code Generate Type", YouBindCollector.CodeGenerateType.CSharp);
+                }
+                return;
+            }
+
+            var oldType = rootBindBase.codeGenerateType;
+            var newType = (YouBindCollector.CodeGenerateType)EditorGUILayout.EnumPopup("Code Generate Type", oldType);
+            if (newType == oldType) return;
+
+            Undo.RecordObject(rootBindBase, "YouBindCollector Change CodeGenerateType");
+            rootBindBase.codeGenerateType = newType;
             EditorUtility.SetDirty(rootBindBase);
         }
 
@@ -342,6 +371,8 @@ namespace YouBindCollector
                 var newBindObject = EditorGUILayout.ObjectField(info.bindObject, pickerType, true, GUILayout.Width(200));
                 if (newBindObject != null && newBindObject != info.bindObject)
                     RebindMissingObject(info, newBindObject);
+                if (GUILayout.Button("Delete Ref", GUILayout.Width(80)))
+                    waitDeleteMissingRefBindInfo = info;
             }
             // if (GUILayout.Button("\u00D7", GUILayout.Width(20))) // ×
             // {
