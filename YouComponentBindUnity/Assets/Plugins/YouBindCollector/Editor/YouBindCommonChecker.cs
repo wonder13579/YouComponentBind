@@ -1,0 +1,144 @@
+using System;
+using System.Collections.Generic;
+using UnityEditor;
+using UnityEngine;
+using Object = UnityEngine.Object;
+
+namespace YouBindCollector
+{
+    // 处理通用错误检查与自动修复逻辑
+    public class YouBindCommonCheckerManager
+    {
+        public YouBindCollector rootBindBase;
+        public List<CheckerErrorBase> errorList = new();
+
+        private Vector2 scrollPosition = Vector2.zero;
+        private readonly CheckNodePathChange checkNodePathChange = new();
+
+        public void DoAllCheck(YouBindCollector rootBindBase = null)
+        {
+            if (rootBindBase == null)
+                rootBindBase = YouBindCollectorController.Instance.rootBindBase;
+
+            this.rootBindBase = rootBindBase;
+            var newErrorList = new List<CheckerErrorBase>();
+            checkNodePathChange.Check(rootBindBase, newErrorList);
+            errorList = newErrorList;
+        }
+
+        public void OnGUI()
+        {
+            DoAllCheck();
+
+            if (rootBindBase == null)
+            {
+                EditorGUILayout.HelpBox("请先选择带有 YouBindCollector 的目标根物体。", MessageType.Info);
+                return;
+            }
+
+            if (errorList.Count <= 0)
+            {
+                EditorGUILayout.HelpBox("未发现错误。", MessageType.Info);
+                return;
+            }
+
+            scrollPosition = EditorGUILayout.BeginScrollView(scrollPosition, GUILayout.ExpandHeight(true));
+            for (var i = 0; i < errorList.Count; i++)
+            {
+                var error = errorList[i];
+                EditorGUILayout.BeginVertical("box");
+                EditorGUILayout.BeginHorizontal();
+
+                DrawRefObjectField(error.refObject);
+                GUILayout.FlexibleSpace();
+
+                using (new EditorGUI.DisabledScope(error.autoFixFunc == null))
+                {
+                    if (GUILayout.Button("快速修复", GUILayout.Width(70f)))
+                    {
+                        error.autoFixFunc?.Invoke();
+                    }
+                }
+
+                EditorGUILayout.EndHorizontal();
+
+                // 错误信息单独占一行，自动换行并自适应高度
+                EditorGUILayout.HelpBox(error.message ?? string.Empty, MessageType.None);
+                EditorGUILayout.EndVertical();
+            }
+            EditorGUILayout.EndScrollView();
+        }
+
+        private static void DrawRefObjectField(Object refObject)
+        {
+            if (refObject is Component)
+                EditorGUILayout.ObjectField(refObject, typeof(Component), false, GUILayout.Width(140f));
+            else if (refObject is GameObject)
+                EditorGUILayout.ObjectField(refObject, typeof(GameObject), false, GUILayout.Width(140f));
+            else
+                EditorGUILayout.ObjectField(refObject, typeof(Object), false, GUILayout.Width(140f));
+        }
+    }
+
+    // 单条错误信息
+    public class CheckerErrorBase
+    {
+        public string message;
+        public Object refObject;
+        public Func<bool> autoFixFunc;
+    }
+
+    // 检查记录路径和当前路径是否一致
+    public class CheckNodePathChange
+    {
+        public void Check(YouBindCollector collector, List<CheckerErrorBase> errorList)
+        {
+            if (collector == null || errorList == null) return;
+            if (collector.bindInfoList == null || collector.bindInfoList.Count <= 0) return;
+
+            var root = collector.transform;
+            for (var i = 0; i < collector.bindInfoList.Count; i++)
+            {
+                var bindInfo = collector.bindInfoList[i];
+                if (bindInfo?.bindObject == null) continue;
+
+                var tf = bindInfo.GetTransform();
+                if (tf == null) continue;
+
+                var savedPath = bindInfo.relativePath ?? string.Empty;
+                var currentPath = YouBindUtils.GetRelativePath(tf, root);
+                if (savedPath == currentPath) continue;
+
+                errorList.Add(new CheckerErrorBase
+                {
+                    refObject = bindInfo.bindObject,
+                    message = $"路径已修改: {savedPath} -> {currentPath}",
+                    autoFixFunc = () => AutoFixPathChange(collector, bindInfo)
+                });
+            }
+        }
+
+        private static bool AutoFixPathChange(YouBindCollector collector, BindObjectInfo bindInfo)
+        {
+            if (collector == null) return false;
+            if (collector.bindInfoList == null) return false;
+
+            // 先重新生成代码，再更新全部引用组件的记录路径
+            YouBindCodeGenerater.Instance.DoGenerate(collector);
+
+            var root = collector.transform;
+            Undo.RecordObject(collector, "YouBindCollector Fix Path Change");
+            for (var i = 0; i < collector.bindInfoList.Count; i++)
+            {
+                var info = collector.bindInfoList[i];
+                if (info == null) continue;
+
+                var tf = info.GetTransform();
+                info.relativePath = tf == null ? string.Empty : YouBindUtils.GetRelativePath(tf, root);
+            }
+
+            EditorUtility.SetDirty(collector);
+            return true;
+        }
+    }
+}

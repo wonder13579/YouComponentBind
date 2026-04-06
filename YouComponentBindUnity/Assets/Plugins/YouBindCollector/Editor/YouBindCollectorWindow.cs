@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text.RegularExpressions;
+using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
 
@@ -22,12 +23,13 @@ namespace YouBindCollector
         private string searchString = "";
         private BindObjectInfo waitDeleteBindInfo;
         private int operationTabIndex = 0;
-        private static readonly string[] OperationTabTitleArray = { "新增组件", "更多功能", "设置" };
+        private static readonly string[] OperationTabTitleArray = { "新增组件", "更多功能", "设置", "错误检测" };
         private static readonly Color MissingRefColorDark = new Color(1f, 0.75f, 0.2f, 1f);
         private static readonly Color MissingRefColorLight = new Color(0.75f, 0.2f, 0f, 1f);
         private const float RightPanelWidth = 240f;
         private const float MinWindowWidth = 600f;
         private const float ComponentDragHandleWidth = 24f;
+        private YouBindCommonCheckerManager checker = new();
 
         public YouBindCollector rootBindBase
         {
@@ -204,6 +206,9 @@ namespace YouBindCollector
                     break;
                 case 2:
                     DrawSettingPanel();
+                    break;
+                case 3:
+                    checker.OnGUI();
                     break;
                 default:
                     DrawAddComponentPanel();
