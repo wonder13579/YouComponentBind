@@ -16,10 +16,10 @@ public partial class FirstWindow
     public void InitializeView()
     {
         view.GOtransformAndGameObject = transform.Find("AllType/transformAndGameObject")?.gameObject;
-        view.InputInputField = transform.Find("")?.GetComponent<InputField>();
+        view.InputInputField = GetComponent<InputField>();
         view.RawRawImage = transform.Find("AllType/RawImage")?.GetComponent<RawImage>();
         view.Text2 = transform.Find("AllType/Toggle/2")?.GetComponent<Text>();
-        view.TextItemLabel = transform.Find("")?.GetComponent<Text>();
+        view.TextItemLabel = GetComponent<Text>();
         view.TextLabel = transform.Find("AllType/Dropdown/Label")?.GetComponent<Text>();
         view.TextPlaceholder = transform.Find("AllType/InputField/Placeholder")?.GetComponent<Text>();
         view.TextText = transform.Find("AllType/InputField/Text")?.GetComponent<Text>();
@@ -30,6 +30,7 @@ public partial class FirstWindow
         view.TFtransformAndGameObject = transform.Find("AllType/transformAndGameObject");
         view.RTFRawImage = transform.Find("AllType/RawImage") as RectTransform;
         view.GORawImage = transform.Find("AllType/RawImage")?.gameObject;
+        view.RTFFirstWindow = transform as RectTransform;
     }
 
     public virtual void OnEnable()
@@ -67,6 +68,7 @@ public partial class FirstWindowView
     public Transform TFtransformAndGameObject;
     public RectTransform RTFRawImage;
     public GameObject GORawImage;
+    public RectTransform RTFFirstWindow;
 }
 
 public interface IFirstWindowEventFunction

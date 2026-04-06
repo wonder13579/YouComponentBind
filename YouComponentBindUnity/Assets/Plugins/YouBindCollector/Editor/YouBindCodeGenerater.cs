@@ -196,30 +196,43 @@ public interface I@ClassName@EventFunction
             var objectTF = YouBindUtils.GetObjectTransform(bindInfo.bindObject);
             var root = YouBindCodeGenerater.Instance.rootBindBase?.transform;
             var relativePath = YouBindUtils.GetRelativePath(objectTF, root);
+            var hasRelativePath = !string.IsNullOrEmpty(relativePath);
             // 我们需要对GameObject和Transform进行单独处理
             if (bindInfo.bindType == typeof(GameObject))
             {
                 fieldAssignmentBuilder.AppendLine(
-                    //        view.btnExitButton = transform.Find("a/b/c")?.gameObject;
-                    $"        view.{bindInfo.fieldName} = transform.Find(\"{relativePath}\")?.gameObject;");
+                    hasRelativePath
+                        //        view.btnExitButton = transform.Find("a/b/c")?.gameObject;
+                        ? $"        view.{bindInfo.fieldName} = transform.Find(\"{relativePath}\")?.gameObject;"
+                        //        view.btnExitButton = gameObject;
+                        : $"        view.{bindInfo.fieldName} = gameObject;");
             }
             else if (bindInfo.bindType == typeof(RectTransform))
             {
                 fieldAssignmentBuilder.AppendLine(
-                    //        view.btnExitButton = transform.Find("a/b/c") as RectTransform;
-                    $"        view.{bindInfo.fieldName} = transform.Find(\"{relativePath}\") as RectTransform;");
+                    hasRelativePath
+                        //        view.btnExitButton = transform.Find("a/b/c") as RectTransform;
+                        ? $"        view.{bindInfo.fieldName} = transform.Find(\"{relativePath}\") as RectTransform;"
+                        //        view.btnExitButton = transform as RectTransform;
+                        : $"        view.{bindInfo.fieldName} = transform as RectTransform;");
             }
             else if (bindInfo.bindType == typeof(Transform))
             {
                 fieldAssignmentBuilder.AppendLine(
-                    //        view.btnExitButton = transform.Find("a/b/c");
-                    $"        view.{bindInfo.fieldName} = transform.Find(\"{relativePath}\");");
+                    hasRelativePath
+                        //        view.btnExitButton = transform.Find("a/b/c");
+                        ? $"        view.{bindInfo.fieldName} = transform.Find(\"{relativePath}\");"
+                        //        view.btnExitButton = transform;
+                        : $"        view.{bindInfo.fieldName} = transform;");
             }
             else
             {
                 fieldAssignmentBuilder.AppendLine(
-                    //        view.btnExitButton = transform.Find("a/b/c")?.GetComponent<Button>();
-                    $"        view.{bindInfo.fieldName} = transform.Find(\"{relativePath}\")?.GetComponent<{bindInfo.bindType.Name}>();");
+                    hasRelativePath
+                        //        view.btnExitButton = transform.Find("a/b/c")?.GetComponent<Button>();
+                        ? $"        view.{bindInfo.fieldName} = transform.Find(\"{relativePath}\")?.GetComponent<{bindInfo.bindType.Name}>();"
+                        //        view.btnExitButton = GetComponent<Button>();
+                        : $"        view.{bindInfo.fieldName} = GetComponent<{bindInfo.bindType.Name}>();");
             }
             fieldDefinitionBuilder.AppendLine(
                 //    public Button btnExitButton;
