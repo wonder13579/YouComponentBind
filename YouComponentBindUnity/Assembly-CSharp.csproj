@@ -43,6 +43,7 @@
   <ItemGroup>
      <Compile Include="Assets\Example\Scripts\Gen\FirstWindow.g.cs" />
      <Compile Include="Assets\Example\Scripts\Gen\FirstWindow.cs" />
+     <Compile Include="Assets\Example\Scripts\Lua\LuaTransformDemo.cs" />
      <Folder Include="Assets" />
      <Folder Include="Assets\Example\Resources\ResImages" />
      <Folder Include="Assets\Resources" />
@@ -51,9 +52,12 @@
      <None Include="Assets\Resources\BillingMode.json" />
      <Folder Include="Assets\Example\Scripts" />
      <Folder Include="Assets\Example\Plugins" />
+     <None Include="Assets\Example\Resources\Lua\transform_demo.lua.txt" />
      <Folder Include="Assets\Example" />
+     <Folder Include="Assets\Example\Resources\Lua" />
      <Folder Include="Assets\Example\Scenes" />
      <Folder Include="Assets\Example\PrefabsUI" />
+     <Folder Include="Assets\Example\Scripts\Lua" />
      <Reference Include="UnityEngine">
      <HintPath>C:\_root\APP\unity\Editor\Unity 2021.3.8f1c1\Editor\Data\Managed\UnityEngine\UnityEngine.dll</HintPath>
      </Reference>

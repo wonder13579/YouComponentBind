@@ -1,0 +1,8 @@
+function print_transform_from_cs(tf)
+    print("[Lua] received transform:", tf)
+    if tf ~= nil then
+        print("[Lua] transform.name:", tf.name)
+    else
+        print("[Lua] transform is nil")
+    end
+end
