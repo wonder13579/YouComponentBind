@@ -43,7 +43,7 @@
   <ItemGroup>
      <Compile Include="Assets\Example\Scripts\Gen\FirstWindow.g.cs" />
      <Compile Include="Assets\Example\Scripts\Gen\FirstWindow.cs" />
-     <Compile Include="Assets\Example\Scripts\Lua\LuaTransformDemo.cs" />
+     <Compile Include="Assets\Example\Scripts\Lua\LuaSystem.cs" />
      <Folder Include="Assets" />
      <Folder Include="Assets\Example\Resources\ResImages" />
      <Folder Include="Assets\Resources" />

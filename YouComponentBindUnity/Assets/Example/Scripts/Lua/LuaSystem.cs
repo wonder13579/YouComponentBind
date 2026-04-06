@@ -5,9 +5,9 @@ using XLua;
 namespace Example.LuaDemo
 {
     // 提供测试用Lua环境
-    public class LuaTransformDemo : MonoBehaviour
+    public class LuaSystem : MonoBehaviour
     {
-        public static LuaTransformDemo instance;
+        public static LuaSystem instance;
         private void Awake()
         {
             instance = this;

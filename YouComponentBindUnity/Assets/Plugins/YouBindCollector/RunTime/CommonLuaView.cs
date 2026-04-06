@@ -1,6 +1,8 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using XLua;
+using Object = UnityEngine.Object;
 
 // For lua-driven views. Avoid generating a C# view class for each screen.
 public class CommonLuaView : MonoBehaviour
@@ -48,5 +50,10 @@ public class CommonLuaView : MonoBehaviour
     public string luaBasePath = "Lua/Gen";
     public List<Object> viewList = new List<Object>();
 
-
+    // TODO 项目中应当使用LuaSystem中的lua环境
+    // TODO 初始化lua环境。调用FirstLuaWindow.lua和FirstLuaWindow.bind.lua来初始化view。
+    private void Start()
+    {
+        throw new NotImplementedException();
+    }
 }
