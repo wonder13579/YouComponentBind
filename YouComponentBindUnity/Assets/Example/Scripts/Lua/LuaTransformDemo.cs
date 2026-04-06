@@ -6,7 +6,6 @@ namespace Example.LuaDemo
     public class LuaTransformDemo : MonoBehaviour
     {
         [SerializeField] private Transform targetTransform;
-        [SerializeField] private string luaResourcePath = "Lua/transform_demo";
 
         private LuaEnv luaEnv;
         private LuaFunction printTransformFunc;
@@ -15,18 +14,20 @@ namespace Example.LuaDemo
         {
             luaEnv = new LuaEnv();
 
-            var luaAsset = LoadLuaAsset();
-            if (luaAsset == null)
+            var luaAsset = LoadLuaAsset("Lua/Gen/FirstWindow");
+            var luaGenAsset = LoadLuaAsset("Lua/Gen/FirstWindow.g");
+            if (luaAsset == null || luaGenAsset == null)
             {
                 Debug.LogError(
-                    $"Lua file not found in Resources. tried: {luaResourcePath}, {luaResourcePath}.lua, {TrimLuaSuffix(luaResourcePath)}, {TrimLuaSuffix(luaResourcePath)}.lua",
+                    $"Lua file not found in Resources. ",
                     this);
                 return;
             }
 
+            luaEnv.DoString(luaGenAsset.text, luaGenAsset.name);
             luaEnv.DoString(luaAsset.text, luaAsset.name);
 
-            printTransformFunc = luaEnv.Global.Get<LuaFunction>("print_transform_from_cs");
+            printTransformFunc = luaEnv.Global.Get<LuaFunction>("FirstWindow_Init");
             if (printTransformFunc == null)
             {
                 Debug.LogError("Lua function not found: print_transform_from_cs", this);
@@ -37,14 +38,14 @@ namespace Example.LuaDemo
             printTransformFunc.Call(tf);
         }
 
-        private TextAsset LoadLuaAsset()
+        private TextAsset LoadLuaAsset(string luaFilePath)
         {
             // For files named like xxx.lua.txt, Unity's resource name is usually xxx.lua.
-            var basePath = TrimLuaSuffix(luaResourcePath);
+            var basePath = TrimLuaSuffix(luaFilePath);
             var tryPathArray = new[]
             {
-                luaResourcePath,
-                luaResourcePath + ".lua",
+                luaFilePath,
+                luaFilePath + ".lua",
                 basePath,
                 basePath + ".lua"
             };

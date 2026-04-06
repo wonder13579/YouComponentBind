@@ -656,13 +656,23 @@ namespace YouBindCollector
                 return;
             var message = $"警告！将删除生成代码文件，点击确认继续\n" +
                 $"将删除：{rootBindBase.targetClassName}.cs\n" +
-                $"{rootBindBase.targetClassName}.g.cs";
+                $"{rootBindBase.targetClassName}.g.cs\n" +
+                $"{rootBindBase.targetClassName}.bind.lua.txt\n" +
+                $"{rootBindBase.targetClassName}.lua.txt";
             if (!EditorUtility.DisplayDialog("确认", message, "确认", "取消"))
             {
                 return;
             }
-            File.Delete(YouBindGlobalDefine.GetCSharpGenCodeFilePath(rootBindBase.targetClassName));
-            File.Delete(YouBindGlobalDefine.GetCSharpCustomCodeFilePath(rootBindBase.targetClassName));
+            TryDeleteFile(YouBindGlobalDefine.GetCSharpGenCodeFilePath(rootBindBase.targetClassName));
+            TryDeleteFile(YouBindGlobalDefine.GetCSharpCustomCodeFilePath(rootBindBase.targetClassName));
+            TryDeleteFile(YouBindGlobalDefine.GetLuaGenCodeFilePath(rootBindBase.targetClassName));
+            TryDeleteFile(YouBindGlobalDefine.GetLuaCustomCodeFilePath(rootBindBase.targetClassName));
+        }
+
+        private static void TryDeleteFile(string filePath)
+        {
+            if (File.Exists(filePath))
+                File.Delete(filePath);
         }
     }
 }

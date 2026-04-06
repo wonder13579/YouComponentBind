@@ -173,7 +173,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   targetTransform: {fileID: 2124544013}
-  luaResourcePath: Lua/transform_demo
+  luaResourcePath: Lua/Gen/FirstWindow
 --- !u!1 &687784831
 GameObject:
   m_ObjectHideFlags: 0
