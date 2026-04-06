@@ -15,16 +15,19 @@ public partial class FirstWindow
     [ContextMenu("为view上引用的字段赋值"), ExecuteInEditMode]
     public void InitializeView()
     {
-        view.Text_tip23424 = transform.Find("GameObject/AllType/tip23424")?.GetComponent<global::UnityEngine.UI.Text>();
-        view.Raw_RawImage = transform.Find("GameObject/AllType/RawImage")?.GetComponent<global::UnityEngine.UI.RawImage>();
-        view.Button_Button = transform.Find("GameObject/AllType/Button")?.GetComponent<global::UnityEngine.UI.Button>();
-        view.Text_Text2 = transform.Find("GameObject/AllType/Button/Text2")?.GetComponent<global::UnityEngine.UI.Text>();
-        view.Toggle_Toggle = transform.Find("GameObject/AllType/Toggle")?.GetComponent<global::UnityEngine.UI.Toggle>();
-        view.Text_2 = transform.Find("GameObject/AllType/Toggle/2")?.GetComponent<global::UnityEngine.UI.Text>();
-        view.Text_Label = transform.Find("GameObject/AllType/Dropdown/Label")?.GetComponent<global::UnityEngine.UI.Text>();
-        view.Toggle_Item = transform.Find("GameObject/AllType/Dropdown/Template/Viewport/Content/Item")?.GetComponent<global::UnityEngine.UI.Toggle>();
-        view.Text_Placeholder = transform.Find("GameObject/AllType/InputField/Placeholder")?.GetComponent<global::UnityEngine.UI.Text>();
-        view.Text_Text = transform.Find("GameObject/AllType/InputField/Text")?.GetComponent<global::UnityEngine.UI.Text>();
+        view.Text_tip23424 = transform.Find("AllType/tip23424")?.GetComponent<global::UnityEngine.UI.Text>();
+        view.Raw_RawImage = transform.Find("AllType/RawImage")?.GetComponent<global::UnityEngine.UI.RawImage>();
+        view.Button_Button = transform.Find("AllType/Button")?.GetComponent<global::UnityEngine.UI.Button>();
+        view.Text_Text2 = transform.Find("AllType/tip23424")?.GetComponent<global::UnityEngine.UI.Text>();
+        view.Toggle_Toggle = transform.Find("AllType/Toggle")?.GetComponent<global::UnityEngine.UI.Toggle>();
+        view.Text_2 = transform.Find("AllType/Toggle/2")?.GetComponent<global::UnityEngine.UI.Text>();
+        view.Text_Label = transform.Find("AllType/Dropdown/Label")?.GetComponent<global::UnityEngine.UI.Text>();
+        view.Toggle_Item = transform.Find("AllType/Dropdown/Template/Viewport/Content/Item")?.GetComponent<global::UnityEngine.UI.Toggle>();
+        view.Text_Placeholder = transform.Find("AllType/InputField/Placeholder")?.GetComponent<global::UnityEngine.UI.Text>();
+        view.Text_Text = transform.Find("AllType/InputField/Text")?.GetComponent<global::UnityEngine.UI.Text>();
+        view.GO_Scrollbar = transform.Find("AllType/Scrollbar")?.gameObject;
+        view.Text_Text222 = transform.Find("Text444 (1)")?.GetComponent<global::UnityEngine.UI.Text>();
+        view.Text_Text333 = transform.Find("Text555")?.GetComponent<global::UnityEngine.UI.Text>();
     }
 
     public virtual void OnEnable()
@@ -55,6 +58,9 @@ public partial class FirstWindowView
     public global::UnityEngine.UI.Toggle Toggle_Item;
     public global::UnityEngine.UI.Text Text_Placeholder;
     public global::UnityEngine.UI.Text Text_Text;
+    public global::UnityEngine.GameObject GO_Scrollbar;
+    public global::UnityEngine.UI.Text Text_Text222;
+    public global::UnityEngine.UI.Text Text_Text333;
 }
 
 public interface IFirstWindowEventFunction

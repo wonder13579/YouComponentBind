@@ -187,14 +187,14 @@ namespace YouBindCollector
 
             if (targetTf == null)
             {
-                Debug.LogWarning($"快速修复失败：找不到保存路径对应的节点。路径={savedPath}", collector);
+                Debug.LogWarning($"快速修复失败：找不到保存路径对应的节点。可尝试将新组件拖入修复。路径={savedPath}", collector);
                 return false;
             }
 
             var bindType = bindInfo.bindType;
             if (bindType == null)
             {
-                Debug.LogWarning($"快速修复失败：字段类型为空。字段={bindInfo.fieldName}", collector);
+                Debug.LogWarning($"快速修复失败：字段类型为空。可尝试将新组件拖入修复。字段={bindInfo.fieldName}", collector);
                 return false;
             }
 

@@ -26,6 +26,8 @@ namespace YouBindCollector
         private static readonly string[] OperationTabTitleArray = { "新增组件", "更多功能", "设置", "错误检测" };
         private static readonly Color MissingRefColorDark = new Color(1f, 0.75f, 0.2f, 1f);
         private static readonly Color MissingRefColorLight = new Color(0.75f, 0.2f, 0f, 1f);
+        private static readonly Color MissingFieldNameColorDark = new Color(1f, 0.45f, 0.1f, 1f);
+        private static readonly Color MissingFieldNameColorLight = new Color(0.95f, 0.25f, 0f, 1f);
         private const float RightPanelWidth = 240f;
         private const float MinWindowWidth = 600f;
         private const float ComponentDragHandleWidth = 24f;
@@ -309,9 +311,12 @@ namespace YouBindCollector
 
             // 显示字段名和快速改字段名支持
             var isNameValid = IsNameValid(info.fieldName);
+            var isMissingReference = info.bindObject == null;
             var oldColor = GUI.color;
             if (!isNameValid)
                 GUI.color = Color.red;
+            else if (isMissingReference)
+                GUI.color = EditorGUIUtility.isProSkin ? MissingFieldNameColorDark : MissingFieldNameColorLight;
             var newFieldName = EditorGUILayout.TextField(info.fieldName, GUILayout.Width(100));
             GUI.color = oldColor;
             if (newFieldName != info.fieldName)
@@ -332,11 +337,11 @@ namespace YouBindCollector
                 EditorGUILayout.ObjectField(info.bindObject, typeof(GameObject), false, GUILayout.Width(200));
             else
             {
-                // 引用失效时显示文本提示，避免把字符串当作GUIStyle名称。
-                var oldContentColor = GUI.contentColor;
-                GUI.contentColor = EditorGUIUtility.isProSkin ? MissingRefColorDark : MissingRefColorLight;
-                GUILayout.Label("引用丢失", EditorStyles.boldLabel, GUILayout.Width(200));
-                GUI.contentColor = oldContentColor;
+                // 引用丢失时，仍显示对象框，允许回填同类型引用。
+                var pickerType = GetMissingBindObjectPickerType(info);
+                var newBindObject = EditorGUILayout.ObjectField(info.bindObject, pickerType, true, GUILayout.Width(200));
+                if (newBindObject != null && newBindObject != info.bindObject)
+                    RebindMissingObject(info, newBindObject);
             }
             // if (GUILayout.Button("\u00D7", GUILayout.Width(20))) // ×
             // {
@@ -363,7 +368,49 @@ namespace YouBindCollector
             for (var index = 0; index < info.eventInfoList.Count; index++)
                 ShowEventBindInfo(index);
         }
+        private static Type GetMissingBindObjectPickerType(BindObjectInfo info)
+        {
+            if (info?.bindType == null)
+                return typeof(UnityEngine.Object);
+            if (info.bindType == typeof(GameObject))
+                return typeof(GameObject);
+            if (typeof(Component).IsAssignableFrom(info.bindType))
+                return info.bindType;
+            return typeof(UnityEngine.Object);
+        }
 
+        private void RebindMissingObject(BindObjectInfo info, UnityEngine.Object newBindObject)
+        {
+            if (info == null || newBindObject == null || rootBindBase == null)
+                return;
+
+            if (!CanAssignBindObject(info, newBindObject))
+            {
+                Debug.LogWarning($"引用回填失败：类型不匹配。字段={info.fieldName} 期望={info.bindType} 实际={newBindObject.GetType()}", rootBindBase);
+                return;
+            }
+
+            Undo.RecordObject(rootBindBase, "YouBindCollector Rebind Missing Object");
+            info.bindObject = newBindObject;
+            var tf = YouBindUtils.GetObjectTransform(newBindObject);
+            info.relativePath = tf == null ? string.Empty : YouBindUtils.GetRelativePath(tf, rootBindBase.transform);
+            rootBindBase.joinedObjectSet.Clear();
+            EditorUtility.SetDirty(rootBindBase);
+            YouBindHierarchyMark.NotifyCollectorChanged(rootBindBase);
+            YouBindCodeGenerater.Instance.DoGenerate(rootBindBase);
+            ApplySearchStr(searchString);
+        }
+
+        private static bool CanAssignBindObject(BindObjectInfo info, UnityEngine.Object candidate)
+        {
+            if (info?.bindType == null || candidate == null)
+                return false;
+            if (info.bindType == typeof(GameObject))
+                return candidate is GameObject;
+            if (typeof(Component).IsAssignableFrom(info.bindType))
+                return info.bindType.IsAssignableFrom(candidate.GetType());
+            return false;
+        }
         private void HandleComponentItemDrag(BindObjectInfo info, Rect rowRect, Rect dragHandleRect, bool canDragCustomOrder)
         {
             var currentEvent = Event.current;
