@@ -15,6 +15,8 @@ namespace YouBindCollector
         public int dragStartIndex = -1;
         public int dragEndIndex = -1;
         public BindObjectInfo dragingComponentBindInfo;
+        private BindObjectInfo draggingListBindInfo;
+        private BindObjectInfo dragHoverListBindInfo;
         private BindObjectInfo currentBindComponentInfo;
         private Vector2 scrollPosition = Vector2.zero;
         private string searchString = "";
@@ -25,6 +27,7 @@ namespace YouBindCollector
         private static readonly Color MissingRefColorLight = new Color(0.75f, 0.2f, 0f, 1f);
         private const float RightPanelWidth = 240f;
         private const float MinWindowWidth = 600f;
+        private const float ComponentDragHandleWidth = 24f;
 
         public YouBindCollector rootBindBase
         {
@@ -38,9 +41,26 @@ namespace YouBindCollector
         [MenuItem("Tools/组件绑定工具 YouComponentBind")]
         public static void OpenWindow()
         {
+            OpenWindow(null);
+        }
+
+        public static void OpenWindow(YouBindCollector collector)
+        {
             var window = GetWindow<YouBindCollectorWindow>("YouComponentBindWindow");
             window.titleContent = new GUIContent("组件绑定工具 YouComponentBind");
             window.ApplyMinWindowWidth();
+            window.SyncRootBindBase(collector);
+        }
+
+        private void SyncRootBindBase(YouBindCollector collector = null)
+        {
+            var bind = collector;
+            if (bind == null)
+                bind = YouBindUtils.GetFirstComponentInParent<YouBindCollector>(Selection.activeTransform);
+
+            rootBindBase = bind;
+            ApplySearchStr("");
+            Repaint();
         }
 
         private void Awake()
@@ -64,8 +84,7 @@ namespace YouBindCollector
             var bind = YouBindUtils.GetFirstComponentInParent<YouBindCollector>(Selection.activeTransform);
             if (rootBindBase != bind)
             {
-                rootBindBase = bind;
-                ApplySearchStr("");
+                SyncRootBindBase(bind);
             }
 
             Repaint();
@@ -96,6 +115,7 @@ namespace YouBindCollector
                 return;
             }
 
+            DrawSortOrderGUI();
             ShowSearchGUI();
             ApplySelectFieldName();
 
@@ -112,6 +132,26 @@ namespace YouBindCollector
             }
             GUILayout.EndScrollView();
             EditorGUILayout.EndVertical();
+        }
+
+        private void DrawSortOrderGUI()
+        {
+            var oldSortOrder = rootBindBase.sortOrder;
+            var newSortOrder = (YouBindCollector.SortOrder)EditorGUILayout.EnumPopup("排序方式", oldSortOrder);
+            if (newSortOrder == oldSortOrder) return;
+
+            Undo.RecordObject(rootBindBase, "YouBindCollector Change SortOrder");
+            if (newSortOrder == YouBindCollector.SortOrder.Custom
+                && oldSortOrder != YouBindCollector.SortOrder.Custom
+                && !rootBindBase.customSortInitialized)
+            {
+                YouBindCollectorController.Instance.SortBindObjectInfoByJoinOrder(rootBindBase);
+                rootBindBase.customSortInitialized = true;
+            }
+            rootBindBase.sortOrder = newSortOrder;
+            YouBindCollectorController.Instance.SortBindObjectInfo(rootBindBase);
+            ApplySearchStr(searchString);
+            EditorUtility.SetDirty(rootBindBase);
         }
 
         private void DrawRightToolbarPanel()
@@ -165,7 +205,7 @@ namespace YouBindCollector
                     // 进行组件增删前重建下缓存
                     YouBindCollectorController.Instance.SetRootBindBase(rootBindBase);
                     YouBindCollectorController.Instance.AddBindComponent(obj);
-                    Repaint();
+                    ApplySearchStr(searchString);
                 }
                 ShowAppendContent();
             }
@@ -215,17 +255,26 @@ namespace YouBindCollector
                 EditorPrefs.SetBool(YouBindGlobalDefine.YouComponentBind_ShowHierarchyMarkInEditMode, newShowHierarchyMark);
                 YouBindHierarchyMark.RefreshDisplaySetting();
             }
+
+            var showNoGenCodeComponent = EditorPrefs.GetBool(YouBindGlobalDefine.YouComponentBind_ShowNoGenCodeComponent, true);
+            var newShowNoGenCodeComponent = EditorGUILayout.Toggle("显示不生成组件", showNoGenCodeComponent);
+            if (showNoGenCodeComponent != newShowNoGenCodeComponent)
+            {
+                EditorPrefs.SetBool(YouBindGlobalDefine.YouComponentBind_ShowNoGenCodeComponent, newShowNoGenCodeComponent);
+                ApplySearchStr(searchString);
+            }
         }
 
         public void ShowBindObjectInfo(BindObjectInfo info)
         {
             currentBindComponentInfo = info;
-            GUILayout.BeginHorizontal();
+            var rowRect = EditorGUILayout.BeginHorizontal();
             var oldGenCode = info.genCode;
             info.genCode = GUILayout.Toggle(info.genCode, "", GUILayout.Width(20));
             if (oldGenCode != info.genCode)
             {
                 YouBindHierarchyMark.NotifyCollectorChanged(rootBindBase);
+                ApplySearchStr(searchString);
             }
             //调试搜索功能
             //GUILayout.Label(info.searchPriority.ToString(), GUILayout.Width(20));
@@ -278,11 +327,83 @@ namespace YouBindCollector
             //             p => p.eventName + ", "));
 
             // GUILayout.Label(showEventStr);
+            var canDragCustomOrder = rootBindBase?.sortOrder == YouBindCollector.SortOrder.Custom;
+            var dragHandleRect = GUILayoutUtility.GetRect(ComponentDragHandleWidth, 18f, GUILayout.Width(ComponentDragHandleWidth));
+            EditorGUI.LabelField(dragHandleRect, canDragCustomOrder ? "\u2195" : "");
             GUILayout.EndHorizontal();
+            HandleComponentItemDrag(info, rowRect, dragHandleRect, canDragCustomOrder);
 
             // if (info.foldout)
             for (var index = 0; index < info.eventInfoList.Count; index++)
                 ShowEventBindInfo(index);
+        }
+
+        private void HandleComponentItemDrag(BindObjectInfo info, Rect rowRect, Rect dragHandleRect, bool canDragCustomOrder)
+        {
+            var currentEvent = Event.current;
+            if (currentEvent == null || currentEvent.button != 0) return;
+
+            if (!canDragCustomOrder)
+            {
+                if (currentEvent.type == EventType.MouseUp)
+                {
+                    draggingListBindInfo = null;
+                    dragHoverListBindInfo = null;
+                }
+                return;
+            }
+
+            if (currentEvent.type == EventType.MouseDown && dragHandleRect.Contains(currentEvent.mousePosition))
+            {
+                draggingListBindInfo = info;
+                dragHoverListBindInfo = info;
+                currentEvent.Use();
+                return;
+            }
+
+            if (draggingListBindInfo == null)
+                return;
+
+            if (currentEvent.type == EventType.MouseDrag)
+            {
+                if (rowRect.Contains(currentEvent.mousePosition))
+                {
+                    if (dragHoverListBindInfo != info && TryMoveBindObjectInfo(draggingListBindInfo, info))
+                    {
+                        dragHoverListBindInfo = info;
+                        ApplySearchStr(searchString);
+                        Repaint();
+                    }
+                    currentEvent.Use();
+                }
+                return;
+            }
+
+            if (currentEvent.type == EventType.MouseUp)
+            {
+                draggingListBindInfo = null;
+                dragHoverListBindInfo = null;
+                currentEvent.Use();
+            }
+        }
+
+        private bool TryMoveBindObjectInfo(BindObjectInfo fromInfo, BindObjectInfo toInfo)
+        {
+            var bindInfoList = rootBindBase?.bindInfoList;
+            if (bindInfoList == null || fromInfo == null || toInfo == null || fromInfo == toInfo)
+                return false;
+
+            var fromIndex = bindInfoList.IndexOf(fromInfo);
+            var toIndex = bindInfoList.IndexOf(toInfo);
+            if (fromIndex < 0 || toIndex < 0 || fromIndex == toIndex)
+                return false;
+
+            Undo.RecordObject(rootBindBase, "YouBindCollector Drag Sort Component");
+            bindInfoList.RemoveAt(fromIndex);
+            bindInfoList.Insert(toIndex, fromInfo);
+            rootBindBase.customSortInitialized = true;
+            EditorUtility.SetDirty(rootBindBase);
+            return true;
         }
 
         private void ShowEventBindInfo(int index)
@@ -369,7 +490,7 @@ namespace YouBindCollector
                 YouBindCollectorController.Instance.SetRootBindBase(rootBindBase);
                 YouBindCollectorController.Instance.AddBindComponent(bindObject);
             }
-            Repaint();
+            ApplySearchStr(searchString);
         }
 
         // 搜索时显示的是一个独立列表，此时如果修改原始数据，列表不会更新
@@ -377,15 +498,28 @@ namespace YouBindCollector
         {
             if (!rootBindBase) return;
             this.searchString = searchString;
+            var displayBindInfoList = GetDisplayBindInfoList();
             if (string.IsNullOrEmpty(searchString))
             {
-                showComponentBindInfoList = rootBindBase.bindInfoList;
+                showComponentBindInfoList = displayBindInfoList;
                 return;
             }
 
             showComponentBindInfoList = YouBindUtils.SearchSort(
-                rootBindBase.bindInfoList, p => p.fieldName, searchString);
+                displayBindInfoList, p => p.fieldName, searchString);
             Repaint();
+        }
+
+        private List<BindObjectInfo> GetDisplayBindInfoList()
+        {
+            if (rootBindBase?.bindInfoList == null)
+                return new List<BindObjectInfo>();
+
+            var showNoGenCodeComponent = EditorPrefs.GetBool(YouBindGlobalDefine.YouComponentBind_ShowNoGenCodeComponent, true);
+            if (showNoGenCodeComponent)
+                return rootBindBase.bindInfoList;
+
+            return rootBindBase.bindInfoList.Where(p => p != null && p.genCode).ToList();
         }
 
         private void ShowSearchGUI()

@@ -13,6 +13,7 @@ namespace YouBindCollector
         public string targetClassName;
         public List<BindObjectInfo> bindInfoList = new List<BindObjectInfo>();
         public SortOrder sortOrder = SortOrder.TypeAndName;
+        [HideInInspector] public bool customSortInitialized;
 
         [NonSerialized]
         private readonly HashSet<Object> _joinedObjectSet = new HashSet<Object>();
@@ -60,6 +61,8 @@ namespace YouBindCollector
         public Object bindObject;// 可能是component也可能是GameObject
         // 标记是否会生成。如果是自动添加的，需要加到列表中然后关掉它，防止自动扫描时重复添加。
         public bool genCode;
+        // 记录加入顺序，用于JoinOrder排序。旧数据默认-1，会在编辑器里自动补齐。
+        public int joinIndex = -1;
 
         // 生成代码时使用的路径是实时获取的，防止路径错误。保留这个用来检查路径是否修改。
         public string relativePath;

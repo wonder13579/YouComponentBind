@@ -7,6 +7,7 @@ namespace YouBindCollector
     {
         public static string YouComponentBind_RefreshAfterGenCode = "YouComponentBind_RefreshAfterGenCode";
         public static string YouComponentBind_ShowHierarchyMarkInEditMode = "YouComponentBind_ShowHierarchyMarkInEditMode";
+        public static string YouComponentBind_ShowNoGenCodeComponent = "YouComponentBind_ShowNoGenCodeComponent";
 
         // .g.cs文件输出目录。就是不能手动修改的
         public static string GetCSharpGenCodeFilePath(string className)

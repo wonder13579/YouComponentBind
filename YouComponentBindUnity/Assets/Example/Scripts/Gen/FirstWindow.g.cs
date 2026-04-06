@@ -15,7 +15,6 @@ public partial class FirstWindow
     [ContextMenu("为view上引用的字段赋值"), ExecuteInEditMode]
     public void InitializeView()
     {
-        view.ButtonButton = transform.Find("AllType/Button")?.GetComponent<Button>();
         view.GOtransformAndGameObject = transform.Find("AllType/transformAndGameObject")?.gameObject;
         view.InputInputField = transform.Find("")?.GetComponent<InputField>();
         view.RawRawImage = transform.Find("AllType/RawImage")?.GetComponent<RawImage>();
@@ -29,11 +28,12 @@ public partial class FirstWindow
         view.ToggleItem = transform.Find("AllType/Dropdown/Template/Viewport/Content/Item")?.GetComponent<Toggle>();
         view.ToggleToggle = transform.Find("AllType/Toggle")?.GetComponent<Toggle>();
         view.TFtransformAndGameObject = transform.Find("AllType/transformAndGameObject");
+        view.RTFRawImage = transform.Find("AllType/RawImage") as RectTransform;
+        view.GORawImage = transform.Find("AllType/RawImage")?.gameObject;
     }
 
     public virtual void OnEnable()
     {
-        view.ButtonButton.onClick.AddListener(OnButtonButtonClick);
         view.InputInputField.onValueChanged.AddListener(OnInputInputFieldValueChanged);
         view.InputInputField.onEndEdit.AddListener(OnInputInputFieldEndEdit);
         view.ToggleItem.onValueChanged.AddListener(OnToggleItemValueChanged);
@@ -42,7 +42,6 @@ public partial class FirstWindow
 
     public virtual void OnDisable()
     {
-        view.ButtonButton.onClick.RemoveListener(OnButtonButtonClick);
         view.InputInputField.onValueChanged.RemoveListener(OnInputInputFieldValueChanged);
         view.InputInputField.onEndEdit.RemoveListener(OnInputInputFieldEndEdit);
         view.ToggleItem.onValueChanged.RemoveListener(OnToggleItemValueChanged);
@@ -53,7 +52,6 @@ public partial class FirstWindow
 [System.Serializable]
 public partial class FirstWindowView
 {
-    public Button ButtonButton;
     public GameObject GOtransformAndGameObject;
     public InputField InputInputField;
     public RawImage RawRawImage;
@@ -67,11 +65,12 @@ public partial class FirstWindowView
     public Toggle ToggleItem;
     public Toggle ToggleToggle;
     public Transform TFtransformAndGameObject;
+    public RectTransform RTFRawImage;
+    public GameObject GORawImage;
 }
 
 public interface IFirstWindowEventFunction
 {
-    void OnButtonButtonClick();
     void OnInputInputFieldValueChanged(string value);
     void OnInputInputFieldEndEdit(string value);
     void OnToggleItemValueChanged(bool value);

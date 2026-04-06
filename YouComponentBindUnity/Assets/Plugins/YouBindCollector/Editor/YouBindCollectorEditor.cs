@@ -16,7 +16,7 @@ namespace YouBindCollector
                 YouBindCollectorController.Instance.UpdateCode(targetComponent);
             }
             if (GUILayout.Button("打开工具箱", GUILayout.Height(20), GUILayout.Width(70)))
-                YouBindCollectorWindow.OpenWindow();
+                YouBindCollectorWindow.OpenWindow(targetComponent);
 
             GUILayout.EndHorizontal();
             DrawDefaultInspector();

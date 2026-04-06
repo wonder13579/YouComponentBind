@@ -85,6 +85,7 @@ namespace YouBindCollector
             var componentInfo = new BindObjectInfo()
             {
                 genCode = true,
+                joinIndex = GetNextJoinIndex(resultList),
                 relativePath = relativePath,
                 bindObject = bindObject,
                 bindType = type,
@@ -257,12 +258,72 @@ namespace YouBindCollector
                         .ToList();
                     break;
                 case YouBindCollector.SortOrder.JoinOrder:
+                    EnsureJoinOrderIndex(collector.bindInfoList);
+                    collector.bindInfoList = collector.bindInfoList
+                        .OrderBy(p => p.joinIndex)
+                        .ToList();
                     break;
                 case YouBindCollector.SortOrder.Custom:
                     break;
                 default:
                     break;
             }
+        }
+
+        public void SortBindObjectInfoByJoinOrder(YouBindCollector collector)
+        {
+            if (collector == null || collector.bindInfoList == null) return;
+            EnsureJoinOrderIndex(collector.bindInfoList);
+            collector.bindInfoList = collector.bindInfoList
+                .OrderBy(p => p.joinIndex)
+                .ToList();
+        }
+
+        private static void EnsureJoinOrderIndex(List<BindObjectInfo> bindInfoList)
+        {
+            if (bindInfoList == null || bindInfoList.Count <= 0) return;
+
+            var usedIndexSet = new HashSet<int>();
+            var needRebuild = false;
+            for (var i = 0; i < bindInfoList.Count; i++)
+            {
+                var info = bindInfoList[i];
+                if (info == null) continue;
+
+                if (info.joinIndex < 0 || !usedIndexSet.Add(info.joinIndex))
+                {
+                    needRebuild = true;
+                    break;
+                }
+            }
+
+            if (!needRebuild) return;
+
+            var joinIndex = 0;
+            for (var i = 0; i < bindInfoList.Count; i++)
+            {
+                var info = bindInfoList[i];
+                if (info == null) continue;
+                info.joinIndex = joinIndex;
+                joinIndex++;
+            }
+        }
+
+        private static int GetNextJoinIndex(List<BindObjectInfo> bindInfoList)
+        {
+            if (bindInfoList == null || bindInfoList.Count <= 0) return 0;
+
+            EnsureJoinOrderIndex(bindInfoList);
+            var maxJoinIndex = -1;
+            for (var i = 0; i < bindInfoList.Count; i++)
+            {
+                var info = bindInfoList[i];
+                if (info == null) continue;
+                if (info.joinIndex > maxJoinIndex)
+                    maxJoinIndex = info.joinIndex;
+            }
+
+            return maxJoinIndex + 1;
         }
     }
 }
