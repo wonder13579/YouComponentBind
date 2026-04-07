@@ -48,7 +48,6 @@
      <Compile Include="Assets\Plugins\xlua\Src\Editor\LinkXmlGen\LinkXmlGen.cs" />
      <Compile Include="Assets\Plugins\YouBindCollector\Editor\YouBindCollectorController.cs" />
      <Compile Include="Assets\Plugins\xlua\Src\Editor\Report.cs" />
-     <Compile Include="Assets\Plugins\YouBindCollector\Editor\YouBindCodeGenerater.cs" />
      <Compile Include="Assets\Plugins\xlua\Src\Editor\TemplateRef.cs" />
      <Compile Include="Assets\Plugins\YouBindCollector\Editor\YouBindCollectorWindow.cs" />
      <Compile Include="Assets\Plugins\YouBindCollector\Editor\YouBindHierarchyMark.cs" />
@@ -56,7 +55,14 @@
      <Compile Include="Assets\Plugins\YouBindCollector\Editor\YouBindCommonChecker.cs" />
      <Compile Include="Assets\Plugins\xlua\Src\Editor\Generator.cs" />
      <Compile Include="Assets\Plugins\YouBindCollector\Editor\YouBindTypeConfig.cs" />
+     <Compile Include="Assets\Plugins\YouBindCollector\Editor\CodeGenerators\CSharpGenCodeFileGenerater.cs" />
+     <Compile Include="Assets\Plugins\YouBindCollector\Editor\CodeGenerators\LuaGenCodeFileGenerater.cs" />
+     <Compile Include="Assets\Plugins\YouBindCollector\Editor\CodeGenerators\CodeGeneraterBase.cs" />
+     <Compile Include="Assets\Plugins\YouBindCollector\Editor\CodeGenerators\CSharpCustomCodeFileGenerater.cs" />
+     <Compile Include="Assets\Plugins\YouBindCollector\Editor\CodeGenerators\LuaCustomCodeFileGenerater.cs" />
+     <Compile Include="Assets\Plugins\YouBindCollector\Editor\CodeGenerators\YouBindCodeGenerater.cs" />
      <None Include="Assets\Plugins\xlua\Src\Editor\Template\LuaInterfaceBridge.tpl.txt" />
+     <Folder Include="Assets\Plugins\YouBindCollector\Editor\CodeGenerators" />
      <None Include="Assets\Plugins\xlua\Src\Editor\Template\LuaWrapPusher.tpl.txt" />
      <None Include="Assets\Plugins\xlua\Src\Editor\Template\LuaDelegateWrap.tpl.txt" />
      <None Include="Assets\Plugins\xlua\Src\Editor\Template\LuaRegister.tpl.txt" />
@@ -769,6 +775,10 @@
     <ProjectReference Include="Assembly-CSharp-firstpass.csproj">
       <Project>{e606cba8-dd6d-97f3-bdeb-c6b0f56ff0ca}</Project>
       <Name>Assembly-CSharp-firstpass</Name>
+    </ProjectReference>
+    <ProjectReference Include="Assembly-CSharp.csproj">
+      <Project>{d8d47e9c-a306-2e97-f1ca-e5c711bec4b7}</Project>
+      <Name>Assembly-CSharp</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -238,6 +238,19 @@ namespace YouBindCollector
             if (collector.gameObject == null) return;
             if (string.IsNullOrEmpty(collector.targetClassName)) return;
 
+            if (collector.codeGenerateType == YouBindCollector.CodeGenerateType.Lua)
+            {
+                CheckLuaViewNullNode(collector, errorList);
+                return;
+            }
+
+            CheckCSharpViewNullNode(collector, errorList);
+        }
+
+        private static void CheckCSharpViewNullNode(YouBindCollector collector, List<CheckerErrorBase> errorList)
+        {
+            if (collector == null || errorList == null) return;
+
             var generatedComponent = collector.gameObject.GetComponent(collector.targetClassName);
             if (generatedComponent == null)
             {
@@ -245,7 +258,7 @@ namespace YouBindCollector
                 {
                     refObject = collector.gameObject,
                     message = $"未找到生成组件 [{collector.targetClassName}]，需要更新代码并赋值引用。",
-                    autoFixFunc = () => AutoFixViewNullNode(collector)
+                    autoFixFunc = () => AutoFixCSharpViewNullNode(collector)
                 });
                 return;
             }
@@ -262,7 +275,7 @@ namespace YouBindCollector
                 {
                     refObject = generatedComponent,
                     message = $"生成组件 [{generatedComponent.GetType().Name}] 的 view 为空，需要更新代码并赋值引用。",
-                    autoFixFunc = () => AutoFixViewNullNode(collector)
+                    autoFixFunc = () => AutoFixCSharpViewNullNode(collector)
                 });
                 return;
             }
@@ -293,11 +306,115 @@ namespace YouBindCollector
             {
                 refObject = generatedComponent,
                 message = $"生成组件 view 中有空节点（{nullFieldNameList.Count} 个）：{preview}。需要更新代码并赋值引用。",
-                autoFixFunc = () => AutoFixViewNullNode(collector)
+                autoFixFunc = () => AutoFixCSharpViewNullNode(collector)
             });
         }
 
-        private static bool AutoFixViewNullNode(YouBindCollector collector)
+        private static bool CheckLuaViewListMismatch(
+            YouBindCollector collector,
+            Component luaViewComponent,
+            IList<Object> viewList,
+            List<CheckerErrorBase> errorList)
+        {
+            if (collector == null || luaViewComponent == null || errorList == null) return false;
+
+            var expectedCount = 0;
+            for (var i = 0; i < collector.bindInfoList.Count; i++)
+            {
+                var bindInfo = collector.bindInfoList[i];
+                if (bindInfo == null || !bindInfo.genCode || bindInfo.bindObject == null)
+                    continue;
+                expectedCount++;
+            }
+
+            var actualCount = viewList == null ? 0 : viewList.Count;
+            if (expectedCount == actualCount)
+                return false;
+
+            errorList.Add(new CheckerErrorBase
+            {
+                refObject = luaViewComponent,
+                message = $"CommonLuaView.viewList 数量不匹配，期望 {expectedCount}，实际 {actualCount}。需要重新生成并初始化引用。",
+                autoFixFunc = () => AutoFixLuaViewNullNode(collector)
+            });
+            return true;
+        }
+
+        private static void CheckLuaViewNullNode(YouBindCollector collector, List<CheckerErrorBase> errorList)
+        {
+            var luaViewType = FindTypeByName("CommonLuaView");
+            if (luaViewType == null)
+            {
+                errorList.Add(new CheckerErrorBase
+                {
+                    refObject = collector.gameObject,
+                    message = "未找到 CommonLuaView 类型，请确认脚本已编译。",
+                    autoFixFunc = () => AutoFixLuaViewNullNode(collector)
+                });
+                return;
+            }
+
+            var luaView = collector.gameObject.GetComponent(luaViewType);
+            if (luaView == null)
+            {
+                errorList.Add(new CheckerErrorBase
+                {
+                    refObject = collector.gameObject,
+                    message = "未找到 CommonLuaView 组件，需要补充组件并初始化引用。",
+                    autoFixFunc = () => AutoFixLuaViewNullNode(collector)
+                });
+                return;
+            }
+
+            var luaViewClassName = GetStringFieldOrProperty(luaView, "className");
+            if (string.IsNullOrEmpty(luaViewClassName) || luaViewClassName != collector.targetClassName)
+            {
+                errorList.Add(new CheckerErrorBase
+                {
+                    refObject = luaView,
+                    message = $"CommonLuaView.className 异常，期望 [{collector.targetClassName}]，实际 [{luaViewClassName}]。",
+                    autoFixFunc = () => AutoFixLuaViewNullNode(collector)
+                });
+            }
+
+            var viewList = GetObjectListFieldOrProperty(luaView, "viewList");
+            if (viewList == null)
+            {
+                errorList.Add(new CheckerErrorBase
+                {
+                    refObject = luaView,
+                    message = "CommonLuaView.viewList 为空，需要重新初始化引用。",
+                    autoFixFunc = () => AutoFixLuaViewNullNode(collector)
+                });
+                return;
+            }
+
+            var nullIndexList = new List<int>();
+            for (var i = 0; i < viewList.Count; i++)
+            {
+                if (viewList[i] == null)
+                    nullIndexList.Add(i);
+            }
+
+            if (nullIndexList.Count > 0)
+            {
+                var previewCount = Math.Min(5, nullIndexList.Count);
+                var preview = string.Join(", ", nullIndexList.GetRange(0, previewCount));
+                if (nullIndexList.Count > previewCount)
+                    preview += "...";
+
+                errorList.Add(new CheckerErrorBase
+                {
+                    refObject = luaView,
+                    message = $"CommonLuaView.viewList 中有空引用（{nullIndexList.Count} 个），索引：{preview}。",
+                    autoFixFunc = () => AutoFixLuaViewNullNode(collector)
+                });
+            }
+
+            CheckLuaViewListMismatch(collector, luaView, viewList, errorList);
+        }
+
+        private static bool AutoFixCSharpViewNullNode(YouBindCollector collector)
         {
             if (collector == null) return false;
 
@@ -337,6 +454,101 @@ namespace YouBindCollector
 
             EditorUtility.SetDirty(generatedComponent);
             return true;
+        }
+
+        private static bool AutoFixLuaViewNullNode(YouBindCollector collector)
+        {
+            if (collector == null) return false;
+
+            // 先更新代码
+            YouBindCodeGenerater.Instance.DoGenerate(collector);
+
+            var luaViewType = FindTypeByName("CommonLuaView");
+            if (luaViewType == null)
+            {
+                Debug.LogWarning("快速修复失败：未找到 CommonLuaView 类型。", collector);
+                return false;
+            }
+
+            var luaView = collector.gameObject.GetComponent(luaViewType);
+            if (luaView == null)
+                luaView = Undo.AddComponent(collector.gameObject, luaViewType);
+            if (luaView == null)
+            {
+                Debug.LogWarning("快速修复失败：无法添加 CommonLuaView 组件。", collector);
+                return false;
+            }
+
+            try
+            {
+                var initializeViewMethod = luaViewType.GetMethod("InitializeView",
+                    BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
+                if (initializeViewMethod == null)
+                {
+                    Debug.LogWarning("快速修复失败：CommonLuaView 不存在 InitializeView 方法。", luaView);
+                    return false;
+                }
+                initializeViewMethod.Invoke(luaView, null);
+            }
+            catch (Exception e)
+            {
+                Debug.LogWarning($"快速修复失败：调用 CommonLuaView.InitializeView 异常。{e.Message}", luaView);
+                return false;
+            }
+
+            EditorUtility.SetDirty(luaView);
+            return true;
+        }
+
+        private static Type FindTypeByName(string typeName)
+        {
+            if (string.IsNullOrEmpty(typeName))
+                return null;
+
+            var assemblyArray = AppDomain.CurrentDomain.GetAssemblies();
+            for (var i = 0; i < assemblyArray.Length; i++)
+            {
+                var assembly = assemblyArray[i];
+                var type = assembly.GetType(typeName);
+                if (type != null)
+                    return type;
+            }
+
+            return null;
+        }
+
+        private static string GetStringFieldOrProperty(Component component, string memberName)
+        {
+            if (component == null || string.IsNullOrEmpty(memberName))
+                return string.Empty;
+
+            var type = component.GetType();
+            var field = type.GetField(memberName, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
+            if (field != null)
+                return field.GetValue(component) as string ?? string.Empty;
+
+            var property = type.GetProperty(memberName, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
+            if (property != null)
+                return property.GetValue(component, null) as string ?? string.Empty;
+
+            return string.Empty;
+        }
+
+        private static IList<Object> GetObjectListFieldOrProperty(Component component, string memberName)
+        {
+            if (component == null || string.IsNullOrEmpty(memberName))
+                return null;
+
+            var type = component.GetType();
+            var field = type.GetField(memberName, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
+            if (field != null)
+                return field.GetValue(component) as IList<Object>;
+
+            var property = type.GetProperty(memberName, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
+            if (property != null)
+                return property.GetValue(component, null) as IList<Object>;
+
+            return null;
         }
     }
 }
