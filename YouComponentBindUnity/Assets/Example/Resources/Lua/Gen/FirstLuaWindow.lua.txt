@@ -1,6 +1,12 @@
--- Generated once by YouBindCollector. This file will not be overwritten.
-function FirstLuaWindow_Init(root)
-    local view = FirstLuaWindow_InitializeView(root)
+-- 此文件由 YouBindCollector 生成一次，后续不会被覆盖，可自由修改业务逻辑。
+
+--- 初始化 FirstLuaWindow 视图。
+--- 调用自动生成的 FirstLuaWindow_InitializeView 完成组件绑定，
+--- 再执行窗口自身的业务初始化逻辑。
+--- @param commonView CommonLuaView  挂载在预制体上的 CommonLuaView 组件
+--- @return table  包含各组件引用的视图 table
+function FirstLuaWindow_Init(commonView)
+    local view = FirstLuaWindow_InitializeView(commonView)
     print("[FirstLuaWindow] Init done.")
     if view ~= nil then
         for key, value in pairs(view) do

@@ -72,9 +72,9 @@ public class CommonLuaView : MonoBehaviour
             string luaFilePath2 = $"{luaBasePath}/{className}";
             luaSystem.LoadLuaFile(luaFilePath2);
 
-            // 调用初始化函数
+            // 调用初始化函数，传入自身（CommonLuaView），让 Lua 可访问 viewList
             string initFunctionName = $"{className}_Init";
-            luaSystem.DoLuaTransformFunction(initFunctionName, transform);
+            luaSystem.DoLuaViewFunction(initFunctionName, this);
         }
         else
         {

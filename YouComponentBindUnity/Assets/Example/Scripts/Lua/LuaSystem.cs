@@ -34,10 +34,10 @@ public class LuaSystem : MonoBehaviour
     }
 
     /// <summary>
-    /// 执行lua函数
+    /// 执行lua函数，传入 Transform
     /// </summary>
-    /// <param name="functionName"></param>
-    /// <param name="tf"></param>
+    /// <param name="functionName">Lua 函数名</param>
+    /// <param name="tf">传入的 Transform</param>
     public void DoLuaTransformFunction(string functionName, Transform tf)
     {
         var luaFunction = luaEnv.Global.Get<LuaFunction>(functionName);
@@ -48,6 +48,25 @@ public class LuaSystem : MonoBehaviour
         }
 
         luaFunction.Call(tf);
+    }
+
+    /// <summary>
+    /// 执行lua函数，传入 CommonLuaView。
+    /// 与 DoLuaTransformFunction 的区别在于参数类型，
+    /// 让 Lua 侧可以直接访问 viewList 列表，无需通过路径查找组件。
+    /// </summary>
+    /// <param name="functionName">Lua 函数名</param>
+    /// <param name="view">传入的 CommonLuaView 对象</param>
+    public void DoLuaViewFunction(string functionName, CommonLuaView view)
+    {
+        var luaFunction = luaEnv.Global.Get<LuaFunction>(functionName);
+        if (luaFunction == null)
+        {
+            Debug.LogError($"Lua luaFunction not found: {functionName}", this);
+            return;
+        }
+
+        luaFunction.Call(view);
     }
 
     /// <summary>
