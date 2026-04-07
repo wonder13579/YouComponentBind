@@ -378,26 +378,31 @@ public partial class @ClassName@ : MonoBehaviour, I@ClassName@EventFunction
     public class LuaGenCodeFileGenerater : CodeGeneraterBase
     {
         private StringBuilder fieldAssignmentBuilder => codeContentBuilder[0];
-        private StringBuilder addListenerBuilder => codeContentBuilder[1];
-        private StringBuilder removeListenerBuilder => codeContentBuilder[2];
-        protected override int builderCount => 3;
+        private StringBuilder eventFunctionBuilder => codeContentBuilder[1];
+        private StringBuilder registerEventBuilder => codeContentBuilder[2];
+        private StringBuilder unregisterEventBuilder => codeContentBuilder[3];
+        protected override int builderCount => 4;
         private int appendIndex = 0;
 
         private string templateLuaGenCode =
 @"-- 此文件由 YouBindCollector 自动生成，请勿手动修改。
 
-local __@ClassName@_EventCacheMap = setmetatable({}, { __mode = ""k"" })
+--- @class @ClassName@
+local @ClassName@ = {}
+local PanelName = UIPanelName.@ClassName@PanelName
 
-local function __@ClassName@_GetEventCache(commonView)
-    local eventCache = __@ClassName@_EventCacheMap[commonView]
-    if eventCache == nil then
-        eventCache = {}
-        __@ClassName@_EventCacheMap[commonView] = eventCache
-    end
-    return eventCache
+UIRegistry.Register(PanelName, @ClassName@)
+
+function @ClassName@_Init(commonView)
+    return @ClassName@:InitView(commonView)
 end
 
---- 根据传入的 CommonLuaView 对象初始化视图 table。
+function @ClassName@:InitView(commonView)
+    self.view = @ClassName@_InitializeView(commonView)
+    return self.view
+end
+
+-- 根据传入的 CommonLuaView 对象初始化视图 table。
 function @ClassName@_InitializeView(commonView)
     if commonView == nil or commonView.viewList == nil then
         print(""[@ClassName@.bind] commonView is nil"")
@@ -411,27 +416,47 @@ function @ClassName@_InitializeView(commonView)
     return view
 end
 
-function @ClassName@_OnEnable(commonView)
-    local view = @ClassName@_InitializeView(commonView)
-    if view == nil then
-        return
+function Get@ClassName@Panel()
+    --- @type @ClassName@
+    local panel = UIRegistry.Get(PanelName)
+    if panel == nil then
+        print(""[@ClassName@] Panel not found in UIRegistry."")
     end
-
-    local eventCache = __@ClassName@_GetEventCache(commonView)
-@AddListener@
+    return panel
 end
 
-function @ClassName@_OnDisable(commonView)
-    local view = @ClassName@_InitializeView(commonView)
-    if view == nil then
-        return
-    end
+@EventFunction@
+function @ClassName@_OnEnable()
+    local panel = Get@ClassName@Panel()
+    if panel == nil then return end
 
-    local eventCache = __@ClassName@_EventCacheMap[commonView]
-    if eventCache == nil then
-        return
+    -- 防止重复注册
+    panel:UnregisterEvent()
+    panel:RegisterEvent()
+
+    if panel.OnEnable ~= nil then
+        panel:OnEnable()
     end
-@RemoveListener@
+end
+
+function @ClassName@_OnDisable()
+    local panel = Get@ClassName@Panel()
+    if panel == nil then return end
+    panel:UnregisterEvent()
+
+    if panel.OnDisable ~= nil then
+        panel:OnDisable()
+    end
+end
+
+function @ClassName@:RegisterEvent()
+@RegisterEvent@
+    return self.view
+end
+
+function @ClassName@:UnregisterEvent()
+@UnregisterEvent@
+    return self.view
 end
 ";
 
@@ -454,10 +479,10 @@ end
             var escapedFieldName = EscapeLuaIdentifier(bindInfo.fieldName);
             var luaTypeName = GetLuaSimpleTypeName(bindInfo.bindType);
 
-            fieldAssignmentBuilder.AppendLine($"    --- @type {luaTypeName}");
             fieldAssignmentBuilder.AppendLine(
-                $"    view.{escapedFieldName} = viewList[{appendIndex}]   -- {EscapeLuaComment(displayPath)} -> {luaTypeName}");
-            fieldAssignmentBuilder.AppendLine();
+                $"    --- @type {luaTypeName} {EscapeLuaComment(displayPath)} -> {luaTypeName}");
+            fieldAssignmentBuilder.AppendLine(
+                $"    view.{escapedFieldName} = viewList[{appendIndex}]");
             appendIndex++;
         }
 
@@ -472,47 +497,30 @@ end
 
             var fieldName = EscapeLuaIdentifier(bindInfo.fieldName);
             var eventFuncName = eventConfig.eventFuncFormat.Replace("@EventName@", bindInfo.fieldName);
-            var luaHandlerName = $"{className}_{eventFuncName}";
-            var escapedHandlerName = EscapeLuaString(luaHandlerName);
-            var escapedEventName = EscapeLuaIdentifier(eventConfig.eventName);
+            var wrapperName = $"{className}_{eventFuncName}";
+            var paramList = GetLuaParamNameList(
+                eventConfig.eventDefinition.Replace("@EventName@", bindInfo.fieldName));
 
-            addListenerBuilder.AppendLine(
-                $"    if view.{fieldName} ~= nil and view.{fieldName}.{escapedEventName} ~= nil then");
-            addListenerBuilder.AppendLine(
-                $"        if eventCache[\"{escapedHandlerName}\"] == nil then");
-            addListenerBuilder.AppendLine(
-                $"            eventCache[\"{escapedHandlerName}\"] = function(...)");
-            addListenerBuilder.AppendLine(
-                $"                local eventFunc = _G[\"{escapedHandlerName}\"]");
-            addListenerBuilder.AppendLine(
-                $"                if eventFunc ~= nil then");
-            addListenerBuilder.AppendLine(
-                $"                    eventFunc(...)");
-            addListenerBuilder.AppendLine(
-                $"                end");
-            addListenerBuilder.AppendLine(
-                $"            end");
-            addListenerBuilder.AppendLine(
-                $"        end");
-            addListenerBuilder.AppendLine(
-                $"        view.{fieldName}.{escapedEventName}:AddListener(eventCache[\"{escapedHandlerName}\"])");
-            addListenerBuilder.AppendLine(
+            eventFunctionBuilder.AppendLine(
+                $"function {wrapperName}({paramList})");
+            eventFunctionBuilder.AppendLine(
+                $"    local panel = Get{className}Panel()");
+            eventFunctionBuilder.AppendLine(
+                $"    if panel ~= nil and panel.{eventFuncName} ~= nil then");
+            if (string.IsNullOrEmpty(paramList))
+                eventFunctionBuilder.AppendLine($"        panel:{eventFuncName}()");
+            else
+                eventFunctionBuilder.AppendLine($"        panel:{eventFuncName}({paramList})");
+            eventFunctionBuilder.AppendLine(
                 $"    end");
-            addListenerBuilder.AppendLine();
+            eventFunctionBuilder.AppendLine(
+                $"end");
+            eventFunctionBuilder.AppendLine();
 
-            removeListenerBuilder.AppendLine(
-                $"    if view.{fieldName} ~= nil and view.{fieldName}.{escapedEventName} ~= nil then");
-            removeListenerBuilder.AppendLine(
-                $"        local cachedHandler = eventCache[\"{escapedHandlerName}\"]");
-            removeListenerBuilder.AppendLine(
-                $"        if cachedHandler ~= nil then");
-            removeListenerBuilder.AppendLine(
-                $"            view.{fieldName}.{escapedEventName}:RemoveListener(cachedHandler)");
-            removeListenerBuilder.AppendLine(
-                $"        end");
-            removeListenerBuilder.AppendLine(
-                $"    end");
-            removeListenerBuilder.AppendLine();
+            registerEventBuilder.AppendLine(
+                $"    self.view.{fieldName}.{eventConfig.eventName}:AddListener({wrapperName})");
+            unregisterEventBuilder.AppendLine(
+                $"    self.view.{fieldName}.{eventConfig.eventName}:RemoveListener({wrapperName})");
         }
 
         private static string GetLuaSimpleTypeName(System.Type type)
@@ -529,18 +537,46 @@ end
             return value.Replace(" ", "_").Replace("-", "_");
         }
 
-        private static string EscapeLuaString(string value)
-        {
-            if (string.IsNullOrEmpty(value))
-                return string.Empty;
-            return value.Replace("\\", "\\\\").Replace("\"", "\\\"");
-        }
-
         private static string EscapeLuaComment(string value)
         {
             if (string.IsNullOrEmpty(value))
                 return string.Empty;
             return value.Replace("\r", " ").Replace("\n", " ");
+        }
+
+        private static string GetLuaParamNameList(string eventDefinitionWithName)
+        {
+            if (string.IsNullOrEmpty(eventDefinitionWithName))
+                return string.Empty;
+
+            var leftBracketIndex = eventDefinitionWithName.IndexOf('(');
+            var rightBracketIndex = eventDefinitionWithName.LastIndexOf(')');
+            if (leftBracketIndex < 0 || rightBracketIndex <= leftBracketIndex)
+                return string.Empty;
+
+            var paramContent = eventDefinitionWithName
+                .Substring(leftBracketIndex + 1, rightBracketIndex - leftBracketIndex - 1)
+                .Trim();
+            if (string.IsNullOrEmpty(paramContent))
+                return string.Empty;
+
+            var luaParamList = new List<string>();
+            var rawParamArray = paramContent.Split(',');
+            for (var i = 0; i < rawParamArray.Length; i++)
+            {
+                var rawParam = rawParamArray[i].Trim();
+                if (string.IsNullOrEmpty(rawParam))
+                    continue;
+
+                var tokenArray = rawParam.Split(new[] { ' ' }, System.StringSplitOptions.RemoveEmptyEntries);
+                if (tokenArray.Length <= 0)
+                    continue;
+
+                var paramName = tokenArray[tokenArray.Length - 1];
+                luaParamList.Add(EscapeLuaIdentifier(paramName));
+            }
+
+            return string.Join(", ", luaParamList);
         }
 
         public override void ExportCodeFile()
@@ -549,8 +585,9 @@ end
             var resultBuilder = new StringBuilder(templateLuaGenCode);
             resultBuilder.Replace("@ClassName@", className);
             resultBuilder.Replace("@FieldAssignment@", fieldAssignmentBuilder.ToString());
-            resultBuilder.Replace("@AddListener@", addListenerBuilder.ToString());
-            resultBuilder.Replace("@RemoveListener@", removeListenerBuilder.ToString());
+            resultBuilder.Replace("@EventFunction@", eventFunctionBuilder.ToString());
+            resultBuilder.Replace("@RegisterEvent@", registerEventBuilder.ToString());
+            resultBuilder.Replace("@UnregisterEvent@", unregisterEventBuilder.ToString());
 
             if (string.IsNullOrEmpty(outputFilePath))
                 outputFilePath = YouBindGlobalDefine.GetLuaGenCodeFilePath(className);
@@ -566,28 +603,34 @@ end
         protected override int builderCount => 1;
         private string templateLuaCustomCode =
 @"-- 此文件由 YouBindCollector 生成一次，后续不会被覆盖，可自由修改业务逻辑。
+--- @type @ClassName@
+local @ClassName@ = UIRegistry.Get(UIPanelName.@ClassName@PanelName)
 
---- @param commonView CommonLuaView  挂载在预制体上的 CommonLuaView 组件
-function @ClassName@_Init(commonView)
-    --- @type @ClassName@View
-    local view = @ClassName@_InitializeView(commonView)
+if @ClassName@ == nil then
+    error(""[@ClassName@] Panel not found in UIRegistry. Please check g file registration."")
+end
 
-    -- 测试
-    print(""[@ClassName@] Init done."")
-    if view ~= nil then
-        for key, value in pairs(view) do
+function @ClassName@:Start()
+    print(""[@ClassName@] Start"")
+    -- 测试用，先别删
+    if self.view ~= nil then
+        for key, value in pairs(self.view) do
             print(""[@ClassName@] "" .. key, value)
         end
     end
-
-    @ClassName@_OnEnable(commonView)
-
-    -- view.Text_Text.text = ""Hello YouBind!""
-    return view
+    -- self.view.Text_Text.text = ""Hello YouBind!""
 end
 
-@EventDefinition@
-";
+function @ClassName@:OnEnable()
+    print(""[@ClassName@] OnEnable"")
+end
+
+function @ClassName@:OnDisable()
+    print(""[@ClassName@] OnDisable"")
+    -- 预留：面板关闭时的清理逻辑
+end
+
+@EventDefinition@";
 
         public override void AppendObject(BindObjectInfo bindInfo)
         {
@@ -604,12 +647,30 @@ end
             if (eventConfig == null) return;
 
             var eventFuncName = eventConfig.eventFuncFormat.Replace("@EventName@", bindInfo.fieldName);
-            var luaHandlerName = $"{className}_{eventFuncName}";
+            var eventLogMessage = GetLuaEventLogMessage(bindInfo.fieldName, eventConfig.eventName);
             eventDefinitionBuilder.AppendLine($"--- {bindInfo.fieldName}.{eventConfig.eventName}");
-            eventDefinitionBuilder.AppendLine($"function {luaHandlerName}(...)");
-            eventDefinitionBuilder.AppendLine("    -- TODO: implement event logic");
+            eventDefinitionBuilder.AppendLine($"function {className}:{eventFuncName}(...)");
+            eventDefinitionBuilder.AppendLine($"    print(\"[{className}] {EscapeLuaString(eventLogMessage)}\")");
             eventDefinitionBuilder.AppendLine("end");
             eventDefinitionBuilder.AppendLine();
+        }
+
+        private static string GetLuaEventLogMessage(string fieldName, string eventName)
+        {
+            if (eventName == "onClick")
+                return $"{fieldName} clicked.";
+            if (eventName == "onValueChanged")
+                return $"{fieldName} value changed.";
+            if (eventName == "onEndEdit")
+                return $"{fieldName} end edit.";
+            return $"{fieldName} {eventName}.";
+        }
+
+        private static string EscapeLuaString(string value)
+        {
+            if (string.IsNullOrEmpty(value))
+                return string.Empty;
+            return value.Replace("\\", "\\\\").Replace("\"", "\\\"");
         }
 
         public override void ExportCodeFile()

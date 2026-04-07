@@ -77,7 +77,6 @@ function FirstLuaWindow_OnToggle_ToggleValueChanged(value)
         panel:OnToggle_ToggleValueChanged(value)
     end
 end
-
 function FirstLuaWindow_OnEnable()
     local panel = GetFirstLuaWindowPanel()
     if panel == nil then return end
