@@ -2,6 +2,7 @@
 
 --- @class UILuaWindow2
 local UILuaWindow2 = {}
+UIPanelName = UIPanelName or {}
 UIPanelName.UILuaWindow2PanelName = "UILuaWindow2PanelName"
 local PanelName = UIPanelName.UILuaWindow2PanelName
 

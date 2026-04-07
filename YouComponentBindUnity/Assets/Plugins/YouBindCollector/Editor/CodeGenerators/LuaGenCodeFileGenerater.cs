@@ -19,6 +19,8 @@ namespace YouBindCollector
 
 --- @class @ClassName@
 local @ClassName@ = {}
+UIPanelName = UIPanelName or {}
+UIPanelName.@ClassName@PanelName = ""@ClassName@PanelName""
 local PanelName = UIPanelName.@ClassName@PanelName
 
 UIRegistry.Register(PanelName, @ClassName@)
