@@ -378,11 +378,24 @@ public partial class @ClassName@ : MonoBehaviour, I@ClassName@EventFunction
     public class LuaGenCodeFileGenerater : CodeGeneraterBase
     {
         private StringBuilder fieldAssignmentBuilder => codeContentBuilder[0];
-        protected override int builderCount => 1;
+        private StringBuilder addListenerBuilder => codeContentBuilder[1];
+        private StringBuilder removeListenerBuilder => codeContentBuilder[2];
+        protected override int builderCount => 3;
         private int appendIndex = 0;
 
         private string templateLuaGenCode =
 @"-- 此文件由 YouBindCollector 自动生成，请勿手动修改。
+
+local __@ClassName@_EventCacheMap = setmetatable({}, { __mode = ""k"" })
+
+local function __@ClassName@_GetEventCache(commonView)
+    local eventCache = __@ClassName@_EventCacheMap[commonView]
+    if eventCache == nil then
+        eventCache = {}
+        __@ClassName@_EventCacheMap[commonView] = eventCache
+    end
+    return eventCache
+end
 
 --- 根据传入的 CommonLuaView 对象初始化视图 table。
 function @ClassName@_InitializeView(commonView)
@@ -396,6 +409,29 @@ function @ClassName@_InitializeView(commonView)
     local view = {}
 @FieldAssignment@
     return view
+end
+
+function @ClassName@_OnEnable(commonView)
+    local view = @ClassName@_InitializeView(commonView)
+    if view == nil then
+        return
+    end
+
+    local eventCache = __@ClassName@_GetEventCache(commonView)
+@AddListener@
+end
+
+function @ClassName@_OnDisable(commonView)
+    local view = @ClassName@_InitializeView(commonView)
+    if view == nil then
+        return
+    end
+
+    local eventCache = __@ClassName@_EventCacheMap[commonView]
+    if eventCache == nil then
+        return
+    end
+@RemoveListener@
 end
 ";
 
@@ -425,6 +461,60 @@ end
             appendIndex++;
         }
 
+        public override void AppendEvent(BindObjectInfo bindInfo, BindEventInfo eventInfo)
+        {
+            if (bindInfo == null || eventInfo == null) return;
+            if (!bindInfo.genCode || !eventInfo.genCode) return;
+
+            var eventConfig = YouBindTypeConfigManager.Instance.GetEventConfig(
+                bindInfo.bindType, eventInfo.eventName);
+            if (eventConfig == null) return;
+
+            var fieldName = EscapeLuaIdentifier(bindInfo.fieldName);
+            var eventFuncName = eventConfig.eventFuncFormat.Replace("@EventName@", bindInfo.fieldName);
+            var luaHandlerName = $"{className}_{eventFuncName}";
+            var escapedHandlerName = EscapeLuaString(luaHandlerName);
+            var escapedEventName = EscapeLuaIdentifier(eventConfig.eventName);
+
+            addListenerBuilder.AppendLine(
+                $"    if view.{fieldName} ~= nil and view.{fieldName}.{escapedEventName} ~= nil then");
+            addListenerBuilder.AppendLine(
+                $"        if eventCache[\"{escapedHandlerName}\"] == nil then");
+            addListenerBuilder.AppendLine(
+                $"            eventCache[\"{escapedHandlerName}\"] = function(...)");
+            addListenerBuilder.AppendLine(
+                $"                local eventFunc = _G[\"{escapedHandlerName}\"]");
+            addListenerBuilder.AppendLine(
+                $"                if eventFunc ~= nil then");
+            addListenerBuilder.AppendLine(
+                $"                    eventFunc(...)");
+            addListenerBuilder.AppendLine(
+                $"                end");
+            addListenerBuilder.AppendLine(
+                $"            end");
+            addListenerBuilder.AppendLine(
+                $"        end");
+            addListenerBuilder.AppendLine(
+                $"        view.{fieldName}.{escapedEventName}:AddListener(eventCache[\"{escapedHandlerName}\"])");
+            addListenerBuilder.AppendLine(
+                $"    end");
+            addListenerBuilder.AppendLine();
+
+            removeListenerBuilder.AppendLine(
+                $"    if view.{fieldName} ~= nil and view.{fieldName}.{escapedEventName} ~= nil then");
+            removeListenerBuilder.AppendLine(
+                $"        local cachedHandler = eventCache[\"{escapedHandlerName}\"]");
+            removeListenerBuilder.AppendLine(
+                $"        if cachedHandler ~= nil then");
+            removeListenerBuilder.AppendLine(
+                $"            view.{fieldName}.{escapedEventName}:RemoveListener(cachedHandler)");
+            removeListenerBuilder.AppendLine(
+                $"        end");
+            removeListenerBuilder.AppendLine(
+                $"    end");
+            removeListenerBuilder.AppendLine();
+        }
+
         private static string GetLuaSimpleTypeName(System.Type type)
         {
             if (type == null)
@@ -437,6 +527,13 @@ end
             if (string.IsNullOrEmpty(value))
                 return "_";
             return value.Replace(" ", "_").Replace("-", "_");
+        }
+
+        private static string EscapeLuaString(string value)
+        {
+            if (string.IsNullOrEmpty(value))
+                return string.Empty;
+            return value.Replace("\\", "\\\\").Replace("\"", "\\\"");
         }
 
         private static string EscapeLuaComment(string value)
@@ -452,6 +549,8 @@ end
             var resultBuilder = new StringBuilder(templateLuaGenCode);
             resultBuilder.Replace("@ClassName@", className);
             resultBuilder.Replace("@FieldAssignment@", fieldAssignmentBuilder.ToString());
+            resultBuilder.Replace("@AddListener@", addListenerBuilder.ToString());
+            resultBuilder.Replace("@RemoveListener@", removeListenerBuilder.ToString());
 
             if (string.IsNullOrEmpty(outputFilePath))
                 outputFilePath = YouBindGlobalDefine.GetLuaGenCodeFilePath(className);
@@ -463,6 +562,7 @@ end
     // 生成.lua.txt文件
     public class LuaCustomCodeFileGenerater : CodeGeneraterBase
     {
+        private StringBuilder eventDefinitionBuilder => codeContentBuilder[0];
         protected override int builderCount => 1;
         private string templateLuaCustomCode =
 @"-- 此文件由 YouBindCollector 生成一次，后续不会被覆盖，可自由修改业务逻辑。
@@ -480,9 +580,13 @@ function @ClassName@_Init(commonView)
         end
     end
 
+    @ClassName@_OnEnable(commonView)
+
     -- view.Text_Text.text = ""Hello YouBind!""
     return view
 end
+
+@EventDefinition@
 ";
 
         public override void AppendObject(BindObjectInfo bindInfo)
@@ -492,7 +596,20 @@ end
 
         public override void AppendEvent(BindObjectInfo bindInfo, BindEventInfo eventInfo)
         {
-            // 暂不处理事件
+            if (bindInfo == null || eventInfo == null) return;
+            if (!bindInfo.genCode || !eventInfo.genCode) return;
+
+            var eventConfig = YouBindTypeConfigManager.Instance.GetEventConfig(
+                bindInfo.bindType, eventInfo.eventName);
+            if (eventConfig == null) return;
+
+            var eventFuncName = eventConfig.eventFuncFormat.Replace("@EventName@", bindInfo.fieldName);
+            var luaHandlerName = $"{className}_{eventFuncName}";
+            eventDefinitionBuilder.AppendLine($"--- {bindInfo.fieldName}.{eventConfig.eventName}");
+            eventDefinitionBuilder.AppendLine($"function {luaHandlerName}(...)");
+            eventDefinitionBuilder.AppendLine("    -- TODO: implement event logic");
+            eventDefinitionBuilder.AppendLine("end");
+            eventDefinitionBuilder.AppendLine();
         }
 
         public override void ExportCodeFile()
@@ -500,6 +617,7 @@ end
             base.ExportCodeFile();
             var resultBuilder = new StringBuilder(templateLuaCustomCode);
             resultBuilder.Replace("@ClassName@", className);
+            resultBuilder.Replace("@EventDefinition@", eventDefinitionBuilder.ToString());
 
             if (string.IsNullOrEmpty(outputFilePath))
                 outputFilePath = YouBindGlobalDefine.GetLuaCustomCodeFilePath(className);

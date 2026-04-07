@@ -1,0 +1,54 @@
+-- Global panel registry for lua-driven UI.
+-- Load this file once, then each panel can register itself by name.
+
+UIRegistry = UIRegistry or {}
+UIPanelName = {}
+UIPanelName.FirstLuaWindowPanelName = "FirstLuaWindow"
+
+local panelMap = {}
+
+function UIRegistry.Register(panelName, panel)
+    if type(panelName) ~= "string" or panelName == "" then
+        error("[UIRegistry] Register failed: invalid panelName")
+    end
+    if panel == nil then
+        error("[UIRegistry] Register failed: panel is nil")
+    end
+
+    panelMap[panelName] = panel
+    return panel
+end
+
+function UIRegistry.Get(panelName)
+    return panelMap[panelName]
+end
+
+function UIRegistry.Unregister(panelName, panel)
+    local current = panelMap[panelName]
+    if current == nil then
+        return false
+    end
+
+    if panel ~= nil and current ~= panel then
+        return false
+    end
+
+    panelMap[panelName] = nil
+    return true
+end
+
+function UIRegistry.Has(panelName)
+    return panelMap[panelName] ~= nil
+end
+
+function UIRegistry.Clear()
+    for key in pairs(panelMap) do
+        panelMap[key] = nil
+    end
+end
+
+function UIRegistry.GetMap()
+    return panelMap
+end
+
+return UIRegistry

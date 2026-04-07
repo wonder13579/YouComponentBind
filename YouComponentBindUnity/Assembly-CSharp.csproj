@@ -55,7 +55,6 @@
      <Folder Include="Assets\Example\Scripts" />
      <Folder Include="Assets\Example\Plugins" />
      <Folder Include="Assets\Example" />
-     <None Include="Assets\Example\Resources\Lua\Gen\FirstLuaWindow.lua.txt" />
      <Folder Include="Assets\Example\Resources\Lua" />
      <Folder Include="Assets\Example\Scenes" />
      <Folder Include="Assets\Example\PrefabsUI" />

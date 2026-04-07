@@ -49,6 +49,7 @@ public class CommonLuaView : MonoBehaviour
     public string className;
     public string luaBasePath = "Lua/Gen";
     public List<Object> viewList = new List<Object>();
+    private bool luaReady;
 
     /// <summary>
     /// 初始化Lua环境并加载视图
@@ -67,18 +68,59 @@ public class CommonLuaView : MonoBehaviour
         if (!string.IsNullOrEmpty(className))
         {
             // 构造Lua文件路径
-            string luaFilePath = $"{luaBasePath}/{className}.g";
-            luaSystem.LoadLuaFile(luaFilePath);
             string luaFilePath2 = $"{luaBasePath}/{className}";
             luaSystem.LoadLuaFile(luaFilePath2);
+            string luaFilePath = $"{luaBasePath}/{className}.g";
+            luaSystem.LoadLuaFile(luaFilePath);
 
             // 调用初始化函数，传入自身（CommonLuaView），让 Lua 可访问 viewList
             string initFunctionName = $"{className}_Init";
             luaSystem.DoLuaViewFunction(initFunctionName, this);
+            luaReady = true;
         }
         else
         {
             Debug.LogError("CommonLuaView: className is empty, can not load lua file.", this);
+        }
+    }
+
+    private void OnEnable()
+    {
+        if (!luaReady || string.IsNullOrEmpty(className))
+            return;
+
+        CallLuaViewFunctionIfExists($"{className}_OnEnable");
+    }
+
+    private void OnDisable()
+    {
+        if (!luaReady || string.IsNullOrEmpty(className))
+            return;
+
+        CallLuaViewFunctionIfExists($"{className}_OnDisable");
+    }
+
+    private void CallLuaViewFunctionIfExists(string functionName)
+    {
+        var luaSystem = LuaSystem.instance;
+        if (luaSystem == null)
+            return;
+
+        var luaEnv = luaSystem.GetLuaEnv();
+        if (luaEnv == null)
+            return;
+
+        var luaFunction = luaEnv.Global.Get<LuaFunction>(functionName);
+        if (luaFunction == null)
+            return;
+
+        try
+        {
+            luaFunction.Call(this);
+        }
+        finally
+        {
+            luaFunction.Dispose();
         }
     }
 }
