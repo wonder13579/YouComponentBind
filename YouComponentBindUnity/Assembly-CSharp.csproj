@@ -41,9 +41,9 @@
     <ImplicitlyExpandDesignTimeFacades>false</ImplicitlyExpandDesignTimeFacades>
   </PropertyGroup>
   <ItemGroup>
+     <Compile Include="Assets\Example\Scripts\Lua\LuaSystem.cs" />
      <Compile Include="Assets\Example\Scripts\Gen\FirstWindow.g.cs" />
      <Compile Include="Assets\Example\Scripts\Gen\FirstWindow.cs" />
-     <Compile Include="Assets\Example\Scripts\Lua\LuaSystem.cs" />
      <Folder Include="Assets" />
      <Folder Include="Assets\Example\Resources\ResImages" />
      <Folder Include="Assets\Resources" />
@@ -55,8 +55,6 @@
      <Folder Include="Assets\Example\Plugins" />
      <None Include="Assets\Example\Resources\Lua\transform_demo.lua.txt" />
      <Folder Include="Assets\Example" />
-     <None Include="Assets\Example\Resources\Lua\Gen\FirstWindow.g.lua.txt" />
-     <None Include="Assets\Example\Resources\Lua\Gen\FirstWindow.lua.txt" />
      <None Include="Assets\Example\Resources\Lua\Gen\FirstLuaWindow.lua.txt" />
      <Folder Include="Assets\Example\Resources\Lua" />
      <Folder Include="Assets\Example\Scenes" />

@@ -55,9 +55,9 @@
      <Compile Include="Assets\Plugins\YouBindCollector\Editor\YouBindHierarchyMark.cs" />
      <Compile Include="Assets\Plugins\xlua\Editor\ExampleConfig.cs" />
      <Compile Include="Assets\Plugins\YouBindCollector\Editor\YouBindCollectorAddBindWindow.cs" />
+     <Compile Include="Assets\Plugins\YouBindCollector\Editor\YouBindCommonChecker.cs" />
      <Compile Include="Assets\Plugins\xlua\Src\Editor\Generator.cs" />
      <Compile Include="Assets\Plugins\YouBindCollector\Editor\YouBindTypeConfig.cs" />
-     <Compile Include="Assets\Plugins\YouBindCollector\Editor\YouBindCommonChecker.cs" />
      <None Include="Assets\Plugins\xlua\Src\Editor\Template\LuaInterfaceBridge.tpl.txt" />
      <None Include="Assets\Plugins\xlua\Src\Editor\Template\LuaWrapPusher.tpl.txt" />
      <None Include="Assets\Plugins\xlua\Src\Editor\Template\LuaDelegateWrap.tpl.txt" />
