@@ -7,8 +7,8 @@ if FirstLuaWindow == nil then
 end
 
 function FirstLuaWindow:Start()
+    print("[FirstLuaWindow] Start")
     -- 测试用，先别删
-    print("[FirstLuaWindow] Init done.")
     if self.view ~= nil then
         for key, value in pairs(self.view) do
             print("[FirstLuaWindow] " .. key, value)
@@ -17,12 +17,12 @@ function FirstLuaWindow:Start()
     self.view.Text_Text.text = "Hello YouBind!"
 end
 
-function FirstLuaWindow:Enable()
-    print("[FirstLuaWindow] Enable")
+function FirstLuaWindow:OnEnable()
+    print("[FirstLuaWindow] OnEnable")
 end
 
-function FirstLuaWindow:Disable()
-    print("[FirstLuaWindow] Disable")
+function FirstLuaWindow:OnDisable()
+    print("[FirstLuaWindow] OnDisable")
     -- 预留：面板关闭时的清理逻辑
 end
 

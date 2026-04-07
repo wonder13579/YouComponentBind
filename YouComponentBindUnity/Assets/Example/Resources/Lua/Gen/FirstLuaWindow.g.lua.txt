@@ -12,7 +12,6 @@ end
 
 function FirstLuaWindow:InitView(commonView)
     self.view = FirstLuaWindow_InitializeView(commonView)
-    FirstLuaWindow_OnEnable()
     return self.view
 end
 
@@ -26,39 +25,30 @@ function FirstLuaWindow_InitializeView(commonView)
 
     --- @class FirstLuaWindowView
     local view = {}
-    --- @type Button
-    view.Button_Button = viewList[0]   -- AllType/Button -> Button
-
-    --- @type RawImage
-    view.Raw_RawImage = viewList[1]   -- AllType/RawImage -> RawImage
-
-    --- @type Text
-    view.Text_2 = viewList[2]   -- AllType/Toggle/2 -> Text
-
-    --- @type Text
-    view.Text_Label = viewList[3]   -- AllType/Dropdown/Label -> Text
-
-    --- @type Text
-    view.Text_Placeholder = viewList[4]   -- AllType/InputField/Placeholder -> Text
-
-    --- @type Text
-    view.Text_Text = viewList[5]   -- AllType/InputField/Text -> Text
-
-    --- @type Text
-    view.Text_Text555 = viewList[6]   -- Text555 -> Text
-
-    --- @type Text
-    view.Text_tip23424 = viewList[7]   -- AllType/tip23424 -> Text
-
-    --- @type Toggle
-    view.Toggle_Item = viewList[8]   -- AllType/Dropdown/Template/Viewport/Content/Item -> Toggle
-
-    --- @type Toggle
-    view.Toggle_Toggle = viewList[9]   -- AllType/Toggle -> Toggle
+    --- @type Button AllType/Button -> Button
+    view.Button_Button = viewList[0]
+    --- @type RawImage AllType/RawImage -> RawImage
+    view.Raw_RawImage = viewList[1]
+    --- @type Text AllType/Toggle/2 -> Text
+    view.Text_2 = viewList[2]
+    --- @type Text AllType/Dropdown/Label -> Text
+    view.Text_Label = viewList[3]
+    --- @type Text AllType/InputField/Placeholder -> Text
+    view.Text_Placeholder = viewList[4]
+    --- @type Text AllType/InputField/Text -> Text
+    view.Text_Text = viewList[5]
+    --- @type Text Text555 -> Text
+    view.Text_Text555 = viewList[6]
+    --- @type Text AllType/tip23424 -> Text
+    view.Text_tip23424 = viewList[7]
+    --- @type Toggle AllType/Dropdown/Template/Viewport/Content/Item -> Toggle
+    view.Toggle_Item = viewList[8]
+    --- @type Toggle AllType/Toggle -> Toggle
+    view.Toggle_Toggle = viewList[9]
     return view
 end
 
-local function GetFirstLuaWindowPanel()
+function GetFirstLuaWindowPanel()
     --- @type FirstLuaWindow
     local panel = UIRegistry.Get(PanelName)
     if panel == nil then
@@ -90,46 +80,37 @@ end
 
 function FirstLuaWindow_OnEnable()
     local panel = GetFirstLuaWindowPanel()
-    if panel == nil then
-        return
-    end
-
-    local view = panel.view
-    if view == nil then
-        print("[FirstLuaWindow] View is nil.")
-        return
-    end
+    if panel == nil then return end
 
     -- 防止重复注册
-    view.Button_Button.onClick:RemoveListener(FirstLuaWindow_OnButton_ButtonClick)
-    view.Toggle_Item.onValueChanged:RemoveListener(FirstLuaWindow_OnToggle_ItemValueChanged)
-    view.Toggle_Toggle.onValueChanged:RemoveListener(FirstLuaWindow_OnToggle_ToggleValueChanged)
+    panel:UnregisterEvent()
+    panel:RegisterEvent()
 
-    view.Button_Button.onClick:AddListener(FirstLuaWindow_OnButton_ButtonClick)
-    view.Toggle_Item.onValueChanged:AddListener(FirstLuaWindow_OnToggle_ItemValueChanged)
-    view.Toggle_Toggle.onValueChanged:AddListener(FirstLuaWindow_OnToggle_ToggleValueChanged)
-
-    if panel.Enable ~= nil then
-        panel:Enable()
+    if panel.OnEnable ~= nil then
+        panel:OnEnable()
     end
 end
 
 function FirstLuaWindow_OnDisable()
     local panel = GetFirstLuaWindowPanel()
-    if panel == nil then
-        return
-    end
+    if panel == nil then return end
+    panel:UnregisterEvent()
 
-    local view = panel.view
-    if view == nil then
-        return
+    if panel.OnDisable ~= nil then
+        panel:OnDisable()
     end
+end
 
-    view.Button_Button.onClick:RemoveListener(FirstLuaWindow_OnButton_ButtonClick)
-    view.Toggle_Item.onValueChanged:RemoveListener(FirstLuaWindow_OnToggle_ItemValueChanged)
-    view.Toggle_Toggle.onValueChanged:RemoveListener(FirstLuaWindow_OnToggle_ToggleValueChanged)
+function FirstLuaWindow:RegisterEvent()
+    self.view.Button_Button.onClick:AddListener(FirstLuaWindow_OnButton_ButtonClick)
+    self.view.Toggle_Item.onValueChanged:AddListener(FirstLuaWindow_OnToggle_ItemValueChanged)
+    self.view.Toggle_Toggle.onValueChanged:AddListener(FirstLuaWindow_OnToggle_ToggleValueChanged)
+    return self.view
+end
 
-    if panel.Disable ~= nil then
-        panel:Disable()
-    end
+function FirstLuaWindow:UnregisterEvent()
+    self.view.Button_Button.onClick:RemoveListener(FirstLuaWindow_OnButton_ButtonClick)
+    self.view.Toggle_Item.onValueChanged:RemoveListener(FirstLuaWindow_OnToggle_ItemValueChanged)
+    self.view.Toggle_Toggle.onValueChanged:RemoveListener(FirstLuaWindow_OnToggle_ToggleValueChanged)
+    return self.view
 end
