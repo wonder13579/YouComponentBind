@@ -687,7 +687,7 @@ namespace YouBindCollector
             var message = $"警告！将删除生成代码文件，点击确认继续\n" +
                 $"将删除：{rootBindBase.targetClassName}.cs\n" +
                 $"{rootBindBase.targetClassName}.g.cs\n" +
-                $"{rootBindBase.targetClassName}.bind.lua.txt\n" +
+                $"{rootBindBase.targetClassName}.g.lua.txt\n" +
                 $"{rootBindBase.targetClassName}.lua.txt";
             if (!EditorUtility.DisplayDialog("确认", message, "确认", "取消"))
             {

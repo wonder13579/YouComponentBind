@@ -20,10 +20,10 @@ namespace YouBindCollector
             return $"{Application.dataPath}/Example/Scripts/Gen/{className}.cs";
         }
 
-        // .bind.lua.txt文件输出目录。自动生成，可覆盖。
+        // .g.lua.txt文件输出目录。自动生成，可覆盖。
         public static string GetLuaGenCodeFilePath(string className)
         {
-            return $"{Application.dataPath}/Example/Resources/Lua/Gen/{className}.bind.lua.txt";
+            return $"{Application.dataPath}/Example/Resources/Lua/Gen/{className}.g.lua.txt";
         }
 
         // .lua.txt文件输出目录。首次生成，不覆盖。

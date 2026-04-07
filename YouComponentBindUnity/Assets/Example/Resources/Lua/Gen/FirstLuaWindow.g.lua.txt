@@ -1,40 +1,43 @@
 -- 此文件由 YouBindCollector 自动生成，请勿手动修改。
--- 通过 CommonLuaView.viewList 按索引序列化组件，无需运行时路径查找。
 
 --- 根据传入的 CommonLuaView 对象初始化视图 table。
---- 实现原理：直接从 commonView.viewList 按固定索引取出各组件引用，
---- 映射为具名字段，避免运行时 Transform.Find 路径查找的开销。
---- @param commonView CommonLuaView  挂载在预制体上的 CommonLuaView 组件
---- @return table  包含各组件引用的视图 table，初始化失败时返回 nil
 function FirstLuaWindow_InitializeView(commonView)
-    if commonView == nil then
+    if commonView == nil or commonView.viewList == nil then
         print("[FirstLuaWindow.bind] commonView is nil")
         return nil
     end
-
     local viewList = commonView.viewList
-    if viewList == nil then
-        print("[FirstLuaWindow.bind] viewList is nil")
-        return nil
-    end
 
-    -- 将 viewList 中的组件按索引映射为具名字段
-    -- 索引顺序与 YouBindCollector.bindInfoList（genCode=true）保持一致
+    --- @class FirstLuaWindowView
     local view = {}
-    view["Button_Button"]     = viewList[0]   -- AllType/Button -> Button
-    view["Raw_RawImage"]      = viewList[1]   -- AllType/RawImage -> RawImage
-    view["Text_2"]            = viewList[2]   -- AllType/Toggle/2 -> Text
-    view["Text_Label"]        = viewList[3]   -- AllType/Dropdown/Label -> Text
-    view["Text_Placeholder"]  = viewList[4]   -- AllType/InputField/Placeholder -> Text
-    view["Text_Text"]         = viewList[5]   -- AllType/InputField/Text -> Text
-    view["Text_Text555"]      = viewList[6]   -- Text555 -> Text
-    view["Text_tip23424"]     = viewList[7]   -- AllType/tip23424 -> Text
-    view["Toggle_Item"]       = viewList[8]   -- AllType/Dropdown/.../Item -> Toggle
-    view["Toggle_Toggle"]     = viewList[9]   -- AllType/Toggle -> Toggle
+    --- @type Button
+    view.Button_Button = viewList[0]   -- AllType/Button -> Button
 
-    print("[FirstLuaWindow.bind] InitializeView result:")
-    for key, value in pairs(view) do
-        print("[FirstLuaWindow.bind] " .. key, value)
-    end
+    --- @type RawImage
+    view.Raw_RawImage = viewList[1]   -- AllType/RawImage -> RawImage
+
+    --- @type Text
+    view.Text_2 = viewList[2]   -- AllType/Toggle/2 -> Text
+
+    --- @type Text
+    view.Text_Label = viewList[3]   -- AllType/Dropdown/Label -> Text
+
+    --- @type Text
+    view.Text_Placeholder = viewList[4]   -- AllType/InputField/Placeholder -> Text
+
+    --- @type Text
+    view.Text_Text = viewList[5]   -- AllType/InputField/Text -> Text
+
+    --- @type Text
+    view.Text_Text555 = viewList[6]   -- Text555 -> Text
+
+    --- @type Text
+    view.Text_tip23424 = viewList[7]   -- AllType/tip23424 -> Text
+
+    --- @type Toggle
+    view.Toggle_Item = viewList[8]   -- AllType/Dropdown/Template/Viewport/Content/Item -> Toggle
+
+    --- @type Toggle
+    view.Toggle_Toggle = viewList[9]   -- AllType/Toggle -> Toggle
     return view
 end
