@@ -47,24 +47,18 @@ function UILuaWindow2_InitializeView(commonView)
     view.Text_Placeholder = viewList[8]
     --- @type Text AllType/InputField/Text -> Text
     view.Text_Text = viewList[9]
-    --- @type Text ButtonB/Text (Legacy) -> Text
-    view.Text_Text__Legacy_ = viewList[10]
-    --- @type Text ButtonC/Text (Legacy) -> Text
-    view.Text_Text__Legacy_ = viewList[11]
-    --- @type Text ButtonD/Text (Legacy) -> Text
-    view.Text_Text__Legacy_ = viewList[12]
     --- @type Text ButtonA/Text1 -> Text
-    view.Text_Text1 = viewList[13]
+    view.Text_Text1 = viewList[10]
     --- @type Text Text444 (1) -> Text
-    view.Text_Text444__1_ = viewList[14]
+    view.Text_Text444__1_ = viewList[11]
     --- @type Text Text555 -> Text
-    view.Text_Text555 = viewList[15]
+    view.Text_Text555 = viewList[12]
     --- @type Text AllType/tip23424 -> Text
-    view.Text_tip23424 = viewList[16]
+    view.Text_tip23424 = viewList[13]
     --- @type Toggle AllType/Dropdown/Template/Viewport/Content/Item -> Toggle
-    view.Toggle_Item = viewList[17]
+    view.Toggle_Item = viewList[14]
     --- @type Toggle AllType/Toggle -> Toggle
-    view.Toggle_Toggle = viewList[18]
+    view.Toggle_Toggle = viewList[15]
     return view
 end
 
