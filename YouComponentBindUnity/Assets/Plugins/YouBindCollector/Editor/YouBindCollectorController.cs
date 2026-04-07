@@ -170,6 +170,13 @@ namespace YouBindCollector
 
         public YouBindCollector CreateBindCollector(YouBindCollector collector = null)
         {
+            bool _;
+            return CreateBindCollector(out _, collector);
+        }
+
+        public YouBindCollector CreateBindCollector(out bool createdNewCollector, YouBindCollector collector = null)
+        {
+            createdNewCollector = false;
             // 创建绑定配置
             if (collector != null)
                 return collector;
@@ -184,6 +191,7 @@ namespace YouBindCollector
             if (existCollector)
                 return existCollector;
             collector = Selection.activeGameObject.AddComponent<YouBindCollector>();
+            createdNewCollector = true;
             Debug.Log("已新增绑定配置", collector);
             return collector;
         }
@@ -200,10 +208,35 @@ namespace YouBindCollector
                 {
                     var view = collector.gameObject.GetComponent(compType);
                     if (view == null)
-                        collector.gameObject.AddComponent(compType);
+                        view = collector.gameObject.AddComponent(compType);
                     return view;
                 }
             }
+            return null;
+        }
+
+        public Component AddCommonLuaView(YouBindCollector collector = null)
+        {
+            if (collector == null)
+                return null;
+
+            const string luaViewTypeName = "CommonLuaView";
+            var assembArray = AppDomain.CurrentDomain.GetAssemblies();
+            foreach (var assemb in assembArray)
+            {
+                var compType = assemb.GetType(luaViewTypeName);
+                if (compType == null)
+                    continue;
+                if (!typeof(Component).IsAssignableFrom(compType))
+                    continue;
+
+                var view = collector.gameObject.GetComponent(compType);
+                if (view == null)
+                    view = collector.gameObject.AddComponent(compType);
+                return view;
+            }
+
+            Debug.LogWarning($"未找到组件类型 {luaViewTypeName}，请检查脚本是否存在。", collector);
             return null;
         }
 
@@ -211,25 +244,35 @@ namespace YouBindCollector
         public void UpdateCode(YouBindCollector bind = null)
         {
             // 添加收集器
-            bind = CreateBindCollector(bind);
+            bool createdNewCollector;
+            bind = CreateBindCollector(out createdNewCollector, bind);
             if (bind == null) return;
 
             SetRootBindBase(bind);
             // 扫描组件
             ScanComponent(bind);
+            if (createdNewCollector)
+            {
+                Debug.Log("首次新增绑定流程：已自动扫描组件，请确认引用后再次点击生成代码。", bind);
+                return;
+            }
             // 生成代码
             YouBindCodeGenerater.Instance.DoGenerate(rootBindBase);
             if (rootBindBase.codeGenerateType != YouBindCollector.CodeGenerateType.CSharp)
                 return;
             // 添加绑定组件
             var view = AddBindview(bind);
-            // 重新序列化
-            if (view != null)
-            {
-                MethodInfo methodInfo = view.GetType().GetMethod("InitializeView", BindingFlags.Public | BindingFlags.Instance);
-                if (methodInfo != null)
-                    methodInfo.Invoke(view, null);
-            }
+            TryInitializeView(view);
+        }
+
+        internal static void TryInitializeView(Component view)
+        {
+            if (view == null)
+                return;
+
+            var methodInfo = view.GetType().GetMethod("InitializeView", BindingFlags.Public | BindingFlags.Instance);
+            if (methodInfo != null)
+                methodInfo.Invoke(view, null);
         }
 
         public void SortBindObjectInfo(YouBindCollector collector)

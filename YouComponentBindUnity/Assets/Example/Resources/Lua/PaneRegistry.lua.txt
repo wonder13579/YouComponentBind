@@ -3,7 +3,6 @@
 
 UIRegistry = UIRegistry or {}
 UIPanelName = {}
-UIPanelName.FirstLuaWindowPanelName = "FirstLuaWindow"
 
 local panelMap = {}
 

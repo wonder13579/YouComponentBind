@@ -65,6 +65,12 @@ namespace YouBindCollector
             codeGeneraterList.ForEach(p => p.ExportCodeFile());
             codeGeneraterList.ForEach(p => p.Clear());
 
+            if (rootBindBase.codeGenerateType == YouBindCollector.CodeGenerateType.Lua)
+            {
+                var luaView = YouBindCollectorController.Instance.AddCommonLuaView(rootBindBase);
+                YouBindCollectorController.TryInitializeView(luaView);
+            }
+
             var refreshAfterGenCode = EditorPrefs.GetBool(YouBindGlobalDefine.YouComponentBind_RefreshAfterGenCode, true);
             if (refreshAfterGenCode)
                 AssetDatabase.Refresh();

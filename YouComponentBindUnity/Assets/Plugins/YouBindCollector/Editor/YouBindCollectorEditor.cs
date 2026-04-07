@@ -19,8 +19,7 @@ namespace YouBindCollector
                 YouBindCollectorWindow.OpenWindow(targetComponent);
 
             GUILayout.EndHorizontal();
-            // 隐藏字段属性显示。这样在debug下还是能看到的。
-            // DrawDefaultInspector();
+            DrawDefaultInspector();
         }
     }
 }

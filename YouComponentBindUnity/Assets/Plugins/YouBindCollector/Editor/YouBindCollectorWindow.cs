@@ -351,10 +351,19 @@ namespace YouBindCollector
             {
                 var config = YouBindTypeConfigManager.Instance.GetBindConfig(info.bindType);
                 Debug.Log("" + info.bindType + config);
-                newFieldName = Regex.Replace(newFieldName, "^" + config.prefix, "");
+                var objectName = newFieldName;
+                var prefix = config?.prefix ?? "Field";
+                var prefixWithSeparator = prefix + "_";
+                if (objectName.StartsWith(prefixWithSeparator))
+                    objectName = objectName.Substring(prefixWithSeparator.Length);
+                else if (objectName.StartsWith(prefix))
+                    objectName = objectName.Substring(prefix.Length);
+
+                objectName = YouBindGlobalDefine.SanitizeIdentifier(objectName, "Object");
                 var transform = YouBindUtils.GetObjectTransform(info.bindObject);
-                transform.name = newFieldName;
-                info.fieldName = config.prefix + newFieldName;
+                if (transform != null)
+                    transform.name = objectName;
+                info.fieldName = YouBindGlobalDefine.BuildFieldName(prefix, objectName);
             }
 
             // 显示引用

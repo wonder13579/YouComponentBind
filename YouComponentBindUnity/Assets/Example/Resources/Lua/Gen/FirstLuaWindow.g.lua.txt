@@ -2,6 +2,8 @@
 
 --- @class FirstLuaWindow
 local FirstLuaWindow = {}
+-- TODO 注册名移动到这里了，改下生成器逻辑
+UIPanelName.FirstLuaWindowPanelName = "FirstLuaWindowPanelName"
 local PanelName = UIPanelName.FirstLuaWindowPanelName
 
 UIRegistry.Register(PanelName, FirstLuaWindow)

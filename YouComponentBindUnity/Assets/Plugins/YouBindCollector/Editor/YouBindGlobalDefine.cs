@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Text;
+using UnityEngine;
 
 namespace YouBindCollector
 {
@@ -47,7 +48,37 @@ namespace YouBindCollector
                 bindConfig = YouBindTypeConfigManager.Instance.GetBindConfig(bindInfo.bindType);
             if (objectTF == null)
                 objectTF = YouBindUtils.GetObjectTransform(bindInfo.bindObject);
-            return bindConfig?.prefix + "_" + objectTF?.name;
+            return BuildFieldName(bindConfig?.prefix, objectTF?.name);
+        }
+
+        public static string BuildFieldName(string prefix, string rawName)
+        {
+            var normalizedPrefix = SanitizeIdentifier(prefix, "Field");
+            var normalizedName = SanitizeIdentifier(rawName, "Object");
+            return normalizedPrefix + "_" + normalizedName;
+        }
+
+        public static string SanitizeIdentifier(string value, string fallback = "_")
+        {
+            if (string.IsNullOrEmpty(value))
+                return fallback;
+
+            var builder = new StringBuilder(value.Length + 1);
+            for (var i = 0; i < value.Length; i++)
+            {
+                var c = value[i];
+                if (char.IsLetterOrDigit(c) || c == '_')
+                    builder.Append(c);
+                else
+                    builder.Append('_');
+            }
+
+            if (builder.Length <= 0)
+                builder.Append(fallback);
+            if (char.IsDigit(builder[0]))
+                builder.Insert(0, '_');
+
+            return builder.ToString();
         }
     }
 }
