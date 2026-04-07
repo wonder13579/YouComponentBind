@@ -1,6 +1,8 @@
 using System;
 using UnityEngine;
+using UnityEngine.Events;
 using XLua;
+using System.Collections.Generic;
 
 // 提供测试用Lua环境
 public class LuaSystem : MonoBehaviour
@@ -11,6 +13,7 @@ public class LuaSystem : MonoBehaviour
     {
         instance = this;
         luaEnv = new LuaEnv();
+        LoadLuaFile("Lua/PaneRegistry.lua");
     }
 
     private LuaEnv luaEnv;
@@ -121,4 +124,17 @@ public class LuaSystem : MonoBehaviour
         luaEnv?.Dispose();
         luaEnv = null;
     }
+}
+
+public static class LuaSystemXLuaConfig
+{
+    [CSharpCallLua]
+    public static List<Type> CSharpCallLua = new List<Type>()
+    {
+        typeof(UnityAction),
+        typeof(UnityAction<bool>),
+        typeof(UnityAction<int>),
+        typeof(UnityAction<float>),
+        typeof(UnityAction<string>)
+    };
 }

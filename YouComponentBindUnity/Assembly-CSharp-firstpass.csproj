@@ -42,9 +42,7 @@
   </PropertyGroup>
   <ItemGroup>
      <Compile Include="Assets\Plugins\xlua\Src\LuaDLL.cs" />
-     <Compile Include="Assets\Plugins\xlua\Tutorial\LoadLuaScript\Loader\CustomLoader.cs" />
      <Compile Include="Assets\Plugins\xlua\Src\MethodWarpsCache.cs" />
-     <Compile Include="Assets\Plugins\xlua\Tutorial\LuaCallCSharp\LuaCallCs.cs" />
      <Compile Include="Assets\Plugins\xlua\Src\LuaFunction.cs" />
      <Compile Include="Assets\Plugins\xlua\Src\ObjectCasters.cs" />
      <Compile Include="Assets\Plugins\xlua\Src\SignatureLoader.cs" />
@@ -54,7 +52,6 @@
      <Compile Include="Assets\Plugins\xlua\Src\InternalGlobals.cs" />
      <Compile Include="Assets\Plugins\xlua\Src\ObjectTranslatorPool.cs" />
      <Compile Include="Assets\Plugins\xlua\Src\LuaTable.cs" />
-     <Compile Include="Assets\Plugins\xlua\Tutorial\LoadLuaScript\ByFile\ByFile.cs" />
      <Compile Include="Assets\Plugins\xlua\Src\Utils.cs" />
      <Compile Include="Assets\Plugins\xlua\Src\RawObject.cs" />
      <Compile Include="Assets\Plugins\xlua\Src\TemplateEngine\TemplateEngine.cs" />
@@ -62,31 +59,22 @@
      <Compile Include="Assets\Plugins\YouBindCollector\RunTime\EventCenter.cs" />
      <Compile Include="Assets\Plugins\xlua\Src\LuaBase.cs" />
      <Compile Include="Assets\Plugins\xlua\Src\GenAttributes.cs" />
-     <Compile Include="Assets\Plugins\xlua\Tutorial\LoadLuaScript\ByString\ByString.cs" />
      <Compile Include="Assets\Plugins\xlua\Src\ObjectTranslator.cs" />
      <Compile Include="Assets\Plugins\xlua\Src\LuaEnv.cs" />
-     <Compile Include="Assets\Plugins\xlua\Tutorial\CSharpCallLua\CSCallLua.cs" />
      <Compile Include="Assets\Plugins\xlua\Src\DelegateBridge.cs" />
      <Compile Include="Assets\Plugins\xlua\Src\GenericDelegateBridge.cs" />
      <Compile Include="Assets\Plugins\xlua\Src\CopyByValue.cs" />
      <Compile Include="Assets\Plugins\xlua\Src\StaticLuaCallbacks.cs" />
      <Compile Include="Assets\Plugins\YouBindCollector\RunTime\YouBindCollector.cs" />
-     <None Include="Assets\Plugins\xlua\Tutorial\LoadLuaScript\ByFile\Resources\byfile.lua.txt" />
-     <Folder Include="Assets\Plugins\xlua\Tutorial\LoadLuaScript\ByFile\Resources" />
      <Folder Include="Assets\Plugins\xlua\Resources\xlua" />
      <None Include="Assets\Plugins\xlua\Resources\xlua\util.lua.txt" />
-     <Folder Include="Assets\Plugins\xlua\Tutorial\LoadLuaScript" />
      <Folder Include="Assets\Plugins\YouBindCollector\RunTime" />
-     <Folder Include="Assets\Plugins\xlua\Tutorial\LuaCallCSharp" />
-     <Folder Include="Assets\Plugins\xlua\Tutorial\CSharpCallLua" />
      <Folder Include="Assets\Plugins\xlua\Resources\perf" />
      <Folder Include="Assets\Plugins\xlua\Src\Lib" />
      <Folder Include="Assets\Plugins\xlua\Doc" />
      <None Include="Assets\Plugins\xlua\Resources\perf\profiler.lua.txt" />
      <None Include="Assets\Plugins\xlua\Resources\perf\memory.lua.txt" />
      <Folder Include="Assets\Plugins\xlua\Resources" />
-     <Folder Include="Assets\Plugins\xlua\Tutorial\LoadLuaScript\Loader" />
-     <Folder Include="Assets\Plugins\xlua\Tutorial\LoadLuaScript\ByString" />
      <Folder Include="Assets\Plugins\YouBindCollector" />
      <Folder Include="Assets\Plugins\xlua\Src" />
      <Folder Include="Assets\Plugins\xlua" />
@@ -94,10 +82,8 @@
      <None Include="Assets\Plugins\xlua\Resources\tdr\tdr.lua.txt" />
      <None Include="Assets\Plugins\xlua\CHANGELOG.txt" />
      <Folder Include="Assets\Plugins\xlua\Doc\Materials" />
-     <Folder Include="Assets\Plugins\xlua\Tutorial\LoadLuaScript\ByFile" />
      <Folder Include="Assets\Plugins\xlua\Src\TemplateEngine" />
      <Folder Include="Assets\Plugins\xlua\Resources\tdr" />
-     <Folder Include="Assets\Plugins\xlua\Tutorial" />
      <Reference Include="UnityEngine">
      <HintPath>C:\_root\APP\unity\Editor\Unity 2021.3.8f1c1\Editor\Data\Managed\UnityEngine\UnityEngine.dll</HintPath>
      </Reference>

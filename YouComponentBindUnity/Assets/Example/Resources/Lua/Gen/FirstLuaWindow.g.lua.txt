@@ -2,7 +2,9 @@
 
 --- @class FirstLuaWindow
 local FirstLuaWindow = {}
-UIRegistry.Register(UIPanelName.FirstLuaWindowPanelName, FirstLuaWindow)
+local PanelName = UIPanelName.FirstLuaWindowPanelName
+
+UIRegistry.Register(PanelName, FirstLuaWindow)
 
 function FirstLuaWindow_Init(commonView)
     return FirstLuaWindow:InitView(commonView)
@@ -10,8 +12,8 @@ end
 
 function FirstLuaWindow:InitView(commonView)
     self.view = FirstLuaWindow_InitializeView(commonView)
-
-    FirstLuaWindow_OnEnable(commonView)
+    FirstLuaWindow_OnEnable()
+    return self.view
 end
 
 -- 根据传入的 CommonLuaView 对象初始化视图 table。
@@ -56,46 +58,78 @@ function FirstLuaWindow_InitializeView(commonView)
     return view
 end
 
+local function GetFirstLuaWindowPanel()
+    --- @type FirstLuaWindow
+    local panel = UIRegistry.Get(PanelName)
+    if panel == nil then
+        print("[FirstLuaWindow] Panel not found in UIRegistry.")
+    end
+    return panel
+end
 
 function FirstLuaWindow_OnButton_ButtonClick()
-    --- @type FirstLuaWindow
-    local panel = UIRegistry.Get("FirstLuaWindow")
+    local panel = GetFirstLuaWindowPanel()
     if panel ~= nil and panel.OnButton_ButtonClick ~= nil then
         panel:OnButton_ButtonClick()
     end
 end
 
 function FirstLuaWindow_OnToggle_ItemValueChanged(value)
-    -- TODO
+    local panel = GetFirstLuaWindowPanel()
+    if panel ~= nil and panel.OnToggle_ItemValueChanged ~= nil then
+        panel:OnToggle_ItemValueChanged(value)
+    end
 end
 
 function FirstLuaWindow_OnToggle_ToggleValueChanged(value)
-
-    -- TODO
+    local panel = GetFirstLuaWindowPanel()
+    if panel ~= nil and panel.OnToggle_ToggleValueChanged ~= nil then
+        panel:OnToggle_ToggleValueChanged(value)
+    end
 end
 
 function FirstLuaWindow_OnEnable()
-    local panel = UIRegistry.Get(UIPanelName.FirstLuaWindowPanelName)
+    local panel = GetFirstLuaWindowPanel()
     if panel == nil then
-        print("[FirstLuaWindow] Panel not found in UIRegistry.")
         return
     end
+
     local view = panel.view
-    -- 不需要检查view中Button_Button等组件是否为空，我们可以假定他都正确
+    if view == nil then
+        print("[FirstLuaWindow] View is nil.")
+        return
+    end
+
+    -- 防止重复注册
+    view.Button_Button.onClick:RemoveListener(FirstLuaWindow_OnButton_ButtonClick)
+    view.Toggle_Item.onValueChanged:RemoveListener(FirstLuaWindow_OnToggle_ItemValueChanged)
+    view.Toggle_Toggle.onValueChanged:RemoveListener(FirstLuaWindow_OnToggle_ToggleValueChanged)
+
     view.Button_Button.onClick:AddListener(FirstLuaWindow_OnButton_ButtonClick)
     view.Toggle_Item.onValueChanged:AddListener(FirstLuaWindow_OnToggle_ItemValueChanged)
     view.Toggle_Toggle.onValueChanged:AddListener(FirstLuaWindow_OnToggle_ToggleValueChanged)
+
+    if panel.Enable ~= nil then
+        panel:Enable()
+    end
 end
 
 function FirstLuaWindow_OnDisable()
-    local panel = UIRegistry.Get(UIPanelName.FirstLuaWindowPanelName)
+    local panel = GetFirstLuaWindowPanel()
     if panel == nil then
-        print("[FirstLuaWindow] Panel not found in UIRegistry.")
         return
     end
+
     local view = panel.view
-    -- 不需要检查view中Button_Button等组件是否为空，我们可以假定他都正确
-    view.Button_Button.onClick:AddListener(FirstLuaWindow_OnButton_ButtonClick)
-    view.Toggle_Item.onValueChanged:AddListener(FirstLuaWindow_OnToggle_ItemValueChanged)
-    view.Toggle_Toggle.onValueChanged:AddListener(FirstLuaWindow_OnToggle_ToggleValueChanged)
+    if view == nil then
+        return
+    end
+
+    view.Button_Button.onClick:RemoveListener(FirstLuaWindow_OnButton_ButtonClick)
+    view.Toggle_Item.onValueChanged:RemoveListener(FirstLuaWindow_OnToggle_ItemValueChanged)
+    view.Toggle_Toggle.onValueChanged:RemoveListener(FirstLuaWindow_OnToggle_ToggleValueChanged)
+
+    if panel.Disable ~= nil then
+        panel:Disable()
+    end
 end

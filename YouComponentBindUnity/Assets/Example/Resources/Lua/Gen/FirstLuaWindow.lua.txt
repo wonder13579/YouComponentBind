@@ -2,6 +2,10 @@
 --- @type FirstLuaWindow
 local FirstLuaWindow = UIRegistry.Get(UIPanelName.FirstLuaWindowPanelName)
 
+if FirstLuaWindow == nil then
+    error("[FirstLuaWindow] Panel not found in UIRegistry. Please check g file registration.")
+end
+
 function FirstLuaWindow:Start()
     -- 测试用，先别删
     print("[FirstLuaWindow] Init done.")
@@ -13,14 +17,13 @@ function FirstLuaWindow:Start()
     self.view.Text_Text.text = "Hello YouBind!"
 end
 
--- TODO 实现这个生命周期函数
 function FirstLuaWindow:Enable()
-    
+    print("[FirstLuaWindow] Enable")
 end
 
--- TODO 实现这个生命周期函数
 function FirstLuaWindow:Disable()
-    
+    print("[FirstLuaWindow] Disable")
+    -- 预留：面板关闭时的清理逻辑
 end
 
 --- Button_Button.onClick
@@ -37,4 +40,3 @@ end
 function FirstLuaWindow:OnToggle_ToggleValueChanged(...)
     print("[FirstLuaWindow] Toggle_Toggle value changed.")
 end
-

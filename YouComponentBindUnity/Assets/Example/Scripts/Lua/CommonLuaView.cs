@@ -68,9 +68,9 @@ public class CommonLuaView : MonoBehaviour
         if (!string.IsNullOrEmpty(className))
         {
             // 构造Lua文件路径
-            string luaFilePath2 = $"{luaBasePath}/{className}";
-            luaSystem.LoadLuaFile(luaFilePath2);
-            string luaFilePath = $"{luaBasePath}/{className}.g";
+            string luaGenFilePath = $"{luaBasePath}/{className}.g";
+            luaSystem.LoadLuaFile(luaGenFilePath);
+            string luaFilePath = $"{luaBasePath}/{className}";
             luaSystem.LoadLuaFile(luaFilePath);
 
             // 调用初始化函数，传入自身（CommonLuaView），让 Lua 可访问 viewList

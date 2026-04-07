@@ -44,7 +44,6 @@
      <Compile Include="Assets\Plugins\YouBindCollector\Editor\YouBindCollectorEditor.cs" />
      <Compile Include="Assets\Plugins\YouBindCollector\Editor\YouBindGlobalDefine.cs" />
      <Compile Include="Assets\Plugins\xlua\Src\Editor\Hotfix.cs" />
-     <Compile Include="Assets\Plugins\xlua\Editor\XLuaUnityDefaultConfig.cs" />
      <Compile Include="Assets\Plugins\YouBindCollector\Editor\YouBindUtils.cs" />
      <Compile Include="Assets\Plugins\xlua\Src\Editor\LinkXmlGen\LinkXmlGen.cs" />
      <Compile Include="Assets\Plugins\YouBindCollector\Editor\YouBindCollectorController.cs" />
@@ -53,7 +52,6 @@
      <Compile Include="Assets\Plugins\xlua\Src\Editor\TemplateRef.cs" />
      <Compile Include="Assets\Plugins\YouBindCollector\Editor\YouBindCollectorWindow.cs" />
      <Compile Include="Assets\Plugins\YouBindCollector\Editor\YouBindHierarchyMark.cs" />
-     <Compile Include="Assets\Plugins\xlua\Editor\ExampleConfig.cs" />
      <Compile Include="Assets\Plugins\YouBindCollector\Editor\YouBindCollectorAddBindWindow.cs" />
      <Compile Include="Assets\Plugins\YouBindCollector\Editor\YouBindCommonChecker.cs" />
      <Compile Include="Assets\Plugins\xlua\Src\Editor\Generator.cs" />
