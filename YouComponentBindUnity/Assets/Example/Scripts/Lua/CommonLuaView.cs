@@ -50,10 +50,35 @@ public class CommonLuaView : MonoBehaviour
     public string luaBasePath = "Lua/Gen";
     public List<Object> viewList = new List<Object>();
 
-    // TODO 项目中应当使用LuaSystem中的lua环境
-    // TODO 初始化lua环境。调用FirstLuaWindow.lua和FirstLuaWindow.bind.lua来初始化view。
+    /// <summary>
+    /// 初始化Lua环境并加载视图
+    /// </summary>
     private void Start()
     {
-        throw new NotImplementedException();
+        // 获取LuaSystem实例
+        var luaSystem = LuaSystem.instance;
+        if (luaSystem == null)
+        {
+            Debug.LogError("CommonLuaView: LuaSystem instance is null, can not initialize lua environment.", this);
+            return;
+        }
+
+        // 加载对应的Lua文件
+        if (!string.IsNullOrEmpty(className))
+        {
+            // 构造Lua文件路径
+            string luaFilePath = $"{luaBasePath}/{className}.g";
+            luaSystem.LoadLuaFile(luaFilePath);
+            string luaFilePath2 = $"{luaBasePath}/{className}";
+            luaSystem.LoadLuaFile(luaFilePath2);
+
+            // 调用初始化函数
+            string initFunctionName = $"{className}_Init";
+            luaSystem.DoLuaTransformFunction(initFunctionName, transform);
+        }
+        else
+        {
+            Debug.LogError("CommonLuaView: className is empty, can not load lua file.", this);
+        }
     }
 }
