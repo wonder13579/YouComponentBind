@@ -44,20 +44,24 @@ namespace YouBindCollector
         {
             if (bindInfo == null)
                 return "";
-            if (bindConfig == null)
-                bindConfig = YouBindTypeConfigManager.Instance.GetBindConfig(bindInfo.bindType);
+            // 前缀这个功能没啥必要了，不留了
+            // if (bindConfig == null)
+            //     bindConfig = YouBindTypeConfigManager.Instance.GetBindConfig(bindInfo.bindType);
             if (objectTF == null)
                 objectTF = YouBindUtils.GetObjectTransform(bindInfo.bindObject);
-            return BuildFieldName(bindConfig?.prefix, objectTF?.name);
+            return BuildFieldName(objectTF?.name, bindConfig?.prefix);
         }
 
-        public static string BuildFieldName(string prefix, string rawName)
+        public static string BuildFieldName(string rawName, string prefix)
         {
-            var normalizedPrefix = SanitizeIdentifier(prefix, "Field");
-            var normalizedName = SanitizeIdentifier(rawName, "Object");
-            return normalizedPrefix + "_" + normalizedName;
+            return SanitizeIdentifier(rawName, "Object");
+            // 前缀这个功能没啥必要了，不留了
+            // var normalizedPrefix = SanitizeIdentifier(prefix, "Field");
+            // var normalizedName = SanitizeIdentifier(rawName, "Object");
+            // return normalizedPrefix + "_" + normalizedName;
         }
 
+        // 替换标识符中的特殊字符
         public static string SanitizeIdentifier(string value, string fallback = "_")
         {
             if (string.IsNullOrEmpty(value))

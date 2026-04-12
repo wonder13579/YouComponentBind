@@ -83,4 +83,19 @@ function CallLuaPanelFunction(luaWindowName, functionName, luaObject)
     return targetFunc(panel, luaObject)
 end
 
+function CleanupLuaPanelCallbacks()
+    for _, panel in pairs(panelMap) do
+        if panel ~= nil and type(panel.UnregisterEvent) == "function" then
+            local ok, err = pcall(function()
+                panel:UnregisterEvent()
+            end)
+            if not ok then
+                print("[CleanupLuaPanelCallbacks] UnregisterEvent failed:", err)
+            end
+        end
+    end
+
+    UIRegistry.Clear()
+end
+
 return UIRegistry

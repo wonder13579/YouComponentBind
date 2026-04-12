@@ -419,8 +419,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2399799427705367193}
-  - component: {fileID: 3212365363540653040}
-  - component: {fileID: 7401089374687360301}
+  - component: {fileID: 4361843767375138065}
+  - component: {fileID: 6971601967328315285}
   m_Layer: 5
   m_Name: UILuaWindow2
   m_TagString: Untagged
@@ -455,7 +455,7 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &3212365363540653040
+--- !u!114 &4361843767375138065
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -470,7 +470,7 @@ MonoBehaviour:
   targetClassName: UILuaWindow2
   codeGenerateType: 1
   bindInfoList:
-  - fieldName: Button_Button
+  - fieldName: Button
     typeFullName: UnityEngine.UI.Button, UnityEngine.UI, Version=1.0.0.0, Culture=neutral,
       PublicKeyToken=null
     bindObject: {fileID: 2577398793189967209}
@@ -480,7 +480,7 @@ MonoBehaviour:
     eventInfoList:
     - genCode: 1
       eventName: onClick
-  - fieldName: Button_ButtonA
+  - fieldName: ButtonA
     typeFullName: UnityEngine.UI.Button, UnityEngine.UI, Version=1.0.0.0, Culture=neutral,
       PublicKeyToken=null
     bindObject: {fileID: 1955382609288728015}
@@ -490,7 +490,7 @@ MonoBehaviour:
     eventInfoList:
     - genCode: 1
       eventName: onClick
-  - fieldName: Button_ButtonB
+  - fieldName: ButtonB
     typeFullName: UnityEngine.UI.Button, UnityEngine.UI, Version=1.0.0.0, Culture=neutral,
       PublicKeyToken=null
     bindObject: {fileID: 438104575424360269}
@@ -500,7 +500,7 @@ MonoBehaviour:
     eventInfoList:
     - genCode: 1
       eventName: onClick
-  - fieldName: Button_ButtonC
+  - fieldName: ButtonC
     typeFullName: UnityEngine.UI.Button, UnityEngine.UI, Version=1.0.0.0, Culture=neutral,
       PublicKeyToken=null
     bindObject: {fileID: 8764303679358880861}
@@ -510,7 +510,7 @@ MonoBehaviour:
     eventInfoList:
     - genCode: 1
       eventName: onClick
-  - fieldName: Button_ButtonD
+  - fieldName: ButtonD
     typeFullName: UnityEngine.UI.Button, UnityEngine.UI, Version=1.0.0.0, Culture=neutral,
       PublicKeyToken=null
     bindObject: {fileID: 8868127697392644068}
@@ -520,7 +520,7 @@ MonoBehaviour:
     eventInfoList:
     - genCode: 1
       eventName: onClick
-  - fieldName: Raw_RawImage
+  - fieldName: RawImage
     typeFullName: UnityEngine.UI.RawImage, UnityEngine.UI, Version=1.0.0.0, Culture=neutral,
       PublicKeyToken=null
     bindObject: {fileID: 2578076359635319253}
@@ -528,7 +528,7 @@ MonoBehaviour:
     joinIndex: 1
     relativePath: AllType/RawImage
     eventInfoList: []
-  - fieldName: Text__2
+  - fieldName: _2
     typeFullName: UnityEngine.UI.Text, UnityEngine.UI, Version=1.0.0.0, Culture=neutral,
       PublicKeyToken=null
     bindObject: {fileID: 2577711703045539805}
@@ -536,7 +536,7 @@ MonoBehaviour:
     joinIndex: 4
     relativePath: AllType/Toggle/2
     eventInfoList: []
-  - fieldName: Text_Label
+  - fieldName: Label
     typeFullName: UnityEngine.UI.Text, UnityEngine.UI, Version=1.0.0.0, Culture=neutral,
       PublicKeyToken=null
     bindObject: {fileID: 2577532979063309999}
@@ -544,7 +544,7 @@ MonoBehaviour:
     joinIndex: 5
     relativePath: AllType/Dropdown/Label
     eventInfoList: []
-  - fieldName: Text_Placeholder
+  - fieldName: Placeholder
     typeFullName: UnityEngine.UI.Text, UnityEngine.UI, Version=1.0.0.0, Culture=neutral,
       PublicKeyToken=null
     bindObject: {fileID: 2577356930077441405}
@@ -552,7 +552,7 @@ MonoBehaviour:
     joinIndex: 7
     relativePath: AllType/InputField/Placeholder
     eventInfoList: []
-  - fieldName: Text_Text
+  - fieldName: Text
     typeFullName: UnityEngine.UI.Text, UnityEngine.UI, Version=1.0.0.0, Culture=neutral,
       PublicKeyToken=null
     bindObject: {fileID: 2577204198953163973}
@@ -560,31 +560,31 @@ MonoBehaviour:
     joinIndex: 8
     relativePath: AllType/InputField/Text
     eventInfoList: []
-  - fieldName: Text_Text__Legacy_
+  - fieldName: Text__Legacy_
     typeFullName: UnityEngine.UI.Text, UnityEngine.UI, Version=1.0.0.0, Culture=neutral,
       PublicKeyToken=null
     bindObject: {fileID: 3910881826695571485}
-    genCode: 1
+    genCode: 0
     joinIndex: 14
     relativePath: ButtonB/Text (Legacy)
     eventInfoList: []
-  - fieldName: Text_Text__Legacy_
+  - fieldName: Text__Legacy_
     typeFullName: UnityEngine.UI.Text, UnityEngine.UI, Version=1.0.0.0, Culture=neutral,
       PublicKeyToken=null
     bindObject: {fileID: 8269155810928368845}
-    genCode: 1
+    genCode: 0
     joinIndex: 16
     relativePath: ButtonC/Text (Legacy)
     eventInfoList: []
-  - fieldName: Text_Text__Legacy_
+  - fieldName: Text__Legacy_
     typeFullName: UnityEngine.UI.Text, UnityEngine.UI, Version=1.0.0.0, Culture=neutral,
       PublicKeyToken=null
     bindObject: {fileID: 8806855776538712606}
-    genCode: 1
+    genCode: 0
     joinIndex: 18
     relativePath: ButtonD/Text (Legacy)
     eventInfoList: []
-  - fieldName: Text_Text1
+  - fieldName: Text1
     typeFullName: UnityEngine.UI.Text, UnityEngine.UI, Version=1.0.0.0, Culture=neutral,
       PublicKeyToken=null
     bindObject: {fileID: 1285995944460747125}
@@ -592,7 +592,7 @@ MonoBehaviour:
     joinIndex: 12
     relativePath: ButtonA/Text1
     eventInfoList: []
-  - fieldName: Text_Text444__1_
+  - fieldName: Text444__1_
     typeFullName: UnityEngine.UI.Text, UnityEngine.UI, Version=1.0.0.0, Culture=neutral,
       PublicKeyToken=null
     bindObject: {fileID: 8292596556258100024}
@@ -600,7 +600,7 @@ MonoBehaviour:
     joinIndex: 10
     relativePath: Text444 (1)
     eventInfoList: []
-  - fieldName: Text_Text555
+  - fieldName: Text555
     typeFullName: UnityEngine.UI.Text, UnityEngine.UI, Version=1.0.0.0, Culture=neutral,
       PublicKeyToken=null
     bindObject: {fileID: 2105171264953460094}
@@ -608,7 +608,7 @@ MonoBehaviour:
     joinIndex: 9
     relativePath: Text555
     eventInfoList: []
-  - fieldName: Text_tip23424
+  - fieldName: tip23424
     typeFullName: UnityEngine.UI.Text, UnityEngine.UI, Version=1.0.0.0, Culture=neutral,
       PublicKeyToken=null
     bindObject: {fileID: 2577495295084308753}
@@ -616,7 +616,7 @@ MonoBehaviour:
     joinIndex: 0
     relativePath: AllType/tip23424
     eventInfoList: []
-  - fieldName: Toggle_Item
+  - fieldName: Item
     typeFullName: UnityEngine.UI.Toggle, UnityEngine.UI, Version=1.0.0.0, Culture=neutral,
       PublicKeyToken=null
     bindObject: {fileID: 2578308157685539315}
@@ -626,7 +626,7 @@ MonoBehaviour:
     eventInfoList:
     - genCode: 1
       eventName: onValueChanged
-  - fieldName: Toggle_Toggle
+  - fieldName: Toggle
     typeFullName: UnityEngine.UI.Toggle, UnityEngine.UI, Version=1.0.0.0, Culture=neutral,
       PublicKeyToken=null
     bindObject: {fileID: 2578202600343315627}
@@ -638,7 +638,7 @@ MonoBehaviour:
       eventName: onValueChanged
   sortOrder: 0
   customSortInitialized: 0
---- !u!114 &7401089374687360301
+--- !u!114 &6971601967328315285
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -650,7 +650,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: af5253a8204264440917a89477bc8abc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  collector: {fileID: 3212365363540653040}
+  collector: {fileID: 4361843767375138065}
   className: UILuaWindow2
   luaBasePath: Lua/Gen
   viewList:
@@ -664,9 +664,6 @@ MonoBehaviour:
   - {fileID: 2577532979063309999}
   - {fileID: 2577356930077441405}
   - {fileID: 2577204198953163973}
-  - {fileID: 3910881826695571485}
-  - {fileID: 8269155810928368845}
-  - {fileID: 8806855776538712606}
   - {fileID: 1285995944460747125}
   - {fileID: 8292596556258100024}
   - {fileID: 2105171264953460094}

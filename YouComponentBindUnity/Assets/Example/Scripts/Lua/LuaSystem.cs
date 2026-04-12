@@ -60,8 +60,14 @@ public class LuaSystem : MonoBehaviour
             Debug.LogError($"Lua luaFunction not found: {functionName}", this);
             return;
         }
-
-        luaFunction.Call(tf);
+        try
+        {
+            luaFunction.Call(tf);
+        }
+        finally
+        {
+            luaFunction.Dispose();
+        }
     }
 
     /// <summary>
@@ -120,8 +126,14 @@ public class LuaSystem : MonoBehaviour
             Debug.LogError($"Lua luaFunction not found: {functionName}", this);
             return;
         }
-
-        luaFunction.Call(view);
+        try
+        {
+            luaFunction.Call(view);
+        }
+        finally
+        {
+            luaFunction.Dispose();
+        }
     }
 
     public void CallLuaPanelFunction(string luaWindowName, string functionName, object luaObject=null)
@@ -170,8 +182,44 @@ public class LuaSystem : MonoBehaviour
 
     private void OnDestroy()
     {
-        luaEnv?.Dispose();
-        luaEnv = null;
+        if (luaEnv == null)
+            return;
+
+        TryCleanupLuaPanelCallbacks();
+        try
+        {
+            luaEnv.Dispose();
+        }
+        catch (InvalidOperationException ex)
+        {
+            Debug.LogWarning($"LuaEnv dispose skipped due to remaining C# callbacks: {ex.Message}", this);
+        }
+        finally
+        {
+            luaEnv = null;
+            if (_instance == this)
+                _instance = null;
+        }
+    }
+
+    private void TryCleanupLuaPanelCallbacks()
+    {
+        var cleanupFunc = luaEnv.Global.Get<LuaFunction>("CleanupLuaPanelCallbacks");
+        if (cleanupFunc == null)
+            return;
+
+        try
+        {
+            cleanupFunc.Call();
+        }
+        catch (Exception ex)
+        {
+            Debug.LogWarning($"CleanupLuaPanelCallbacks failed: {ex.Message}", this);
+        }
+        finally
+        {
+            cleanupFunc.Dispose();
+        }
     }
 }
 

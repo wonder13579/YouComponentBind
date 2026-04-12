@@ -97,7 +97,7 @@ public class CommonLuaView : MonoBehaviour
         if (!luaReady || string.IsNullOrEmpty(className))
             return;
 
-        LuaSystem.instance.CallLuaPanelFunction(className, "OnDisable");
         LuaSystem.instance.CallLuaPanelFunction(className, "UnregisterEvent");
+        LuaSystem.instance.CallLuaPanelFunction(className, "OnDisable");
     }
 }
