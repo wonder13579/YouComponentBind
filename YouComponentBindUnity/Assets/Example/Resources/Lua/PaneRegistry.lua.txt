@@ -50,4 +50,37 @@ function UIRegistry.GetMap()
     return panelMap
 end
 
+function CallLuaPanelFunction(luaWindowName, functionName, luaObject)
+    if type(luaWindowName) ~= "string" or luaWindowName == "" then
+        error("[CallLuaPanelFunction] invalid luaWindowName")
+    end
+    if type(functionName) ~= "string" or functionName == "" then
+        error("[CallLuaPanelFunction] invalid functionName")
+    end
+    if type(UIPanelName) ~= "table" then
+        error("[CallLuaPanelFunction] UIPanelName is not ready")
+    end
+
+    local panelName = UIPanelName[luaWindowName]
+    if type(panelName) ~= "string" or panelName == "" then
+        error("[CallLuaPanelFunction] panel name not found: " .. luaWindowName)
+    end
+
+    local panel = UIRegistry.Get(panelName)
+    if panel == nil then
+        error("[CallLuaPanelFunction] panel not found: " .. panelName)
+    end
+
+    local targetFunc = panel[functionName]
+    if targetFunc == nil or type(targetFunc) ~= "function" then
+        error("[CallLuaPanelFunction] function not found: " .. luaWindowName .. "." .. functionName)
+    end
+
+    if luaObject == nil then
+        return targetFunc(panel)
+    end
+
+    return targetFunc(panel, luaObject)
+end
+
 return UIRegistry

@@ -54,7 +54,7 @@ public class CommonLuaView : MonoBehaviour
     /// <summary>
     /// 初始化Lua环境并加载视图
     /// </summary>
-    private void Start()
+    private void Awake()
     {
         // 获取LuaSystem实例
         var luaSystem = LuaSystem.instance;
@@ -74,8 +74,7 @@ public class CommonLuaView : MonoBehaviour
             luaSystem.LoadLuaFile(luaFilePath);
 
             // 调用初始化函数，传入自身（CommonLuaView），让 Lua 可访问 viewList
-            string initFunctionName = $"{className}_Init";
-            luaSystem.DoLuaViewFunction(initFunctionName, this);
+            LuaSystem.instance.CallLuaPanelFunction(className, "InitView", this);
             luaReady = true;
         }
         else
@@ -89,7 +88,8 @@ public class CommonLuaView : MonoBehaviour
         if (!luaReady || string.IsNullOrEmpty(className))
             return;
 
-        CallLuaViewFunctionIfExists($"{className}_OnEnable");
+        LuaSystem.instance.CallLuaPanelFunction(className, "RegisterEvent");
+        LuaSystem.instance.CallLuaPanelFunction(className, "OnEnable");
     }
 
     private void OnDisable()
@@ -97,30 +97,7 @@ public class CommonLuaView : MonoBehaviour
         if (!luaReady || string.IsNullOrEmpty(className))
             return;
 
-        CallLuaViewFunctionIfExists($"{className}_OnDisable");
-    }
-
-    private void CallLuaViewFunctionIfExists(string functionName)
-    {
-        var luaSystem = LuaSystem.instance;
-        if (luaSystem == null)
-            return;
-
-        var luaEnv = luaSystem.GetLuaEnv();
-        if (luaEnv == null)
-            return;
-
-        var luaFunction = luaEnv.Global.Get<LuaFunction>(functionName);
-        if (luaFunction == null)
-            return;
-
-        try
-        {
-            luaFunction.Call(this);
-        }
-        finally
-        {
-            luaFunction.Dispose();
-        }
+        LuaSystem.instance.CallLuaPanelFunction(className, "OnDisable");
+        LuaSystem.instance.CallLuaPanelFunction(className, "UnregisterEvent");
     }
 }

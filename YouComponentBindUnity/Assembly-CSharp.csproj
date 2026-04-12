@@ -41,8 +41,8 @@
     <ImplicitlyExpandDesignTimeFacades>false</ImplicitlyExpandDesignTimeFacades>
   </PropertyGroup>
   <ItemGroup>
-     <Compile Include="Assets\Example\Scripts\Lua\CommonLuaView.cs" />
      <Compile Include="Assets\Example\Scripts\Lua\LuaSystem.cs" />
+     <Compile Include="Assets\Example\Scripts\Lua\CommonLuaView.cs" />
      <Compile Include="Assets\Example\Scripts\Gen\FirstWindow.g.cs" />
      <Compile Include="Assets\Example\Scripts\Gen\FirstWindow.cs" />
      <Folder Include="Assets" />
@@ -52,14 +52,12 @@
      <Folder Include="Assets\Example\Resources" />
      <None Include="Assets\Resources\BillingMode.json" />
      <None Include="Assets\Example\Resources\Lua\Gen\FirstLuaWindow.g.lua.txt" />
-     <None Include="Assets\Example\Resources\Lua\Gen\UILuaWindow2.g.lua.txt" />
      <Folder Include="Assets\Example\Scripts" />
      <Folder Include="Assets\Example\Plugins" />
      <Folder Include="Assets\Example" />
      <None Include="Assets\Example\Resources\Lua\PaneRegistry.lua.txt" />
      <Folder Include="Assets\XLua\Gen" />
      <None Include="Assets\Example\Resources\Lua\Gen\FirstLuaWindow.lua.txt" />
-     <None Include="Assets\Example\Resources\Lua\Gen\UILuaWindow2.lua.txt" />
      <Folder Include="Assets\Example\Resources\Lua" />
      <Folder Include="Assets\Example\Scenes" />
      <Folder Include="Assets\Example\PrefabsUI" />
@@ -699,11 +697,20 @@
      <Reference Include="Unity.TextMeshPro.Editor">
      <HintPath>D:\Root\Project\YouComponentBind\YouComponentBind\YouComponentBindUnity\Library\ScriptAssemblies\Unity.TextMeshPro.Editor.dll</HintPath>
      </Reference>
+     <Reference Include="Unity.VisualStudio.Editor">
+     <HintPath>D:\Root\Project\YouComponentBind\YouComponentBind\YouComponentBindUnity\Library\ScriptAssemblies\Unity.VisualStudio.Editor.dll</HintPath>
+     </Reference>
      <Reference Include="Unity.Performance.Profile-Analyzer.Editor">
      <HintPath>D:\Root\Project\YouComponentBind\YouComponentBind\YouComponentBindUnity\Library\ScriptAssemblies\Unity.Performance.Profile-Analyzer.Editor.dll</HintPath>
      </Reference>
      <Reference Include="Unity.TestTools.CodeCoverage.Editor.OpenCover.Model">
      <HintPath>D:\Root\Project\YouComponentBind\YouComponentBind\YouComponentBindUnity\Library\ScriptAssemblies\Unity.TestTools.CodeCoverage.Editor.OpenCover.Model.dll</HintPath>
+     </Reference>
+     <Reference Include="Unity.TextMeshPro">
+     <HintPath>D:\Root\Project\YouComponentBind\YouComponentBind\YouComponentBindUnity\Library\ScriptAssemblies\Unity.TextMeshPro.dll</HintPath>
+     </Reference>
+     <Reference Include="Unity.2D.Sprite.Editor">
+     <HintPath>D:\Root\Project\YouComponentBind\YouComponentBind\YouComponentBindUnity\Library\ScriptAssemblies\Unity.2D.Sprite.Editor.dll</HintPath>
      </Reference>
      <Reference Include="Unity.TestTools.CodeCoverage.Editor.OpenCover.Mono.Reflection">
      <HintPath>D:\Root\Project\YouComponentBind\YouComponentBind\YouComponentBindUnity\Library\ScriptAssemblies\Unity.TestTools.CodeCoverage.Editor.OpenCover.Mono.Reflection.dll</HintPath>
@@ -714,23 +721,14 @@
      <Reference Include="Unity.Rider.Editor">
      <HintPath>D:\Root\Project\YouComponentBind\YouComponentBind\YouComponentBindUnity\Library\ScriptAssemblies\Unity.Rider.Editor.dll</HintPath>
      </Reference>
+     <Reference Include="Unity.TestTools.CodeCoverage.Editor">
+     <HintPath>D:\Root\Project\YouComponentBind\YouComponentBind\YouComponentBindUnity\Library\ScriptAssemblies\Unity.TestTools.CodeCoverage.Editor.dll</HintPath>
+     </Reference>
      <Reference Include="UnityEngine.UI">
      <HintPath>D:\Root\Project\YouComponentBind\YouComponentBind\YouComponentBindUnity\Library\ScriptAssemblies\UnityEngine.UI.dll</HintPath>
      </Reference>
      <Reference Include="Unity.EditorCoroutines.Editor">
      <HintPath>D:\Root\Project\YouComponentBind\YouComponentBind\YouComponentBindUnity\Library\ScriptAssemblies\Unity.EditorCoroutines.Editor.dll</HintPath>
-     </Reference>
-     <Reference Include="Unity.VisualStudio.Editor">
-     <HintPath>D:\Root\Project\YouComponentBind\YouComponentBind\YouComponentBindUnity\Library\ScriptAssemblies\Unity.VisualStudio.Editor.dll</HintPath>
-     </Reference>
-     <Reference Include="Unity.TextMeshPro">
-     <HintPath>D:\Root\Project\YouComponentBind\YouComponentBind\YouComponentBindUnity\Library\ScriptAssemblies\Unity.TextMeshPro.dll</HintPath>
-     </Reference>
-     <Reference Include="Unity.2D.Sprite.Editor">
-     <HintPath>D:\Root\Project\YouComponentBind\YouComponentBind\YouComponentBindUnity\Library\ScriptAssemblies\Unity.2D.Sprite.Editor.dll</HintPath>
-     </Reference>
-     <Reference Include="Unity.TestTools.CodeCoverage.Editor">
-     <HintPath>D:\Root\Project\YouComponentBind\YouComponentBind\YouComponentBindUnity\Library\ScriptAssemblies\Unity.TestTools.CodeCoverage.Editor.dll</HintPath>
      </Reference>
   </ItemGroup>
   <ItemGroup>

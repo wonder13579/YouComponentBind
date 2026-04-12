@@ -41,31 +41,31 @@
     <ImplicitlyExpandDesignTimeFacades>false</ImplicitlyExpandDesignTimeFacades>
   </PropertyGroup>
   <ItemGroup>
+     <Compile Include="Assets\Plugins\xlua\Src\ObjectTranslatorPool.cs" />
+     <Compile Include="Assets\Plugins\xlua\Src\LuaTable.cs" />
      <Compile Include="Assets\Plugins\xlua\Src\LuaDLL.cs" />
-     <Compile Include="Assets\Plugins\xlua\Src\MethodWarpsCache.cs" />
+     <Compile Include="Assets\Plugins\xlua\Src\GenAttributes.cs" />
      <Compile Include="Assets\Plugins\xlua\Src\LuaFunction.cs" />
      <Compile Include="Assets\Plugins\xlua\Src\ObjectCasters.cs" />
      <Compile Include="Assets\Plugins\xlua\Src\SignatureLoader.cs" />
-     <Compile Include="Assets\Plugins\xlua\Src\TypeExtensions.cs" />
-     <Compile Include="Assets\Plugins\xlua\Src\CodeEmit.cs" />
-     <Compile Include="Assets\Plugins\xlua\Src\LuaException.cs" />
-     <Compile Include="Assets\Plugins\xlua\Src\InternalGlobals.cs" />
-     <Compile Include="Assets\Plugins\xlua\Src\ObjectTranslatorPool.cs" />
-     <Compile Include="Assets\Plugins\xlua\Src\LuaTable.cs" />
      <Compile Include="Assets\Plugins\xlua\Src\Utils.cs" />
+     <Compile Include="Assets\Plugins\xlua\Src\TypeExtensions.cs" />
      <Compile Include="Assets\Plugins\xlua\Src\RawObject.cs" />
-     <Compile Include="Assets\Plugins\xlua\Src\TemplateEngine\TemplateEngine.cs" />
-     <Compile Include="Assets\Plugins\xlua\Src\ObjectPool.cs" />
-     <Compile Include="Assets\Plugins\YouBindCollector\RunTime\EventCenter.cs" />
-     <Compile Include="Assets\Plugins\xlua\Src\LuaBase.cs" />
-     <Compile Include="Assets\Plugins\xlua\Src\GenAttributes.cs" />
      <Compile Include="Assets\Plugins\xlua\Src\ObjectTranslator.cs" />
+     <Compile Include="Assets\Plugins\xlua\Src\TemplateEngine\TemplateEngine.cs" />
      <Compile Include="Assets\Plugins\xlua\Src\LuaEnv.cs" />
+     <Compile Include="Assets\Plugins\xlua\Src\MethodWarpsCache.cs" />
+     <Compile Include="Assets\Plugins\xlua\Src\CodeEmit.cs" />
+     <Compile Include="Assets\Plugins\xlua\Src\ObjectPool.cs" />
+     <Compile Include="Assets\Plugins\xlua\Src\LuaException.cs" />
      <Compile Include="Assets\Plugins\xlua\Src\DelegateBridge.cs" />
+     <Compile Include="Assets\Plugins\YouBindCollector\RunTime\EventCenter.cs" />
      <Compile Include="Assets\Plugins\xlua\Src\GenericDelegateBridge.cs" />
      <Compile Include="Assets\Plugins\xlua\Src\CopyByValue.cs" />
      <Compile Include="Assets\Plugins\xlua\Src\StaticLuaCallbacks.cs" />
+     <Compile Include="Assets\Plugins\xlua\Src\LuaBase.cs" />
      <Compile Include="Assets\Plugins\YouBindCollector\RunTime\YouBindCollector.cs" />
+     <Compile Include="Assets\Plugins\xlua\Src\InternalGlobals.cs" />
      <Folder Include="Assets\Plugins\xlua\Resources\xlua" />
      <None Include="Assets\Plugins\xlua\Resources\xlua\util.lua.txt" />
      <Folder Include="Assets\Plugins\YouBindCollector\RunTime" />
@@ -717,11 +717,20 @@
      <Reference Include="Unity.TextMeshPro.Editor">
      <HintPath>D:\Root\Project\YouComponentBind\YouComponentBind\YouComponentBindUnity\Library\ScriptAssemblies\Unity.TextMeshPro.Editor.dll</HintPath>
      </Reference>
+     <Reference Include="Unity.VisualStudio.Editor">
+     <HintPath>D:\Root\Project\YouComponentBind\YouComponentBind\YouComponentBindUnity\Library\ScriptAssemblies\Unity.VisualStudio.Editor.dll</HintPath>
+     </Reference>
      <Reference Include="Unity.Performance.Profile-Analyzer.Editor">
      <HintPath>D:\Root\Project\YouComponentBind\YouComponentBind\YouComponentBindUnity\Library\ScriptAssemblies\Unity.Performance.Profile-Analyzer.Editor.dll</HintPath>
      </Reference>
      <Reference Include="Unity.TestTools.CodeCoverage.Editor.OpenCover.Model">
      <HintPath>D:\Root\Project\YouComponentBind\YouComponentBind\YouComponentBindUnity\Library\ScriptAssemblies\Unity.TestTools.CodeCoverage.Editor.OpenCover.Model.dll</HintPath>
+     </Reference>
+     <Reference Include="Unity.TextMeshPro">
+     <HintPath>D:\Root\Project\YouComponentBind\YouComponentBind\YouComponentBindUnity\Library\ScriptAssemblies\Unity.TextMeshPro.dll</HintPath>
+     </Reference>
+     <Reference Include="Unity.2D.Sprite.Editor">
+     <HintPath>D:\Root\Project\YouComponentBind\YouComponentBind\YouComponentBindUnity\Library\ScriptAssemblies\Unity.2D.Sprite.Editor.dll</HintPath>
      </Reference>
      <Reference Include="Unity.TestTools.CodeCoverage.Editor.OpenCover.Mono.Reflection">
      <HintPath>D:\Root\Project\YouComponentBind\YouComponentBind\YouComponentBindUnity\Library\ScriptAssemblies\Unity.TestTools.CodeCoverage.Editor.OpenCover.Mono.Reflection.dll</HintPath>
@@ -732,23 +741,14 @@
      <Reference Include="Unity.Rider.Editor">
      <HintPath>D:\Root\Project\YouComponentBind\YouComponentBind\YouComponentBindUnity\Library\ScriptAssemblies\Unity.Rider.Editor.dll</HintPath>
      </Reference>
+     <Reference Include="Unity.TestTools.CodeCoverage.Editor">
+     <HintPath>D:\Root\Project\YouComponentBind\YouComponentBind\YouComponentBindUnity\Library\ScriptAssemblies\Unity.TestTools.CodeCoverage.Editor.dll</HintPath>
+     </Reference>
      <Reference Include="UnityEngine.UI">
      <HintPath>D:\Root\Project\YouComponentBind\YouComponentBind\YouComponentBindUnity\Library\ScriptAssemblies\UnityEngine.UI.dll</HintPath>
      </Reference>
      <Reference Include="Unity.EditorCoroutines.Editor">
      <HintPath>D:\Root\Project\YouComponentBind\YouComponentBind\YouComponentBindUnity\Library\ScriptAssemblies\Unity.EditorCoroutines.Editor.dll</HintPath>
-     </Reference>
-     <Reference Include="Unity.VisualStudio.Editor">
-     <HintPath>D:\Root\Project\YouComponentBind\YouComponentBind\YouComponentBindUnity\Library\ScriptAssemblies\Unity.VisualStudio.Editor.dll</HintPath>
-     </Reference>
-     <Reference Include="Unity.TextMeshPro">
-     <HintPath>D:\Root\Project\YouComponentBind\YouComponentBind\YouComponentBindUnity\Library\ScriptAssemblies\Unity.TextMeshPro.dll</HintPath>
-     </Reference>
-     <Reference Include="Unity.2D.Sprite.Editor">
-     <HintPath>D:\Root\Project\YouComponentBind\YouComponentBind\YouComponentBindUnity\Library\ScriptAssemblies\Unity.2D.Sprite.Editor.dll</HintPath>
-     </Reference>
-     <Reference Include="Unity.TestTools.CodeCoverage.Editor">
-     <HintPath>D:\Root\Project\YouComponentBind\YouComponentBind\YouComponentBindUnity\Library\ScriptAssemblies\Unity.TestTools.CodeCoverage.Editor.dll</HintPath>
      </Reference>
   </ItemGroup>
   <ItemGroup>

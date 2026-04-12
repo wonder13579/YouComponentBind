@@ -41,26 +41,26 @@
     <ImplicitlyExpandDesignTimeFacades>false</ImplicitlyExpandDesignTimeFacades>
   </PropertyGroup>
   <ItemGroup>
-     <Compile Include="Assets\Plugins\YouBindCollector\Editor\YouBindCollectorEditor.cs" />
-     <Compile Include="Assets\Plugins\YouBindCollector\Editor\YouBindGlobalDefine.cs" />
+     <Compile Include="Assets\Plugins\YouBindCollector\Editor\YouBindCommonChecker.cs" />
      <Compile Include="Assets\Plugins\xlua\Src\Editor\Hotfix.cs" />
-     <Compile Include="Assets\Plugins\YouBindCollector\Editor\YouBindUtils.cs" />
      <Compile Include="Assets\Plugins\xlua\Src\Editor\LinkXmlGen\LinkXmlGen.cs" />
+     <Compile Include="Assets\Plugins\YouBindCollector\Editor\CodeGenerators\CSharpCustomCodeFileGenerater.cs" />
      <Compile Include="Assets\Plugins\YouBindCollector\Editor\YouBindCollectorController.cs" />
+     <Compile Include="Assets\Plugins\YouBindCollector\Editor\CodeGenerators\YouBindCodeGenerater.cs" />
+     <Compile Include="Assets\Plugins\YouBindCollector\Editor\YouBindCollectorEditor.cs" />
+     <Compile Include="Assets\Plugins\YouBindCollector\Editor\CodeGenerators\LuaGenCodeFileGenerater.cs" />
+     <Compile Include="Assets\Plugins\xlua\Src\Editor\Generator.cs" />
      <Compile Include="Assets\Plugins\xlua\Src\Editor\Report.cs" />
+     <Compile Include="Assets\Plugins\YouBindCollector\Editor\YouBindGlobalDefine.cs" />
+     <Compile Include="Assets\Plugins\YouBindCollector\Editor\YouBindTypeConfig.cs" />
+     <Compile Include="Assets\Plugins\YouBindCollector\Editor\CodeGenerators\CodeGeneraterBase.cs" />
      <Compile Include="Assets\Plugins\xlua\Src\Editor\TemplateRef.cs" />
      <Compile Include="Assets\Plugins\YouBindCollector\Editor\YouBindCollectorWindow.cs" />
-     <Compile Include="Assets\Plugins\YouBindCollector\Editor\YouBindHierarchyMark.cs" />
-     <Compile Include="Assets\Plugins\YouBindCollector\Editor\YouBindCollectorAddBindWindow.cs" />
-     <Compile Include="Assets\Plugins\YouBindCollector\Editor\YouBindCommonChecker.cs" />
-     <Compile Include="Assets\Plugins\xlua\Src\Editor\Generator.cs" />
-     <Compile Include="Assets\Plugins\YouBindCollector\Editor\YouBindTypeConfig.cs" />
      <Compile Include="Assets\Plugins\YouBindCollector\Editor\CodeGenerators\CSharpGenCodeFileGenerater.cs" />
-     <Compile Include="Assets\Plugins\YouBindCollector\Editor\CodeGenerators\LuaGenCodeFileGenerater.cs" />
-     <Compile Include="Assets\Plugins\YouBindCollector\Editor\CodeGenerators\CodeGeneraterBase.cs" />
-     <Compile Include="Assets\Plugins\YouBindCollector\Editor\CodeGenerators\CSharpCustomCodeFileGenerater.cs" />
+     <Compile Include="Assets\Plugins\YouBindCollector\Editor\YouBindHierarchyMark.cs" />
+     <Compile Include="Assets\Plugins\YouBindCollector\Editor\YouBindUtils.cs" />
+     <Compile Include="Assets\Plugins\YouBindCollector\Editor\YouBindCollectorAddBindWindow.cs" />
      <Compile Include="Assets\Plugins\YouBindCollector\Editor\CodeGenerators\LuaCustomCodeFileGenerater.cs" />
-     <Compile Include="Assets\Plugins\YouBindCollector\Editor\CodeGenerators\YouBindCodeGenerater.cs" />
      <None Include="Assets\Plugins\xlua\Src\Editor\Template\LuaInterfaceBridge.tpl.txt" />
      <Folder Include="Assets\Plugins\YouBindCollector\Editor\CodeGenerators" />
      <None Include="Assets\Plugins\xlua\Src\Editor\Template\LuaWrapPusher.tpl.txt" />
@@ -725,11 +725,11 @@
      <Reference Include="System.Xml.XPath.XDocument">
      <HintPath>C:\_root\APP\unity\Editor\Unity 2021.3.8f1c1\Editor\Data\UnityReferenceAssemblies\unity-4.8-api\Facades\System.Xml.XPath.XDocument.dll</HintPath>
      </Reference>
-     <Reference Include="UnityEditor.TestRunner">
-     <HintPath>D:\Root\Project\YouComponentBind\YouComponentBind\YouComponentBindUnity\Library\ScriptAssemblies\UnityEditor.TestRunner.dll</HintPath>
-     </Reference>
      <Reference Include="UnityEngine.TestRunner">
      <HintPath>D:\Root\Project\YouComponentBind\YouComponentBind\YouComponentBindUnity\Library\ScriptAssemblies\UnityEngine.TestRunner.dll</HintPath>
+     </Reference>
+     <Reference Include="UnityEditor.TestRunner">
+     <HintPath>D:\Root\Project\YouComponentBind\YouComponentBind\YouComponentBindUnity\Library\ScriptAssemblies\UnityEditor.TestRunner.dll</HintPath>
      </Reference>
      <Reference Include="Unity.VSCode.Editor">
      <HintPath>D:\Root\Project\YouComponentBind\YouComponentBind\YouComponentBindUnity\Library\ScriptAssemblies\Unity.VSCode.Editor.dll</HintPath>
@@ -737,11 +737,20 @@
      <Reference Include="Unity.TextMeshPro.Editor">
      <HintPath>D:\Root\Project\YouComponentBind\YouComponentBind\YouComponentBindUnity\Library\ScriptAssemblies\Unity.TextMeshPro.Editor.dll</HintPath>
      </Reference>
+     <Reference Include="Unity.VisualStudio.Editor">
+     <HintPath>D:\Root\Project\YouComponentBind\YouComponentBind\YouComponentBindUnity\Library\ScriptAssemblies\Unity.VisualStudio.Editor.dll</HintPath>
+     </Reference>
      <Reference Include="Unity.Performance.Profile-Analyzer.Editor">
      <HintPath>D:\Root\Project\YouComponentBind\YouComponentBind\YouComponentBindUnity\Library\ScriptAssemblies\Unity.Performance.Profile-Analyzer.Editor.dll</HintPath>
      </Reference>
      <Reference Include="Unity.TestTools.CodeCoverage.Editor.OpenCover.Model">
      <HintPath>D:\Root\Project\YouComponentBind\YouComponentBind\YouComponentBindUnity\Library\ScriptAssemblies\Unity.TestTools.CodeCoverage.Editor.OpenCover.Model.dll</HintPath>
+     </Reference>
+     <Reference Include="Unity.TextMeshPro">
+     <HintPath>D:\Root\Project\YouComponentBind\YouComponentBind\YouComponentBindUnity\Library\ScriptAssemblies\Unity.TextMeshPro.dll</HintPath>
+     </Reference>
+     <Reference Include="Unity.2D.Sprite.Editor">
+     <HintPath>D:\Root\Project\YouComponentBind\YouComponentBind\YouComponentBindUnity\Library\ScriptAssemblies\Unity.2D.Sprite.Editor.dll</HintPath>
      </Reference>
      <Reference Include="Unity.TestTools.CodeCoverage.Editor.OpenCover.Mono.Reflection">
      <HintPath>D:\Root\Project\YouComponentBind\YouComponentBind\YouComponentBindUnity\Library\ScriptAssemblies\Unity.TestTools.CodeCoverage.Editor.OpenCover.Mono.Reflection.dll</HintPath>
@@ -752,23 +761,14 @@
      <Reference Include="Unity.Rider.Editor">
      <HintPath>D:\Root\Project\YouComponentBind\YouComponentBind\YouComponentBindUnity\Library\ScriptAssemblies\Unity.Rider.Editor.dll</HintPath>
      </Reference>
+     <Reference Include="Unity.TestTools.CodeCoverage.Editor">
+     <HintPath>D:\Root\Project\YouComponentBind\YouComponentBind\YouComponentBindUnity\Library\ScriptAssemblies\Unity.TestTools.CodeCoverage.Editor.dll</HintPath>
+     </Reference>
      <Reference Include="UnityEngine.UI">
      <HintPath>D:\Root\Project\YouComponentBind\YouComponentBind\YouComponentBindUnity\Library\ScriptAssemblies\UnityEngine.UI.dll</HintPath>
      </Reference>
      <Reference Include="Unity.EditorCoroutines.Editor">
      <HintPath>D:\Root\Project\YouComponentBind\YouComponentBind\YouComponentBindUnity\Library\ScriptAssemblies\Unity.EditorCoroutines.Editor.dll</HintPath>
-     </Reference>
-     <Reference Include="Unity.VisualStudio.Editor">
-     <HintPath>D:\Root\Project\YouComponentBind\YouComponentBind\YouComponentBindUnity\Library\ScriptAssemblies\Unity.VisualStudio.Editor.dll</HintPath>
-     </Reference>
-     <Reference Include="Unity.TextMeshPro">
-     <HintPath>D:\Root\Project\YouComponentBind\YouComponentBind\YouComponentBindUnity\Library\ScriptAssemblies\Unity.TextMeshPro.dll</HintPath>
-     </Reference>
-     <Reference Include="Unity.2D.Sprite.Editor">
-     <HintPath>D:\Root\Project\YouComponentBind\YouComponentBind\YouComponentBindUnity\Library\ScriptAssemblies\Unity.2D.Sprite.Editor.dll</HintPath>
-     </Reference>
-     <Reference Include="Unity.TestTools.CodeCoverage.Editor">
-     <HintPath>D:\Root\Project\YouComponentBind\YouComponentBind\YouComponentBindUnity\Library\ScriptAssemblies\Unity.TestTools.CodeCoverage.Editor.dll</HintPath>
      </Reference>
   </ItemGroup>
   <ItemGroup>

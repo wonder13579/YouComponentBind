@@ -255,6 +255,7 @@ namespace YouBindCollector
                     // 生成代码
                     YouBindCodeGenerater.Instance.DoGenerate(rootBindBase);
                 }
+                DrawSelectedNodeRenameField();
                 var obj = EditorGUILayout.ObjectField("拖入组件手动添加", null, typeof(UnityEngine.Object), true);
                 if (obj)
                 {
@@ -264,6 +265,34 @@ namespace YouBindCollector
                     ApplySearchStr(searchString);
                 }
                 ShowAppendContent();
+            }
+        }
+
+        private void DrawSelectedNodeRenameField()
+        {
+            var selectedTransform = Selection.activeTransform;
+            if (selectedTransform == null)
+            {
+                using (new EditorGUI.DisabledScope(true))
+                {
+                    EditorGUILayout.TextField("快速改名", "");
+                }
+                return;
+            }
+
+            var oldName = selectedTransform.name ?? "";
+            var newName = EditorGUILayout.TextField("快速改名", oldName);
+            if (newName == oldName)
+                return;
+
+            Undo.RecordObject(selectedTransform.gameObject, "YouBindCollector Rename Selected Node");
+            selectedTransform.name = newName;
+            EditorUtility.SetDirty(selectedTransform.gameObject);
+
+            if (rootBindBase != null)
+            {
+                YouBindHierarchyMark.NotifyCollectorChanged(rootBindBase);
+                ApplySearchStr(searchString);
             }
         }
 

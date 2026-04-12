@@ -1,6 +1,6 @@
 -- 此文件由 YouBindCollector 生成一次，后续不会被覆盖，可自由修改业务逻辑。
 --- @type FirstLuaWindow
-local FirstLuaWindow = UIRegistry.Get(UIPanelName.FirstLuaWindowPanelName)
+local FirstLuaWindow = UIRegistry.Get(UIPanelName.FirstLuaWindow)
 
 if FirstLuaWindow == nil then
     error("[FirstLuaWindow] Panel not found in UIRegistry. Please check g file registration.")

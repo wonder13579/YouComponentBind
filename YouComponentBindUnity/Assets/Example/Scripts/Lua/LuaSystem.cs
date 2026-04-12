@@ -7,11 +7,22 @@ using System.Collections.Generic;
 // 提供测试用Lua环境
 public class LuaSystem : MonoBehaviour
 {
-    public static LuaSystem instance;
-
-    private void Awake()
+    private static LuaSystem _instance;
+    public static LuaSystem instance
     {
-        instance = this;
+        get
+        {
+            if (_instance == null)
+            {
+                _instance = GameObject.Find("LuaSystem").GetComponent<LuaSystem>();
+                _instance.Init();
+            }
+            return _instance;
+        }
+    }
+
+    private void Init()
+    {
         luaEnv = new LuaEnv();
         LoadLuaFile("Lua/PaneRegistry.lua");
     }
@@ -54,25 +65,6 @@ public class LuaSystem : MonoBehaviour
     }
 
     /// <summary>
-    /// 执行lua函数，传入 CommonLuaView。
-    /// 与 DoLuaTransformFunction 的区别在于参数类型，
-    /// 让 Lua 侧可以直接访问 viewList 列表，无需通过路径查找组件。
-    /// </summary>
-    /// <param name="functionName">Lua 函数名</param>
-    /// <param name="view">传入的 CommonLuaView 对象</param>
-    public void DoLuaViewFunction(string functionName, CommonLuaView view)
-    {
-        var luaFunction = luaEnv.Global.Get<LuaFunction>(functionName);
-        if (luaFunction == null)
-        {
-            Debug.LogError($"Lua luaFunction not found: {functionName}", this);
-            return;
-        }
-
-        luaFunction.Call(view);
-    }
-
-    /// <summary>
     /// 获取Lua环境
     /// </summary>
     /// <returns></returns>
@@ -111,6 +103,63 @@ public class LuaSystem : MonoBehaviour
         if (path.EndsWith(".lua"))
             return path.Substring(0, path.Length - 4);
         return path;
+    }
+
+    /// <summary>
+    /// 执行lua函数，传入 CommonLuaView。
+    /// 与 DoLuaTransformFunction 的区别在于参数类型，
+    /// 让 Lua 侧可以直接访问 viewList 列表，无需通过路径查找组件。
+    /// </summary>
+    /// <param name="functionName">Lua 函数名</param>
+    /// <param name="view">传入的 CommonLuaView 对象</param>
+    public void DoLuaViewFunction(string functionName, CommonLuaView view)
+    {
+        var luaFunction = luaEnv.Global.Get<LuaFunction>(functionName);
+        if (luaFunction == null)
+        {
+            Debug.LogError($"Lua luaFunction not found: {functionName}", this);
+            return;
+        }
+
+        luaFunction.Call(view);
+    }
+
+    public void CallLuaPanelFunction(string luaWindowName, string functionName, object luaObject=null)
+    {
+        if (luaEnv == null)
+        {
+            Debug.LogError("Lua env is null, can not call lua panel function.", this);
+            return;
+        }
+        if (string.IsNullOrEmpty(luaWindowName))
+        {
+            Debug.LogError("luaWindowName is null or empty.", this);
+            return;
+        }
+        if (string.IsNullOrEmpty(functionName))
+        {
+            Debug.LogError("functionName is null or empty.", this);
+            return;
+        }
+
+        var luaFunction = luaEnv.Global.Get<LuaFunction>("CallLuaPanelFunction");
+        if (luaFunction == null)
+        {
+            Debug.LogError("Lua function not found: CallLuaPanelFunction", this);
+            return;
+        }
+
+        try
+        {
+            if (luaObject == null)
+                luaFunction.Call(luaWindowName, functionName);
+            else
+                luaFunction.Call(luaWindowName, functionName, luaObject);
+        }
+        finally
+        {
+            luaFunction.Dispose();
+        }
     }
 
     private void Update()
