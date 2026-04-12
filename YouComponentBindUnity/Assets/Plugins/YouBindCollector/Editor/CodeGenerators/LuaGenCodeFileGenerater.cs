@@ -20,22 +20,21 @@ namespace YouBindCollector
 --- @class @ClassName@
 local @ClassName@ = {}
 UIPanelName = UIPanelName or {}
-UIPanelName.@ClassName@PanelName = ""@ClassName@PanelName""
-local PanelName = UIPanelName.@ClassName@PanelName
+UIPanelName.@ClassName@ = ""@ClassName@""
 
-UIRegistry.Register(PanelName, @ClassName@)
+UIRegistry.Register(UIPanelName.@ClassName@, @ClassName@)
 
-function @ClassName@_Init(commonView)
-    return @ClassName@:InitView(commonView)
+function Get@ClassName@Panel()
+    --- @type @ClassName@
+    local panel = UIRegistry.Get(
+        UIPanelName.@ClassName@)
+    if panel == nil then
+        print(""[@ClassName@] Panel not found in UIRegistry."")
+    end
+    return panel
 end
 
 function @ClassName@:InitView(commonView)
-    self.view = @ClassName@_InitializeView(commonView)
-    return self.view
-end
-
--- 根据传入的 CommonLuaView 对象初始化视图 table。
-function @ClassName@_InitializeView(commonView)
     if commonView == nil or commonView.viewList == nil then
         print(""[@ClassName@.bind] commonView is nil"")
         return nil
@@ -45,43 +44,12 @@ function @ClassName@_InitializeView(commonView)
     --- @class @ClassName@View
     local view = {}
 @FieldAssignment@
-    return view
-end
-
-function Get@ClassName@Panel()
-    --- @type @ClassName@
-    local panel = UIRegistry.Get(PanelName)
-    if panel == nil then
-        print(""[@ClassName@] Panel not found in UIRegistry."")
-    end
-    return panel
+    self.view = view
 end
 
 @EventFunction@
-function @ClassName@_OnEnable()
-    local panel = Get@ClassName@Panel()
-    if panel == nil then return end
-
-    -- 防止重复注册
-    panel:UnregisterEvent()
-    panel:RegisterEvent()
-
-    if panel.OnEnable ~= nil then
-        panel:OnEnable()
-    end
-end
-
-function @ClassName@_OnDisable()
-    local panel = Get@ClassName@Panel()
-    if panel == nil then return end
-    panel:UnregisterEvent()
-
-    if panel.OnDisable ~= nil then
-        panel:OnDisable()
-    end
-end
-
 function @ClassName@:RegisterEvent()
+    self:UnregisterEvent()
 @RegisterEvent@
     return self.view
 end

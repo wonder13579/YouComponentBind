@@ -11,7 +11,7 @@ namespace YouBindCollector
         private string templateLuaCustomCode =
 @"-- 此文件由 YouBindCollector 生成一次，后续不会被覆盖，可自由修改业务逻辑。
 --- @type @ClassName@
-local @ClassName@ = UIRegistry.Get(UIPanelName.@ClassName@PanelName)
+local @ClassName@ = UIRegistry.Get(UIPanelName.@ClassName@)
 
 if @ClassName@ == nil then
     error(""[@ClassName@] Panel not found in UIRegistry. Please check g file registration."")
@@ -19,13 +19,6 @@ end
 
 function @ClassName@:Start()
     print(""[@ClassName@] Start"")
-    -- 测试用，先别删
-    if self.view ~= nil then
-        for key, value in pairs(self.view) do
-            print(""[@ClassName@] "" .. key, value)
-        end
-    end
-    -- self.view.Text_Text.text = ""Hello YouBind!""
 end
 
 function @ClassName@:OnEnable()

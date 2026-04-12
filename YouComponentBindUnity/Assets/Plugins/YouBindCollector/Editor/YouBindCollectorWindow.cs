@@ -722,6 +722,7 @@ namespace YouBindCollector
         {
             if (rootBindBase == null)
                 return;
+            // 不区分类型。防止修改类型后删不掉
             var message = $"警告！将删除生成代码文件，点击确认继续\n" +
                 $"将删除：{rootBindBase.targetClassName}.cs\n" +
                 $"{rootBindBase.targetClassName}.g.cs\n" +
