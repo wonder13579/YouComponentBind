@@ -44,13 +44,12 @@ namespace YouBindCollector
             return Array.Find(componentConfig.eventArray, p => p.eventName == eventName);
         }
 
-        public void AddConfig(Type type, string prefix = null, bool autoBind = true,
+        public void AddConfig(Type type, bool autoBind = true,
             YouEventBindConfig[] eventArray = null)
         {
             bindConfigList.Add(new YouBindTypeConfig
             {
                 bindType = type,
-                prefix = prefix,
                 autoBind = autoBind,
                 eventArray = eventArray
             });
@@ -58,21 +57,21 @@ namespace YouBindCollector
 
         private void Init()
         {
-            AddConfig(typeof(Transform), "TF", false);
-            AddConfig(typeof(RectTransform), "RTF", false);
-            AddConfig(typeof(GameObject), "GO", false);
-            AddConfig(typeof(Text), "Text");
-            AddConfig(typeof(Image), "Image", false);
-            AddConfig(typeof(RawImage), "Raw");
-            AddConfig(typeof(Button), "Button", eventArray: new[]
+            AddConfig(typeof(Transform), false);
+            AddConfig(typeof(RectTransform), false);
+            AddConfig(typeof(GameObject), false);
+            AddConfig(typeof(Text));
+            AddConfig(typeof(Image), false);
+            AddConfig(typeof(RawImage));
+            AddConfig(typeof(Button), eventArray: new[]
             {
                 new YouEventBindConfig("onClick", "On@EventName@Click", "void On@EventName@Click()")
             });
-            AddConfig(typeof(Toggle), "Toggle", eventArray: new[]
+            AddConfig(typeof(Toggle), eventArray: new[]
             {
                 new YouEventBindConfig("onValueChanged", "On@EventName@ValueChanged", "void On@EventName@ValueChanged(bool value)")
             });
-            AddConfig(typeof(InputField), "Input", eventArray: new[]
+            AddConfig(typeof(InputField), eventArray: new[]
             {
                 new YouEventBindConfig("onValueChanged", "On@EventName@ValueChanged", "void On@EventName@ValueChanged(string value)"),
                 new YouEventBindConfig("onEndEdit", "On@EventName@EndEdit", "void On@EventName@EndEdit(string value)")
@@ -86,7 +85,6 @@ namespace YouBindCollector
     public class YouBindTypeConfig : IYouCodeBindGenerate
     {
         public bool autoBind; // 扫描时默认加入组件列表
-        public string prefix;
         public Type bindType;
         public YouEventBindConfig[] eventArray; // 支持生成的事件列表
 
@@ -96,7 +94,6 @@ namespace YouBindCollector
             return new YouBindTypeConfig()
             {
                 autoBind = false,
-                prefix = bindType.Name,
                 bindType = bindType,
                 eventArray = null,
             };

@@ -45,6 +45,7 @@
      <Compile Include="Assets\Example\Scripts\Lua\CommonLuaView.cs" />
      <Compile Include="Assets\Example\Scripts\Gen\FirstWindow.g.cs" />
      <Compile Include="Assets\Example\Scripts\Gen\FirstWindow.cs" />
+     <Compile Include="Assets\Example\Scripts\Gen\BindExample.cs" />
      <Folder Include="Assets" />
      <Folder Include="Assets\Example\Resources\ResImages" />
      <Folder Include="Assets\Resources" />

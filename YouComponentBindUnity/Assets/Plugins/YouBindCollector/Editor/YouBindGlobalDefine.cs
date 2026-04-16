@@ -40,25 +40,18 @@ namespace YouBindCollector
         }
 
         // 生成组件的命名
-        public static string GetFieldName(BindObjectInfo bindInfo, YouBindTypeConfig bindConfig = null, Transform objectTF = null)
+        public static string GetFieldName(BindObjectInfo bindInfo, Transform objectTF = null)
         {
             if (bindInfo == null)
                 return "";
-            // 前缀这个功能没啥必要了，不留了
-            // if (bindConfig == null)
-            //     bindConfig = YouBindTypeConfigManager.Instance.GetBindConfig(bindInfo.bindType);
             if (objectTF == null)
                 objectTF = YouBindUtils.GetObjectTransform(bindInfo.bindObject);
-            return BuildFieldName(objectTF?.name, bindConfig?.prefix);
+            return BuildFieldName(objectTF?.name);
         }
 
-        public static string BuildFieldName(string rawName, string prefix)
+        public static string BuildFieldName(string rawName)
         {
             return SanitizeIdentifier(rawName, "Object");
-            // 前缀这个功能没啥必要了，不留了
-            // var normalizedPrefix = SanitizeIdentifier(prefix, "Field");
-            // var normalizedName = SanitizeIdentifier(rawName, "Object");
-            // return normalizedPrefix + "_" + normalizedName;
         }
 
         // 替换标识符中的特殊字符

@@ -91,7 +91,7 @@ namespace YouBindCollector
                 bindType = type,
                 eventInfoList = new List<BindEventInfo>(),
             };
-            componentInfo.fieldName = YouBindGlobalDefine.GetFieldName(componentInfo, bindConfig, objectTF);
+            componentInfo.fieldName = YouBindGlobalDefine.GetFieldName(componentInfo, objectTF);
             AddComponentDefaultEvent(componentInfo);
 
             resultList.Add(componentInfo);

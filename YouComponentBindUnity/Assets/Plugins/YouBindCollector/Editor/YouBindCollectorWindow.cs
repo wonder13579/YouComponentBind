@@ -378,21 +378,11 @@ namespace YouBindCollector
             GUI.color = oldColor;
             if (newFieldName != info.fieldName)
             {
-                var config = YouBindTypeConfigManager.Instance.GetBindConfig(info.bindType);
-                Debug.Log("" + info.bindType + config);
-                var objectName = newFieldName;
-                var prefix = config?.prefix ?? "Field";
-                var prefixWithSeparator = prefix + "_";
-                if (objectName.StartsWith(prefixWithSeparator))
-                    objectName = objectName.Substring(prefixWithSeparator.Length);
-                else if (objectName.StartsWith(prefix))
-                    objectName = objectName.Substring(prefix.Length);
-
-                objectName = YouBindGlobalDefine.SanitizeIdentifier(objectName, "Object");
+                var objectName = YouBindGlobalDefine.SanitizeIdentifier(newFieldName, "Object");
                 var transform = YouBindUtils.GetObjectTransform(info.bindObject);
                 if (transform != null)
                     transform.name = objectName;
-                info.fieldName = YouBindGlobalDefine.BuildFieldName(prefix, objectName);
+                info.fieldName = YouBindGlobalDefine.BuildFieldName(objectName);
             }
 
             // 显示引用
